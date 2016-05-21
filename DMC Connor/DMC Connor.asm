@@ -46,7 +46,12 @@ PACKET_COPY					equ		0x78
 IS_PAIRED					equ		0x79
 COLOR						equ		0x7A
 LED_ON						equ		0x7B
-index						equ		0x7C
+LED_timeval					equ		0x7C
+LED_Counter					equ		0x7D
+LED_Lowerval				equ		0x7E
+LED_Upperval				equ		0x7F
+
+
 ;testvar						equ		0x7D
 ;index2						equ		0x7E
 
@@ -492,11 +497,10 @@ TURN_LEDS_ON:
 		MOVLW		MAX_COUNTS
 		MOVWF		COUNTS_LEFT
 
-	; Set up the indices
-		movlw 	0x00
-		movwf	index
-		;movlw 	0x2D
-		;movwf	index2
+		;Set up the LEDs
+		MOVLW		0x08
+		MOVWF		LED_Timeval
+		MOVWF		LED_Counter
 
 	;		;Transfer the color into the PWM color field
 	;		BCF			PWM_COLOR, 0
@@ -518,12 +522,10 @@ TURN_LEDS_ON:
 
 ;This dims the LEDs
 DIM_LEDS:
-		;Decrease the LED PWM
-		incf 		index, f       	; Increment the step index
-	;	decf		index2, f
-   	;	movf 		index, W       	; Add the working file to the index
-   	;	andlw 		0x3F          	; And the working register NOTE THAT THIS IS GREATER THAN 45!!
-	;	movwf		index							
+		CALL LED_ON_MAX
+		DECFSZ LED_Counter
+		GOTO RESET_TIME
+					
 									;decrement the counter
 		;If the counter is 0, turn the LEDs off
 		DECFSZ		COUNTS_LEFT, F
@@ -551,6 +553,15 @@ TURN_LEDS_OFF:
 		movwf	index
 
 		RETURN
+
+RESET_TIME:
+		decf LED_Timeval
+		movf LED_Timeval, W
+		movwf LED_Counter
+		Call LED_ON_MIN
+
+LED_ON_MAX:
+		
 
 PWM: 
 		; Turn Timer2 OFF
