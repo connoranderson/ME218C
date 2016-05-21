@@ -276,7 +276,11 @@ def SetupGPIO():
     GPIO.setup(33, GPIO.OUT) #pin 33 
     GPIO.setup(35, GPIO.OUT) #pin 35 
     GPIO.setup(37, GPIO.OUT) #pin 47
-    GPIO.output(37, True) #Set the bucket 8 pin high for neutral output.
+    GPIO.setup(15, GPIO.OUT) #forward indicator pin
+    GPIO.setup(13, GPIO.OUT) #backward indicator pin
+    GPIO.setup(11, GPIO.OUT) #right turn indicator pin
+    GPIO.setup(12, GPIO.OUT) #left turn indicator pin
+    GPIO.output(37, True) #Output the 0 bucket value by default. 
 
 OpenConfig()
 LoadAllScripts()

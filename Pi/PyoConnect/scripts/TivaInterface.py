@@ -11,16 +11,22 @@ def updateGPIO(pose, roll):
 	#first deal with the forward/backward command
 	if((pose == "fist") or (pose == "waveIn")): #for robustness...
 		GPIO.output(38, True)
+		GPIO.output(15, True) # The forward signalling LED
 		GPIO.output(40, False)
+		GPIO.output(13, False) #back ward signalling LED
 	elif((pose == "waveOut") or (pose == "fingersSpread")): # again for robustness
 		GPIO.output(40, True)
+		GPIO.output(13, True)
 		GPIO.output(38, False)
+		GPIO.output(15, False)
 	else:
 		GPIO.output(38, False)
 		GPIO.output(40, False)
+		GPIO.output(13, False)
+		GPIO.output(15, False)
 
         if((pose == "doubleTap")): #Double tap to reset center. Make sure arm is parallel to ground.
-                myo.rotSetCenter()
+                myo.rotSetCenter()        
 		#print("YESSSSS")
 
         #Output roll
@@ -61,6 +67,15 @@ def updateGPIO(pose, roll):
 	elif(Bucket<0):
 		Bucket = 0
 
+	if(Bucket < 7):
+		GPIO.output(11, True)
+		GPIO.output(12, False)
+	elif(Bucket > 8):
+		GPIO.output(11, False)
+		GPIO.output(12, True)
+	else:
+		GPIO.output(11, False)
+		GPIO.output(12, False)
 
 	#print("The bucket number is: "+str(Bucket))
 

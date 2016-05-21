@@ -46,18 +46,15 @@ PACKET_COPY					equ		0x78
 IS_PAIRED					equ		0x79
 COLOR						equ		0x7A
 LED_ON						equ		0x7B
-LED_timeval					equ		0x7C
+LED_Timeval					equ		0x7C
 LED_Counter					equ		0x7D
 LED_Lowerval				equ		0x7E
 LED_Upperval				equ		0x7F
 
 
-;testvar						equ		0x7D
-;index2						equ		0x7E
-
 ;Constants
 BITS_IN_PACKET				equ		0x3	
-MAX_COUNTS					equ		0x2D
+MAX_COUNTS					equ		0x5A
 
 
 								org		0
@@ -411,8 +408,8 @@ START_MOVING:
 		bcf		T1CON, TMR1ON	; Turn timer 1 off
 		BCF T1CON, TMR1CS1 ; Set the source to instruction clock
 		BCF T1CON, TMR1CS0 
-		BSF T1CON, T1CKPS1 ; Set the prescaler to 8
-		BSF T1CON, T1CKPS0 
+		BSF T1CON, T1CKPS1 ; Set the prescaler to 4
+		BCF T1CON, T1CKPS0 
 		BCF T1GCON, TMR1GE ; Disable the gate control
 
 ;		;Check if the motor was moving.
@@ -489,8 +486,8 @@ TURN_LEDS_ON:
 		bcf		T1CON, TMR1ON	; Turn timer 1 off
 		BCF T1CON, TMR1CS1 ; Set the source to instruction clock
 		BCF T1CON, TMR1CS0 
-		BSF T1CON, T1CKPS1 ; Set the prescaler to 4
-		BCF T1CON, T1CKPS0 
+		BCF T1CON, T1CKPS1 ; Set the prescaler to 2
+		BSF T1CON, T1CKPS0 
 		BCF T1GCON, TMR1GE ; Disable the gate control
 		BSF	T1CON, TMR1ON	;Reenable the timer
 		;Set the counter to 45
@@ -498,7 +495,7 @@ TURN_LEDS_ON:
 		MOVWF		COUNTS_LEFT
 
 		;Set up the LEDs
-		MOVLW		0x08
+		MOVLW		0x0C
 		MOVWF		LED_Timeval
 		MOVWF		LED_Counter
 
@@ -524,8 +521,10 @@ TURN_LEDS_ON:
 DIM_LEDS:
 		CALL LED_ON_MAX
 		DECFSZ LED_Counter
-		GOTO RESET_TIME
-					
+		GOTO CONTINUE_LEDS
+		CALL RESET_TIME
+
+CONTINUE_LEDS:		
 									;decrement the counter
 		;If the counter is 0, turn the LEDs off
 		DECFSZ		COUNTS_LEFT, F
@@ -549,18 +548,32 @@ TURN_LEDS_OFF:
 		banksel	PIR1
 		BCF		PIR1, TMR2IF
 
-		movlw 	0x00
-		movwf	index
-
 		RETURN
 
 RESET_TIME:
-		decf LED_Timeval
+		decfsz LED_Timeval
+		GOTO CONTINUE_RESET
+		incf	LED_Timeval
+		incf	LED_Timeval
+CONTINUE_RESET:
 		movf LED_Timeval, W
 		movwf LED_Counter
 		Call LED_ON_MIN
+		RETURN
 
 LED_ON_MAX:
+		movlw 0x01
+		movwf LED_Lowerval
+		movlw 0xFF
+		movwf LED_Upperval
+		RETURN
+
+LED_ON_MIN:
+		movlw 0x01
+		movwf LED_Upperval
+		movlw 0xFF
+		movwf LED_Lowerval
+		RETURN
 		
 
 PWM: 
@@ -591,7 +604,7 @@ PWM_GO_HI: 	; Go to the next look up table value
 	; NEWER CODE
 	;movf index2, W
 	;	movf COUNTS_LEFT, W
-		movlw 0xFB
+		movf LED_Upperval, W
 
 	;movf index, W
 
@@ -619,8 +632,7 @@ PWM_GO_LO: 	; Go to the next look up table value
 	; NEW CODE
 	;		movf		index, W
 	;movf COUNTS_LEFT, W
-	movlw 0x04
-
+			movf LED_Lowerval, W
 
 			 banksel 	PR2				; Select the bank with PR2
 			 movwf 		PR2				; Move 0xFF to PR2 so that the timer counts through 255 (not including pre or post scalers)
