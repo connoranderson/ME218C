@@ -1,0 +1,114 @@
+{\rtf1\ansi\uc0 \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red255\green255\blue255;\red58\green57\blue53;\red255\green00\blue255;\red255\green00\blue255;\red00\green60\blue255;\red00\green60\blue255;\red255\green00\blue255;\red160\green32\blue240;\red255\green00\blue255;\red60\green59\blue55;\red58\green57\blue53;\red255\green00\blue255;\red165\green42\blue53;\red46\green139\blue87;\red87\green46\blue140;\red58\green57\blue53;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#define ALL_BITS ({0}xff<<{2})}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_Configure.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_Framework.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_DeferRecall.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_ShortTimer.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#include <string.h>}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#include}} {\cf9{"inc/hw_memmap.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_types.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_gpio.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_sysctl.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_Timer.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_pwm.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_nvic.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/sysctl.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/pin_map.h"}}{\cf8{	}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/gpio.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/interrupt.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf8{#define PeriodInMS {1}}} {\cf5{// Assumes {2}{0}{0}Hz clock}}}\par\pard
+\cbpat1{{\cf8{}}{\cf2{}}{\cf8{#define PeriodInHMicroS {1}}} {\cf5{// Assumes {2}{0}{0}Hz clock}}}\par\pard
+\cbpat1{{\cf8{}}{\cf2{}}{\cf8{#define PWMTicksPerMS {4}{0}{0}{0}{0}/{3}{2} }}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define PWMTicksPerHMicroS {4}{0}{0}{0}/{3}{2} }}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define BitsPerNibble {4}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf14{bool}} {\cf2{}}{\cf16{\b InitPWM\b0 }} {\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{{\cf5{// start by enabling the clock to the PWM Module (PWM{0})}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCGCPWM}}{\cf11{) |=}} {\cf2{SYSCTL_RCGCPWM_R{0}}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{{\cf5{// enable the clock to Port B}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCGCGPIO}}{\cf11{) |=}} {\cf2{SYSCTL_RCGCGPIO_R{1}}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{{\cf5{// Select the PWM clock as System Clock/{3}{2}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCC}}{\cf11{) = (}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCC}}{\cf11{) & ~}}{\cf2{SYSCTL_RCC_PWMDIV_M}}{\cf11{) |}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCC_USEPWMDIV}} {\cf11{|}} {\cf2{SYSCTL_RCC_PWMDIV_{3}{2}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{{\cf5{// make sure that the PWM module clock has gotten going}}}\par\pard
+\cbpat1{{\cf2{}}{\cf13{while}} {\cf2{}}{\cf11{((}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_PRPWM}}{\cf11{) &}} {\cf2{SYSCTL_PRPWM_R{0}}}{\cf11{) !=}} {\cf2{SYSCTL_PRPWM_R{0}}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// disable the PWM while initializing}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_CTL}} {\cf11{) =}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// program generator A to go to {1} at rising compare A, {0} on falling compare A}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_GENA}}{\cf11{) =}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{(}}{\cf2{PWM_{0}_GENA_ACTCMPAU_ONE}} {\cf11{|}} {\cf2{PWM_{0}_GENA_ACTCMPAD_ZERO}} {\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// program generator B to go to {1} at rising compare B, {0} on falling compare B}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_GENB}}{\cf11{) =}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{(}}{\cf2{PWM_{0}_GENB_ACTCMPBU_ONE}} {\cf11{|}} {\cf2{PWM_{0}_GENB_ACTCMPBD_ZERO}} {\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// Set the PWM period. Since we are counting both up & down, we initialize}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// the load register to {1}/{2} the desired total period. We will also program}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// the match compare registers to {1}/{2} the desired high time}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_LOAD}}{\cf11{) = ((}}{\cf2{PeriodInHMicroS}} {\cf11{*}} {\cf2{PWMTicksPerHMicroS}}{\cf11{))>>}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// Set the initial Duty cycle on A to {5}{0}% by programming the compare value}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// to {1}/{2} the period to count up (or down). Technically, the value to program}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// should be Period/{2} - DesiredHighTime/{2}, but since the desired high time is {1}/{2}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// the period, we can skip the subtract}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_CMPA}}{\cf11{) =}} {\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_LOAD}}{\cf11{)>>}}{\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// Set the initial Duty cycle on B to {2}{5}% by programming the compare value}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// to Period/{2} - Period/{8} ({7}{5}% of the period)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_CMPB}}{\cf11{) = (}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_LOAD}}{\cf11{)) -}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{(((}}{\cf2{PeriodInMS}} {\cf11{*}} {\cf2{PWMTicksPerMS}}{\cf11{))>>}}{\cf2{}}{\cf4{{3}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// enable the PWM outputs}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_ENABLE}}{\cf11{) |= (}}{\cf2{PWM_ENABLE_PWM{1}EN}} {\cf11{|}} {\cf2{PWM_ENABLE_PWM{0}EN}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// now configure the Port B pins to be PWM outputs}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// start by selecting the alternate function for PB{6} & {7}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTB_BASE}}{\cf11{+}}{\cf2{GPIO_O_AFSEL}}{\cf11{) |= (}}{\cf2{BIT{7}HI}} {\cf11{|}} {\cf2{BIT{6}HI}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// now choose to map PWM to those pins, this is a mux value of {4} that we}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// want to use for specifying the function on bits {6} & {7}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTB_BASE}}{\cf11{+}}{\cf2{GPIO_O_PCTL}}{\cf11{) =}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTB_BASE}}{\cf11{+}}{\cf2{GPIO_O_PCTL}}{\cf11{) &}} {\cf2{}}{\cf4{{0}x{0}{0}fffff}}{\cf2{}}{\cf11{) + (}}{\cf2{}}{\cf4{{4}}}{\cf2{}}{\cf11{<<(}}{\cf2{}}{\cf4{{7}}}{\cf2{}}{\cf11{*}}{\cf2{BitsPerNibble}}{\cf11{)) +}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{(}}{\cf2{}}{\cf4{{4}}}{\cf2{}}{\cf11{<<(}}{\cf2{}}{\cf4{{6}}}{\cf2{}}{\cf11{*}}{\cf2{BitsPerNibble}}{\cf11{));}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// Enable pins {6} & {7} on Port B for digital I/O}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTB_BASE}}{\cf11{+}}{\cf2{GPIO_O_DEN}}{\cf11{) |= (}}{\cf2{BIT{7}HI}} {\cf11{|}} {\cf2{BIT{6}HI}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// make pins {6} & {7} on Port B into outputs}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTB_BASE}}{\cf11{+}}{\cf2{GPIO_O_DIR}}{\cf11{) |= (}}{\cf2{BIT{7}HI}} {\cf11{|}}{\cf2{BIT{6}HI}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// set the up/down count mode, enable the PWM generator and make}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// both generator updates locally synchronized to zero count}}}\par\pard
+\cbpat1{{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{PWM{0}_BASE}}{\cf11{+}} {\cf2{PWM_O_{0}_CTL}}{\cf11{) = (}}{\cf2{PWM_{0}_CTL_MODE}} {\cf11{|}} {\cf2{PWM_{0}_CTL_ENABLE}} {\cf11{|}}}\par\pard
+\cbpat1{{\cf2{PWM_{0}_CTL_GENAUPD_LS}} {\cf11{|}} {\cf2{PWM_{0}_CTL_GENBUPD_LS}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf14{bool}} {\cf2{}}{\cf16{\b SetDuty\b0 }}{\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{uint{8}_t}} {\cf2{dutyCycle}} {\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{if}}{\cf2{}}{\cf11{(}}{\cf2{dutyCycle}} {\cf11{==}} {\cf2{}}{\cf4{{1}{0}{0}}} {\cf2{}}{\cf11{||}} {\cf2{dutyCycle}} {\cf11{>}} {\cf2{}}{\cf4{{1}{0}{0}}}{\cf2{}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{		dutyCycle}} {\cf11{=}} {\cf2{}}{\cf4{{9}{9}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{if}}{\cf2{}}{\cf11{(}}{\cf2{dutyCycle}} {\cf11{==}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_CMPA}}{\cf11{) =}} {\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_LOAD}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\}}}{\cf2{}}{\cf13{else}}{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_CMPA}}{\cf11{) =}} {\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_LOAD}}{\cf11{)-}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}} {\cf2{PWM{0}_BASE}}{\cf11{+}}{\cf2{PWM_O_{0}_LOAD}}{\cf11{)*(}}{\cf2{dutyCycle}}{\cf11{)/}}{\cf2{}}{\cf4{{1}{0}{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{}}

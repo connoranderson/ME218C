@@ -1,0 +1,143 @@
+{\rtf1\ansi\uc0 \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red255\green255\blue255;\red58\green57\blue53;\red255\green00\blue255;\red255\green00\blue255;\red00\green60\blue255;\red00\green60\blue255;\red255\green00\blue255;\red160\green32\blue240;\red255\green00\blue255;\red60\green59\blue55;\red58\green57\blue53;\red255\green00\blue255;\red165\green42\blue53;\red46\green139\blue87;\red87\green46\blue140;\red58\green57\blue53;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#include <stdint.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <stdbool.h>}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include <stdio.h>}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#include}} {\cf9{"ES_Configure.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_Framework.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_DeferRecall.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_ShortTimer.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_Timers.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_Port.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#include}} {\cf9{"inc/hw_memmap.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_types.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_gpio.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_sysctl.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#include}} {\cf9{"driverlib/sysctl.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/pin_map.h"}}{\cf8{}}	{\cf5{// Define PART_TM{4}C{1}{2}{3}GH{6}PM in project}}}\par\pard
+\cbpat1{{\cf8{}}{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/gpio.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#include}} {\cf9{"ADMulti.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ADService.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#define ALL_BITS ({0}xff<<{2})}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define MAX_ANALOG_READ {4}{0}{9}{5}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define POT_TO_MOTOR_SPEED {4}{1}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf6{/*---------------------------- Module Variables ---------------------------*/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// with the introduction of Gen{2}, we need a module level Priority variable}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static uint{8}_t}} {\cf2{MyPriority}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static uint{3}{2}_t}} {\cf2{ADResults}}{\cf11{[}}{\cf2{}}{\cf4{{2}}}{\cf2{}}{\cf11{];}} {\cf2{}}{\cf5{// {2} analog read pins}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static}} {\cf2{ADState_t CurrentState}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static uint{1}{6}_t}} {\cf2{CurrentMotorSpeed}} {\cf11{=}} {\cf2{}}{\cf4{{5}{0}}}{\cf2{}}{\cf11{;}} {\cf2{}}{\cf5{// Stores the value that the DCService module uses to adjust the motor speed}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static uint{8}_t}} {\cf2{POT_TO_STEP_SPEED}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static uint{1}{6}_t}} {\cf2{currentPotValue}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static uint{1}{6}_t}} {\cf2{desiredRPM}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/*---------------------------- Module Functions ---------------------------*/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/* prototypes for private functions for this service.They should be functions}}}\par\pard
+\cbpat1{{\cf6{   relevant to the behavior of this service}}}\par\pard
+\cbpat1{{\cf6{*/}}{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf14{uint{1}{6}_t}} {\cf2{}}{\cf16{\b GetMotorSpeed\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{uint{1}{6}_t}} {\cf2{}}{\cf16{\b GetDesiredRPM\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/*------------------------------ Module Code ------------------------------*/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/****************************************************************************}}}\par\pard
+\cbpat1{{\cf6{ Function}}}\par\pard
+\cbpat1{{\cf6{    InitializeDialService}}}\par\pard
+\cbpat1{{\cf6{ }}}\par\pard
+\cbpat1{{\cf6{ Parameters}}}\par\pard
+\cbpat1{{\cf6{ uint{8}_t : the priorty of this service}}}\par\pard
+\cbpat1{{\cf6{ }}}\par\pard
+\cbpat1{{\cf6{ Returns}}}\par\pard
+\cbpat1{{\cf6{ bool, false if error in initialization, true otherwise}}}\par\pard
+\cbpat1{{\cf6{ }}}\par\pard
+\cbpat1{{\cf6{ Description}}}\par\pard
+\cbpat1{{\cf6{ Saves away the priority, and does any}}}\par\pard
+\cbpat1{{\cf6{ other required initialization for this service}}}\par\pard
+\cbpat1{{\cf6{ ****************************************************************************/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf14{bool}} {\cf2{}}{\cf16{\b InitializeADService\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{uint{8}_t}} {\cf2{Priority}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// Initialize the MyPriority variable with the passed in parameter}}}\par\pard
+\cbpat1{{\cf2{    MyPriority}} {\cf11{=}} {\cf2{Priority}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// Initialize PE{0} and PE{1} as ADC for {2} dials}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b ADC_MultiInit\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf4{{2}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// Set CurrentState to Dial_Idle}}}\par\pard
+\cbpat1{{\cf2{    CurrentState}} {\cf11{=}} {\cf2{WaitingForTimeout}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf5{// Initialize a timer to prevent repeated pressing of button}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf16{\b ES_Timer_InitTimer\b0 }}{\cf2{}}{\cf11{(}}{\cf2{AD_TIMER}}{\cf11{,}} {\cf2{}}{\cf4{{2}{0}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{	}\par\pard
+\cbpat1{{\cf5{// Return true}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{return true}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/****************************************************************************}}}\par\pard
+\cbpat1{{\cf6{ Function}}}\par\pard
+\cbpat1{{\cf6{ PostDialService}}}\par\pard
+\cbpat1{{\cf6{ }}}\par\pard
+\cbpat1{{\cf6{ Parameters}}}\par\pard
+\cbpat1{{\cf6{ EF_Event ThisEvent ,the event to post to the queue}}}\par\pard
+\cbpat1{{\cf6{ }}}\par\pard
+\cbpat1{{\cf6{ Returns}}}\par\pard
+\cbpat1{{\cf6{ bool false if the Enqueue operation failed, true otherwise}}}\par\pard
+\cbpat1{{\cf6{ }}}\par\pard
+\cbpat1{{\cf6{ Description}}}\par\pard
+\cbpat1{{\cf6{ Posts an event to this state machine's queue}}}\par\pard
+\cbpat1{{\cf6{ ****************************************************************************/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf14{bool}} {\cf2{}}{\cf16{\b PostADService\b0 }}{\cf2{}}{\cf11{(}}{\cf2{ES_Event ThisEvent}}{\cf11{) \{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{return}} {\cf2{}}{\cf16{\b ES_PostToService\b0 }}{\cf2{}}{\cf11{(}}{\cf2{MyPriority}}{\cf11{,}} {\cf2{ThisEvent}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/****************************************************************************}}}\par\pard
+\cbpat1{{\cf6{ Function}}}\par\pard
+\cbpat1{{\cf6{ RunDialService}}}\par\pard
+\cbpat1{{\cf6{ }}}\par\pard
+\cbpat1{{\cf6{ Parameters}}}\par\pard
+\cbpat1{{\cf6{ ES_Event : the event to process}}}\par\pard
+\cbpat1{{\cf6{ }}}\par\pard
+\cbpat1{{\cf6{ Returns}}}\par\pard
+\cbpat1{{\cf6{ ES_Event, ES_NO_EVENT if no error ES_ERROR otherwise}}}\par\pard
+\cbpat1{{\cf6{ }}}\par\pard
+\cbpat1{{\cf6{ Description}}}\par\pard
+\cbpat1{{\cf6{ Process dial input events}}}\par\pard
+\cbpat1{{\cf6{ ****************************************************************************/}}{\cf2{}\par\pard
+\cbpat1{ES_Event}} {\cf16{\b RunADService\b0 }}{\cf2{}}{\cf11{(}}{\cf2{ES_Event ThisEvent}}{\cf11{) \{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// Declare a new event ReturnEvent}}}\par\pard
+\cbpat1{{\cf2{    ES_Event ReturnEvent}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// Set the EventType of ReturnEvent to ES_NO_EVENT}}}\par\pard
+\cbpat1{{\cf2{    ReturnEvent}}{\cf11{.}}{\cf2{EventType}} {\cf11{=}} {\cf2{ES_NO_EVENT}}{\cf11{;}} {\cf2{}}{\cf5{// assume no errors}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{	}\par\pard
+\cbpat1{		 {\cf13{switch}} {\cf2{}}{\cf11{(}}{\cf2{CurrentState}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{			{\cf13{case}} {\cf2{WaitingForTimeout}} {\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}				{\cf13{if}} {\cf2{}}{\cf11{(}}{\cf2{ThisEvent}}{\cf11{.}}{\cf2{EventType}} {\cf11{==}} {\cf2{ES_TIMEOUT}} {\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}					{\cf16{\b ADC_MultiRead\b0 }}{\cf2{}}{\cf11{(}}{\cf2{ADResults}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{					currentPotValue}} {\cf11{=}} {\cf2{ADResults}}{\cf11{[}}{\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{];}}}\par\pard
+\cbpat1{{\cf2{}}					{\cf16{\b ES_Timer_InitTimer\b0 }}{\cf2{}}{\cf11{(}}{\cf2{AD_TIMER}}{\cf11{,}} {\cf2{}}{\cf4{{2}{0}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}				{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}				}\par\pard
+\cbpat1{  {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}		}\par\pard
+\cbpat1{{\cf5{// Return ReturnEvent}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{return}} {\cf2{ReturnEvent}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf5{// Returns a value {0}-{1}{0}{0} for mapping to duty cycle}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{uint{1}{6}_t}} {\cf2{}}{\cf16{\b GetMotorSpeed\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}}{\cf2{}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{	CurrentMotorSpeed}} {\cf11{=}} {\cf2{currentPotValue}}{\cf11{/}}{\cf2{POT_TO_MOTOR_SPEED}}{\cf11{;}} {\cf2{}}{\cf5{// MAPS to Duty Cycle}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{return}} {\cf2{CurrentMotorSpeed}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{// Returns a value {0}-{4}{0}{9}{5} for mapping to RPM in Feedback control}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{uint{1}{6}_t}} {\cf2{}}{\cf16{\b GetPotValue\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}}{\cf2{}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{return}} {\cf2{currentPotValue}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}{\cf2{}}}\par\pard
+\cbpat1{}}

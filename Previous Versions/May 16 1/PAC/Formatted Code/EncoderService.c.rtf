@@ -1,0 +1,371 @@
+{\rtf1\ansi\uc0 \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red255\green255\blue255;\red58\green57\blue53;\red255\green00\blue255;\red255\green00\blue255;\red00\green60\blue255;\red00\green60\blue255;\red255\green00\blue255;\red160\green32\blue240;\red255\green00\blue255;\red60\green59\blue55;\red58\green57\blue53;\red255\green00\blue255;\red165\green42\blue53;\red46\green139\blue87;\red87\green46\blue140;\red58\green57\blue53;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{}}{\cf8{#define ALL_BITS ({0}xff<<{2})}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_Configure.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_Framework.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_DeferRecall.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ES_ShortTimer.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#include <string.h>}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#include}} {\cf9{"inc/hw_memmap.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_types.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_gpio.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_sysctl.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_Timer.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_pwm.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"inc/hw_nvic.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/sysctl.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/pin_map.h"}}{\cf8{	}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/gpio.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"driverlib/interrupt.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf8{#include}} {\cf9{"DCService.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"ADService.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"PWM_Module.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#include}} {\cf9{"EncoderService.h"}}{\cf8{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf6{/*----------------------------- Module Defines ----------------------------*/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// these times assume a {1}.{0}{0}{0}mS/tick timing}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define ONE_SEC {9}{7}{6}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define HALF_SEC (ONE_SEC/{2})}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define TWO_SEC (ONE_SEC*{2})}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define FIVE_SEC (ONE_SEC*{5})}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define USE_{4}_BIT_WRITE {0}x{8}{0}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#define NUMCHARS {4}{9}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define MAX_INPUT_LENGTH {8}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#define NUM_CHANNELS {4}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#define OPEN_BRIDGE {0}x{1}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#define PERIOD_TO_RPM {7}{9}{4}{4}{9}{2}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf8{#define TicksPerMS {4}{0}{0}{0}{0}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf8{#define RPM_TO_BARS {5}{7}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf6{/*---------------------------- Module Functions ---------------------------*/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/* prototypes for private functions for this service.They should be functions}}}\par\pard
+\cbpat1{{\cf6{   relevant to the behavior of this service}}}\par\pard
+\cbpat1{{\cf6{*/}}{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf14{void}} {\cf2{}}{\cf16{\b EncoderHWInit\b0 }}{\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{void}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{}}{\cf16{\b InputCaptureInit\b0 }}{\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{void}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{void}} {\cf2{}}{\cf16{\b WriteLEDS\b0 }}{\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{uint{8}_t}} {\cf2{input}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/*---------------------------- Module Variables ---------------------------*/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// with the introduction of Gen{2}, we need a module level Priority variable}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static uint{8}_t}} {\cf2{MyPriority}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf14{static}} {\cf2{EncoderState_t CurrentState}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf14{static uint{3}{2}_t}} {\cf2{Period}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static uint{3}{2}_t}} {\cf2{LastCapture}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static uint{3}{2}_t}} {\cf2{CurrentSpeed}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf14{static bool}} {\cf2{encoderChange}} {\cf11{=}} {\cf2{}}{\cf13{false}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}																 									 }\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf6{/*------------------------------ Module Code ------------------------------*/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/****************************************************************************}}}\par\pard
+\cbpat1{{\cf6{ Function}}}\par\pard
+\cbpat1{{\cf6{     InitLCDService}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Parameters}}}\par\pard
+\cbpat1{{\cf6{     uint{8}_t : the priorty of this service}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Returns}}}\par\pard
+\cbpat1{{\cf6{     bool, false if error in initialization, true otherwise}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Description}}}\par\pard
+\cbpat1{{\cf6{     Saves away the priority, and does any }}}\par\pard
+\cbpat1{{\cf6{     other required initialization for this service}}}\par\pard
+\cbpat1{{\cf6{ Notes}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Author}}}\par\pard
+\cbpat1{{\cf6{    Connor Anderson, {1}{0}/{2}{5}/{2}{0}{1}{5}}}}\par\pard
+\cbpat1{{\cf6{****************************************************************************/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf14{bool}} {\cf2{}}{\cf16{\b InitEncoderService\b0 }} {\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{uint{8}_t}} {\cf2{Priority}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b puts\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"EncoderService Running"}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{  ES_Event ThisEvent}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}  }\par\pard
+\cbpat1{	{\cf5{// Encoder HW Init}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b EncoderHWInit\b0 }}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf5{// Input Capture Init}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b InputCaptureInit\b0 }}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf5{// Start Timer}}}\par\pard
+\cbpat1{{\cf2{	}\par\pard
+\cbpat1{  MyPriority}} {\cf11{=}} {\cf2{Priority}}{\cf11{;}}	{\cf2{}}{\cf5{// Initialize the MyPriority variable with the passed in parameter.	}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{{\cf5{// Set CurrentState to be Waiting{4}Char}}}\par\pard
+\cbpat1{{\cf2{	CurrentState}} {\cf11{=}} {\cf2{Finding_Period}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{	{\cf16{\b puts\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf3{"Passed init"}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{	{\cf5{// Initialize a timer to generate events in run}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf16{\b ES_Timer_InitTimer\b0 }}{\cf2{}}{\cf11{(}}{\cf2{ENCODER_TIMER}}{\cf11{,}} {\cf2{}}{\cf4{{2}{0}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{// End of InitializeButton (return True)}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf13{if}} {\cf2{}}{\cf11{(}}{\cf2{}}{\cf16{\b ES_PostToService\b0 }}{\cf2{}}{\cf11{(}}{\cf2{MyPriority}}{\cf11{,}} {\cf2{ThisEvent}}{\cf11{) ==}} {\cf2{}}{\cf13{true}}{\cf2{}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf13{return true}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf11{\}}}{\cf2{}}{\cf13{else}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{return false}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/****************************************************************************}}}\par\pard
+\cbpat1{{\cf6{ Function}}}\par\pard
+\cbpat1{{\cf6{     PostLCDService}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Parameters}}}\par\pard
+\cbpat1{{\cf6{     EF_Event ThisEvent ,the event to post to the queue}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Returns}}}\par\pard
+\cbpat1{{\cf6{     bool false if the Enqueue operation failed, true otherwise}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Description}}}\par\pard
+\cbpat1{{\cf6{     Posts an event to this state machine's queue}}}\par\pard
+\cbpat1{{\cf6{ Notes}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Author}}}\par\pard
+\cbpat1{{\cf6{     Connor Anderson, {1}{0}/{2}{5}/{2}{0}{1}{5}}}}\par\pard
+\cbpat1{{\cf6{****************************************************************************/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf14{bool}} {\cf2{}}{\cf16{\b PostEncoderService\b0 }}{\cf2{}}{\cf11{(}} {\cf2{ES_Event ThisEvent}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf13{return}} {\cf2{}}{\cf16{\b ES_PostToService\b0 }}{\cf2{}}{\cf11{(}} {\cf2{MyPriority}}{\cf11{,}} {\cf2{ThisEvent}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/****************************************************************************}}}\par\pard
+\cbpat1{{\cf6{ Function}}}\par\pard
+\cbpat1{{\cf6{    RunLCDService}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Parameters}}}\par\pard
+\cbpat1{{\cf6{   ES_Event : the event to process}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Returns}}}\par\pard
+\cbpat1{{\cf6{   ES_Event, ES_NO_EVENT if no error ES_ERROR otherwise}}}\par\pard
+\cbpat1{{\cf6{}}}\par\pard
+\cbpat1{{\cf6{ Description}}}\par\pard
+\cbpat1{{\cf6{   add your description here}}}\par\pard
+\cbpat1{{\cf6{ Notes}}}\par\pard
+\cbpat1{{\cf6{   }}}\par\pard
+\cbpat1{{\cf6{ Author}}}\par\pard
+\cbpat1{{\cf6{   Connor Anderson, {1}{0}/{2}{5}/{2}{0}{1}{5}}}}\par\pard
+\cbpat1{{\cf6{****************************************************************************/}}{\cf2{}\par\pard
+\cbpat1{ES_Event}} {\cf16{\b RunEncoderService\b0 }}{\cf2{}}{\cf11{(}} {\cf2{ES_Event ThisEvent}} {\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\{}}}\par\pard
+\cbpat1{{\cf2{	}\par\pard
+\cbpat1{  ES_Event ReturnEvent}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{  ReturnEvent}}{\cf11{.}}{\cf2{EventType}} {\cf11{=}} {\cf2{ES_NO_EVENT}}{\cf11{;}} {\cf2{}}{\cf5{// assume no errors}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf14{uint{1}{6}_t}} {\cf2{delayTime}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{	}\par\pard
+\cbpat1{	}\par\pard
+\cbpat1{  {\cf13{switch}} {\cf2{}}{\cf11{(}}{\cf2{CurrentState}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf13{case}} {\cf2{Finding_Period}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{      {\cf13{if}} {\cf2{}}{\cf11{(}}{\cf2{ThisEvent}}{\cf11{.}}{\cf2{EventType}} {\cf11{==}} {\cf2{ES_TIMEOUT}} {\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}				{\cf5{// convert period into RPMs and store in module variable}}}\par\pard
+\cbpat1{{\cf2{				}\par\pard
+\cbpat1{        CurrentSpeed}} {\cf11{=}} {\cf2{PERIOD_TO_RPM}}{\cf11{/}}{\cf2{Period}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}				}\par\pard
+\cbpat1{        {\cf5{// Write RPM variable to TeraTerm window}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{//				printf("\\r\\n%d RPM",  CurrentSpeed);}}}\par\pard
+\cbpat1{{\cf2{}}				}\par\pard
+\cbpat1{				{\cf13{if}}{\cf2{}}{\cf11{(!}}{\cf2{encoderChange}}{\cf11{)\{}} {\cf2{}}{\cf5{// Timeout for if we are stopped}}}\par\pard
+\cbpat1{{\cf2{					Period}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}		}\par\pard
+\cbpat1{{\cf2{					CurrentSpeed}} {\cf11{=}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}				{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}				}\par\pard
+\cbpat1{        {\cf5{// Write to LEDs				}}}\par\pard
+\cbpat1{{\cf2{}}				{\cf13{if}}{\cf2{}}{\cf11{(}}{\cf2{encoderChange}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}					{\cf14{uint{8}_t}} {\cf2{newLEDValue}} {\cf11{= (}}{\cf2{RPM_TO_BARS}}{\cf11{-}}{\cf2{CurrentSpeed}}{\cf11{)/}}{\cf2{}}{\cf4{{7}}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{//					printf("\\r\\n%d LED",  newLEDValue);}}}\par\pard
+\cbpat1{{\cf2{}}					{\cf16{\b WriteLEDS\b0 }}{\cf2{}}{\cf11{(}}{\cf2{newLEDValue}}{\cf11{);}} }\par\pard
+\cbpat1{{\cf2{					encoderChange}} {\cf11{=}} {\cf2{}}{\cf13{false}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}				{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}				}\par\pard
+\cbpat1{        {\cf5{// Restart timer}}}\par\pard
+\cbpat1{{\cf2{}}				{\cf16{\b ES_Timer_InitTimer\b0 }}{\cf2{}}{\cf11{(}}{\cf2{ENCODER_TIMER}}{\cf11{,}} {\cf2{}}{\cf4{{1}{0}{0}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf11{\}}}	}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{  {\cf13{return}} {\cf2{ReturnEvent}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/***************************************************************************}}}\par\pard
+\cbpat1{{\cf6{ private functions}}}\par\pard
+\cbpat1{{\cf6{ ***************************************************************************/}}{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf14{void}} {\cf2{}}{\cf16{\b EncoderHWInit\b0 }}{\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{void}}{\cf2{}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf5{// Initialize LED Pins as Output}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCGCGPIO}}{\cf11{) |=}} {\cf2{SYSCTL_RCGCGPIO_R{3}}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+}}{\cf2{GPIO_O_DEN}}{\cf11{) |= (}}{\cf2{GPIO_PIN_{0}}}{\cf11{|}}{\cf2{GPIO_PIN_{1}}}{\cf11{|}}{\cf2{GPIO_PIN_{2}}}{\cf11{|}}{\cf2{GPIO_PIN_{3}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf5{//Manual delay to ensure clock is ready}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{while}} {\cf2{}}{\cf11{((}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_PRGPIO}}{\cf11{) &}} {\cf2{SYSCTL_PRGPIO_R{3}}}{\cf11{) !=}} {\cf2{SYSCTL_PRGPIO_R{3}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+}}{\cf2{GPIO_O_DIR}}{\cf11{) |= (}}{\cf2{GPIO_PIN_{0}}}{\cf11{|}}{\cf2{GPIO_PIN_{1}}}{\cf11{|}}{\cf2{GPIO_PIN_{2}}}{\cf11{|}}{\cf2{GPIO_PIN_{3}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{GPIO_PIN_{0}}}{\cf11{|}}{\cf2{GPIO_PIN_{1}}}{\cf11{|}}{\cf2{GPIO_PIN_{2}}}{\cf11{|}}{\cf2{GPIO_PIN_{3}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCGCGPIO}}{\cf11{) |=}} {\cf2{SYSCTL_RCGCGPIO_R{0}}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+}}{\cf2{GPIO_O_DEN}}{\cf11{) |= (}}{\cf2{GPIO_PIN_{2}}}{\cf11{|}}{\cf2{GPIO_PIN_{3}}}{\cf11{|}}{\cf2{GPIO_PIN_{4}}}{\cf11{|}}{\cf2{GPIO_PIN_{5}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf5{//Manual delay to ensure clock is ready}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{while}} {\cf2{}}{\cf11{((}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_PRGPIO}}{\cf11{) &}} {\cf2{SYSCTL_PRGPIO_R{0}}}{\cf11{) !=}} {\cf2{SYSCTL_PRGPIO_R{0}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+}}{\cf2{GPIO_O_DIR}}{\cf11{) |= (}}{\cf2{GPIO_PIN_{2}}}{\cf11{|}}{\cf2{GPIO_PIN_{3}}}{\cf11{|}}{\cf2{GPIO_PIN_{4}}}{\cf11{|}}{\cf2{GPIO_PIN_{5}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{GPIO_PIN_{2}}}{\cf11{|}}{\cf2{GPIO_PIN_{3}}}{\cf11{|}}{\cf2{GPIO_PIN_{4}}}{\cf11{|}}{\cf2{GPIO_PIN_{5}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{	{\cf5{// Initialize LED Pins as Output}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCGCGPIO}}{\cf11{) |=}} {\cf2{SYSCTL_RCGCGPIO_R{4}}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTE_BASE}}{\cf11{+}}{\cf2{GPIO_O_DEN}}{\cf11{) |= (}}{\cf2{GPIO_PIN_{2}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf5{//Manual delay to ensure clock is ready}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{while}} {\cf2{}}{\cf11{((}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_PRGPIO}}{\cf11{) &}} {\cf2{SYSCTL_PRGPIO_R{4}}}{\cf11{) !=}} {\cf2{SYSCTL_PRGPIO_R{4}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTE_BASE}}{\cf11{+}}{\cf2{GPIO_O_DIR}}{\cf11{) |= (}}{\cf2{GPIO_PIN_{2}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTE_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{GPIO_PIN_{2}}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTE_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{		}\par\pard
+\cbpat1{{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf14{void}} {\cf2{}}{\cf16{\b InputCaptureInit\b0 }}{\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{void}}{\cf2{}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf5{// start by enabling the clock to the timer (Wide Timer {0})}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCGCWTIMER}}{\cf11{) |=}} {\cf2{SYSCTL_RCGCWTIMER_R{0}}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// enable the clock to Port E}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{SYSCTL_RCGCGPIO}}{\cf11{) |=}} {\cf2{SYSCTL_RCGCGPIO_R{2}}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// since we added this Port E clock init, we can immediately start}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// into configuring the timer, no need for further delay}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// make sure that timer (Timer A) is disabled before configuring}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_CTL}}{\cf11{) &= ~}}{\cf2{TIMER_CTL_TAEN}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// set it up in {3}{2}bit wide (individual, not concatenated) mode}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// the constant name derives from the {1}{6}/{3}{2} bit timer, but this is a {3}{2}/{6}{4}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// bit timer so we are setting the {3}{2}bit mode}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_CFG}}{\cf11{) =}} {\cf2{TIMER_CFG_{1}{6}_BIT}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// we want to use the full {3}{2} bit count, so initialize the Interval Load}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// register to {0}xffff.ffff (its default value :-)}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_TAILR}}{\cf11{) =}} {\cf2{}}{\cf4{{0}xffffffff}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// set up timer A in capture mode (TAMR={3}, TAAMS = {0}),}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// for edge time (TACMR = {1}) and up-counting (TACDIR = {1})}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_TAMR}}{\cf11{) =}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{(}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_TAMR}}{\cf11{) & ~}}{\cf2{TIMER_TAMR_TAAMS}}{\cf11{) |}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{(}}{\cf2{TIMER_TAMR_TACDIR}} {\cf11{|}} {\cf2{TIMER_TAMR_TACMR}} {\cf11{|}} {\cf2{TIMER_TAMR_TAMR_CAP}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// To set the event to rising edge, we need to modify the TAEVENT bits}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// in GPTMCTL. Rising edge = {0}{0}, so we clear the TAEVENT bits}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_CTL}}{\cf11{) &= ~}}{\cf2{TIMER_CTL_TAEVENT_M}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// Now Set up the port to do the capture (clock was enabled earlier)}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// start by setting the alternate function for Port E bit {4} (WT{0}CCP{0})}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTC_BASE}}{\cf11{+}}{\cf2{GPIO_O_AFSEL}}{\cf11{) |=}} {\cf2{BIT{4}HI}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// Then, map bit {4}'s alternate function to WT{0}CCP{0}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// {7} is the mux value to select WT{0}CCP{0}, {1}{6} to shift it over to the}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// right nibble for bit {4} ({4} bits/nibble * {4} bits)}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTC_BASE}}{\cf11{+}}{\cf2{GPIO_O_PCTL}}{\cf11{) =}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf11{(}}{\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTC_BASE}}{\cf11{+}}{\cf2{GPIO_O_PCTL}}{\cf11{) &}} {\cf2{}}{\cf4{{0}xfff{0}ffff}}{\cf2{}}{\cf11{) + (}}{\cf2{}}{\cf4{{7}}}{\cf2{}}{\cf11{<<}}{\cf2{}}{\cf4{{1}{6}}}{\cf2{}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// Enable pin on Port E for digital I/O}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTC_BASE}}{\cf11{+}}{\cf2{GPIO_O_DEN}}{\cf11{) |=}} {\cf2{BIT{4}HI}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// make pin {4} on Port E into an input}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTC_BASE}}{\cf11{+}}{\cf2{GPIO_O_DIR}}{\cf11{) &=}} {\cf2{BIT{4}LO}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// back to the timer to enable a local capture interrupt}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_IMR}}{\cf11{) |=}} {\cf2{TIMER_IMR_CAEIM}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// enable the Timer A in Wide Timer {0} interrupt in the NVIC}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// it is interrupt number {9}{4} so appears in EN{2} at bit {3}{0}}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{NVIC_EN{2}}}{\cf11{) |=}} {\cf2{BIT{3}{0}HI}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// make sure interrupts are enabled globally}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b __enable_irq\b0 }}{\cf2{}}{\cf11{();}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// now kick the timer off by enabling it and enabling the timer to}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf5{// stall while stopped by the debugger}}}\par\pard
+\cbpat1{{\cf2{}}    {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_CTL}}{\cf11{) |= (}}{\cf2{TIMER_CTL_TAEN}} {\cf11{|}} {\cf2{TIMER_CTL_TASTALL}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{}}  }\par\pard
+\cbpat1{{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf14{void}} {\cf2{}}{\cf16{\b InputCaptureResponse\b0 }}{\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{void}} {\cf2{}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{  {\cf14{uint{3}{2}_t}} {\cf2{ThisCapture}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf5{// start by clearing the source of the interrupt, the input capture event}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_ICR}}{\cf11{) =}} {\cf2{TIMER_ICR_CAECINT}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf5{// now grab the captured value and calculate the period}}}\par\pard
+\cbpat1{{\cf2{  ThisCapture}} {\cf11{=}} {\cf2{}}{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{WTIMER{0}_BASE}}{\cf11{+}}{\cf2{TIMER_O_TAR}}{\cf11{);}}}\par\pard
+\cbpat1{{\cf2{  Period}} {\cf11{=}} {\cf2{ThisCapture}} {\cf11{-}} {\cf2{LastCapture}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf5{// update LastCapture to prepare for the next edge}}}\par\pard
+\cbpat1{{\cf2{  LastCapture}} {\cf11{=}} {\cf2{ThisCapture}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf5{// update encoderChange variable for LED Display}}}\par\pard
+\cbpat1{{\cf2{	encoderChange}} {\cf11{=}} {\cf2{}}{\cf13{true}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf14{void}} {\cf2{}}{\cf16{\b WriteLEDS\b0 }}{\cf2{}}{\cf11{(}} {\cf2{}}{\cf14{uint{8}_t}} {\cf2{input}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}  {\cf13{switch}} {\cf2{}}{\cf11{(}}{\cf2{input}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf13{case}} {\cf2{}}{\cf4{{0}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{0}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{case}} {\cf2{}}{\cf4{{1}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{0}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{case}} {\cf2{}}{\cf4{{2}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{0}HI}} {\cf11{|}} {\cf2{BIT{1}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{case}} {\cf2{}}{\cf4{{3}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{0}HI}} {\cf11{|}} {\cf2{BIT{1}HI}} {\cf11{|}} {\cf2{BIT{2}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{case}} {\cf2{}}{\cf4{{4}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{0}HI}} {\cf11{|}} {\cf2{BIT{1}HI}} {\cf11{|}} {\cf2{BIT{2}HI}} {\cf11{|}} {\cf2{BIT{3}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{case}} {\cf2{}}{\cf4{{5}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{0}HI}} {\cf11{|}} {\cf2{BIT{1}HI}} {\cf11{|}} {\cf2{BIT{2}HI}} {\cf11{|}} {\cf2{BIT{3}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{2}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{case}} {\cf2{}}{\cf4{{6}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{0}HI}} {\cf11{|}} {\cf2{BIT{1}HI}} {\cf11{|}} {\cf2{BIT{2}HI}} {\cf11{|}} {\cf2{BIT{3}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{2}HI}}{\cf11{|}} {\cf2{BIT{3}HI}} {\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{case}} {\cf2{}}{\cf4{{7}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{0}HI}} {\cf11{|}} {\cf2{BIT{1}HI}} {\cf11{|}} {\cf2{BIT{2}HI}} {\cf11{|}} {\cf2{BIT{3}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{2}HI}}{\cf11{|}} {\cf2{BIT{3}HI}} {\cf11{|}} {\cf2{BIT{4}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}		{\cf13{case}} {\cf2{}}{\cf4{{8}}}{\cf2{}}{\cf11{:}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{0}LO}} {\cf11{&}} {\cf2{BIT{1}LO}} {\cf11{&}} {\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}}{\cf11{);}} {\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) &= (}}{\cf2{BIT{2}LO}} {\cf11{&}} {\cf2{BIT{3}LO}} {\cf11{&}} {\cf2{BIT{4}LO}} {\cf11{&}} {\cf2{BIT{5}LO}}{\cf11{);}}{\cf2{}}{\cf5{//Set all LEDs LO for tiny interval}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTD_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{0}HI}} {\cf11{|}} {\cf2{BIT{1}HI}} {\cf11{|}} {\cf2{BIT{2}HI}} {\cf11{|}} {\cf2{BIT{3}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}			{\cf16{\b HWREG\b0 }}{\cf2{}}{\cf11{(}}{\cf2{GPIO_PORTA_BASE}}{\cf11{+(}}{\cf2{GPIO_O_DATA}}{\cf11{+}}{\cf2{ALL_BITS}}{\cf11{)) |= (}}{\cf2{BIT{2}HI}}{\cf11{|}} {\cf2{BIT{3}HI}} {\cf11{|}} {\cf2{BIT{4}HI}} {\cf11{|}} {\cf2{BIT{5}HI}}{\cf11{);}} {\cf2{}}{\cf5{//Set Level {5} HI}}}\par\pard
+\cbpat1{{\cf2{}}      {\cf13{break}}{\cf2{}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf14{int{3}{2}_t}} {\cf2{}}{\cf16{\b GetCurrentSpeed\b0 }}{\cf2{}}{\cf11{(}}{\cf2{}}{\cf14{void}}{\cf2{}}{\cf11{)\{}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{return}} {\cf2{CurrentSpeed}}{\cf11{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf11{\}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf6{/*------------------------------- Footnotes -------------------------------*/}}{\cf2{}}}\par\pard
+\cbpat1{{\cf6{/*------------------------------ End of file ------------------------------*/}}{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{}}

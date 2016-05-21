@@ -1,0 +1,169 @@
+{\rtf1\ansi\uc0 \deff1{\fonttbl{\f1\fmodern\fprq1\fcharset0 Courier New;}}{\colortbl;\red255\green255\blue255;\red58\green57\blue53;\red255\green00\blue255;\red255\green00\blue255;\red00\green60\blue255;\red00\green60\blue255;\red255\green00\blue255;\red160\green32\blue240;\red255\green00\blue255;\red60\green59\blue55;\red58\green57\blue53;\red255\green00\blue255;\red165\green42\blue53;\red46\green139\blue87;\red87\green46\blue140;}
+\paperw11905\paperh16837\margl1134\margr1134\margt1134\margb1134\sectd\plain\f1\fs20
+\pard \cbpat1{{\cf2{	}\par\pard
+\cbpat1{	list P}}{\cf11{=}}{\cf2{PIC{1}{2}F{7}{5}{2}}\par\pard
+\cbpat1{	#}}{\cf13{include}} {\cf2{}}{\cf3{"p{1}{2}F{7}{5}{2}.inc"}}{\cf2{}\par\pard
+\cbpat1{	__config}} {\cf11{(}}{\cf2{_CP_OFF}} {\cf11{&}} {\cf2{_WDT_OFF}} {\cf11{&}} {\cf2{_PWRTE_ON}} {\cf11{&}} {\cf2{_FOSC_INT}} {\cf11{&}} {\cf2{_MCLRE_OFF}}{\cf11{)}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{;	errorlevel -{3}{0}{2}	}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf13{ORG}}     {\cf2{}}{\cf4{{0}}}            {\cf2{}}{\cf5{; processor reset vector}}}\par\pard
+\cbpat1{{\cf2{    goto    main}}              {\cf5{; go to beginning of program}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{    {\cf13{ORG}}     {\cf2{}}{\cf4{{4}}}             {\cf2{}}{\cf5{; interrupt vector location}}}\par\pard
+\cbpat1{{\cf2{    goto 	ISR}}}\par\pard
+\cbpat1{	{\cf13{ORG}}     {\cf2{}}{\cf4{{5}}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{{\cf5{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{; Variable Defs}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{;}}}\par\pard
+\cbpat1{{\cf2{}\par\pard
+\cbpat1{WREG_TEMP}} {\cf13{equ}} {\cf2{}}{\cf4{{1}}}{\cf2{xF{0}}} {\cf5{; Temporary Registers in ALL Banks for Interrupts}}}\par\pard
+\cbpat1{{\cf2{STATUS_TEMP}} {\cf13{equ}} {\cf2{}}{\cf4{{1}}}{\cf2{xF{1}}\par\pard
+\cbpat1{PCLATH_TEMP}} {\cf13{equ}} {\cf2{}}{\cf4{{1}}}{\cf2{xF{2}}\par\pard
+\cbpat1{index}} {\cf13{equ}} {\cf2{}}{\cf4{{0}x{4}{0}}} {\cf2{}}{\cf5{; Index for stepping}}}\par\pard
+\cbpat1{{\cf2{WriteToPort}} {\cf13{equ}} {\cf2{}}{\cf4{{0}x{4}{1}}} }\par\pard
+\cbpat1{{\cf2{DirectionInput}} {\cf13{equ}} {\cf2{RA{4}}} {\cf5{; RA{4} Controls Direction}}}\par\pard
+\cbpat1{{\cf2{ModeInput}} {\cf13{equ}} {\cf2{RA{5}}} {\cf5{; RA{5} Controls Mode}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf5{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{; Tables}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{;}}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{FullStepDrive:}} {\cf2{}}{\cf5{; Definitions for Stepper Steps}}}\par\pard
+\cbpat1{{\cf2{	addwf PCL}}{\cf11{,}} {\cf2{f}\par\pard
+\cbpat1{	retlw}} {\cf4{{0}x{0}{3}}} {\cf2{}}{\cf5{;STEP {1},{0},{1},{0}}}}\par\pard
+\cbpat1{{\cf2{	retlw}} {\cf4{{0}x{0}{2}}} {\cf2{}}{\cf5{;STEP {1},{0},{0},{1}}}}\par\pard
+\cbpat1{{\cf2{	retlw}} {\cf4{{0}x{0}{0}}} {\cf2{}}{\cf5{;STEP {0},{1},{0},{1}}}}\par\pard
+\cbpat1{{\cf2{	retlw}} {\cf4{{0}x{0}{1}}} {\cf2{}}{\cf5{;STEP {0},{1},{1},{0}}}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{EndTBL:}}}\par\pard
+\cbpat1{{\cf2{}}	}\par\pard
+\cbpat1{{\cf15{main:}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{; ANSEL Definitions}}}\par\pard
+\cbpat1{{\cf2{	banksel ANSELA}\par\pard
+\cbpat1{	BCF ANSELA}}{\cf11{,}} {\cf2{ANSA{0}}\par\pard
+\cbpat1{	BCF ANSELA}}{\cf11{,}} {\cf2{ANSA{1}}\par\pard
+\cbpat1{	BCF ANSELA}}{\cf11{,}} {\cf2{ANSA{2}}\par\pard
+\cbpat1{	BCF ANSELA}}{\cf11{,}} {\cf2{ANSA{4}}\par\pard
+\cbpat1{	BCF ANSELA}}{\cf11{,}} {\cf2{ANSA{5}}}}\par\pard
+\cbpat1{	}\par\pard
+\cbpat1{{\cf5{; Pin Definitions (RA{0} and RA{1} are outputs)}}}\par\pard
+\cbpat1{{\cf2{	banksel TRISA}\par\pard
+\cbpat1{	BCF TRISA}}{\cf11{,}} {\cf2{TRISA{0}}\par\pard
+\cbpat1{	BCF TRISA}}{\cf11{,}} {\cf2{TRISA{1}}\par\pard
+\cbpat1{	banksel LATA}\par\pard
+\cbpat1{	bcf LATA}}{\cf11{,}} {\cf2{LATA{0}}\par\pard
+\cbpat1{	bcf LATA}}{\cf11{,}} {\cf2{LATA{1}}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf5{; Initialize Timer}}}\par\pard
+\cbpat1{{\cf2{	banksel INTCON}}}\par\pard
+\cbpat1{	{\cf13{bsf}} {\cf2{INTCON}}{\cf11{,}} {\cf2{GIE}\par\pard
+\cbpat1{	banksel PR{2}}\par\pard
+\cbpat1{	movlw}} {\cf4{{0}xFF}}}\par\pard
+\cbpat1{{\cf2{	movwf PR{2}}} {\cf5{; Set PR{2} to {2}{5}{5}}}}\par\pard
+\cbpat1{{\cf2{}\par\pard
+\cbpat1{	banksel T{2}CON}}}\par\pard
+\cbpat1{	{\cf13{bsf}} {\cf2{T{2}CON}}{\cf11{,}} {\cf2{T{2}OUTPS{0}}} {\cf5{; Postscale Timer{2} to {1}{6}:{1}}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{bsf}} {\cf2{T{2}CON}}{\cf11{,}} {\cf2{T{2}OUTPS{1}}}}\par\pard
+\cbpat1{	{\cf13{bsf}} {\cf2{T{2}CON}}{\cf11{,}} {\cf2{T{2}OUTPS{2}}} }\par\pard
+\cbpat1{	{\cf13{bsf}} {\cf2{T{2}CON}}{\cf11{,}} {\cf2{T{2}OUTPS{3}}} }\par\pard
+\cbpat1{	{\cf13{bsf}} {\cf2{T{2}CON}}{\cf11{,}} {\cf2{TMR{2}ON}} {\cf5{; Turn Timer ON}}}\par\pard
+\cbpat1{{\cf2{	}\par\pard
+\cbpat1{	banksel PIE{1}}} {\cf5{; Enable Timer{2} Interrupt}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{bsf}} {\cf2{PIE{1}}}{\cf11{,}} {\cf2{TMR{2}IE}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf5{; Initialize External Interrupts}}}\par\pard
+\cbpat1{{\cf2{	banksel INTCON}\par\pard
+\cbpat1{	bcf INTCON}}{\cf11{,}} {\cf2{INTF}} {\cf5{; Clear interrupts before enabling}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{bsf}} {\cf2{INTCON}}{\cf11{,}} {\cf2{PEIE}}}\par\pard
+\cbpat1{	{\cf13{bsf}} {\cf2{INTCON}}{\cf11{,}} {\cf2{INTE}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{	goto $}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf15{ISR:}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf15{PUSH:}}}\par\pard
+\cbpat1{{\cf2{	movwf WREG_TEMP}} {\cf5{;save WREG}}}\par\pard
+\cbpat1{{\cf2{	movf STATUS}}{\cf11{,}}{\cf2{W}} {\cf5{;store STATUS in WREG}}}\par\pard
+\cbpat1{{\cf2{	clrf STATUS}} {\cf5{;change to file register bank{0}}}}\par\pard
+\cbpat1{{\cf2{	movwf STATUS_TEMP}} {\cf5{;save STATUS value}}}\par\pard
+\cbpat1{{\cf2{	movf PCLATH}}{\cf11{,}}{\cf2{W}} {\cf5{;store PCLATH in WREG}}}\par\pard
+\cbpat1{{\cf2{	movwf PCLATH_TEMP}} {\cf5{;save PCLATH value}}}\par\pard
+\cbpat1{{\cf2{	clrf PCLATH}} {\cf5{;change to program memory page{0}}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf15{ISR_BODY:}} }\par\pard
+\cbpat1{{\cf2{}}{\cf5{;Figure out which interrupt we triggered}}}\par\pard
+\cbpat1{{\cf2{	banksel PIR{1} }\par\pard
+\cbpat1{	btfsc PIR{1}}}{\cf11{,}} {\cf2{TMR{2}IF}\par\pard
+\cbpat1{		goto TimerInterrupt}} {\cf5{; If Interrupt came from Timer}}}\par\pard
+\cbpat1{{\cf2{	banksel INTCON}\par\pard
+\cbpat1{	btfsc INTCON}}{\cf11{,}} {\cf2{INTF}\par\pard
+\cbpat1{		goto ExternalInterrupt}} {\cf5{; If Interrupt came externally}}}\par\pard
+\cbpat1{{\cf2{	goto}} {\cf13{POP}} {\cf2{}}{\cf5{; At this point, we should have recognized the interrupt, else skip to end}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf15{TimerInterrupt:}}}\par\pard
+\cbpat1{{\cf2{	bcf PIR{1}}}{\cf11{,}} {\cf2{TMR{2}IF}} {\cf5{; Clear source of interrupt}}}\par\pard
+\cbpat1{{\cf2{	btfss PORTA}}{\cf11{,}} {\cf2{ModeInput}} {\cf5{; Figure out which mode we're in}}}\par\pard
+\cbpat1{{\cf2{		goto}} {\cf13{POP}}{\cf2{}}{\cf5{;	; Ignore interrupt if not in timer mode}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{call}} {\cf2{Step}}{\cf5{; ; Step if mode is set}}}\par\pard
+\cbpat1{{\cf2{	goto}} {\cf13{POP}}{\cf2{}}{\cf5{;}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf15{ExternalInterrupt:}}}\par\pard
+\cbpat1{{\cf2{	bcf INTCON}}{\cf11{,}} {\cf2{INTF}} {\cf5{; Clear source of interrupt}}}\par\pard
+\cbpat1{{\cf2{	btfsc PORTA}}{\cf11{,}} {\cf2{ModeInput}} {\cf5{; Figure out which mode we're in}}}\par\pard
+\cbpat1{{\cf2{		goto}} {\cf13{POP}}{\cf2{}}{\cf5{;	;  If mode bit is set, ignore button}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{call}} {\cf2{Step}} {\cf5{; Only step if mode is cleared}}}\par\pard
+\cbpat1{{\cf2{	goto}} {\cf13{POP}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf15{POP:}} }\par\pard
+\cbpat1{{\cf2{	clrf STATUS}} {\cf5{;select bank {0}}}}\par\pard
+\cbpat1{{\cf2{	movf PCLATH_TEMP}}{\cf11{,}}{\cf2{W}} {\cf5{;store saved PCLATH value in WREG}}}\par\pard
+\cbpat1{{\cf2{	movwf PCLATH}} {\cf5{;restore PCLATH}}}\par\pard
+\cbpat1{{\cf2{	movf STATUS_TEMP}}{\cf11{,}}{\cf2{W}} {\cf5{;store saved STATUS value in WREG}}}\par\pard
+\cbpat1{{\cf2{	movwf STATUS}} {\cf5{;restore STATUS}}}\par\pard
+\cbpat1{{\cf2{	swapf WREG_TEMP}}{\cf11{,}}{\cf2{F}} {\cf5{;prepare WREG to be restored}}}\par\pard
+\cbpat1{{\cf2{	swapf WREG_TEMP}}{\cf11{,}}{\cf2{W}} {\cf5{;restore WREG keeping STATUS bits}}}\par\pard
+\cbpat1{{\cf2{	retfie}} {\cf5{;return from interrupt}}}\par\pard
+\cbpat1{{\cf2{}}}\par\pard
+\cbpat1{{\cf15{Step:}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{; Figure out which direction to step in}}}\par\pard
+\cbpat1{{\cf2{	btfss PORTA}}{\cf11{,}} {\cf2{DirectionInput}\par\pard
+\cbpat1{		goto Reverse}\par\pard
+\cbpat1{Forward	incf index}}{\cf11{,}}{\cf2{w}\par\pard
+\cbpat1{	andlw}} {\cf4{{0}x{0}{3}}}}\par\pard
+\cbpat1{{\cf2{	movwf index}\par\pard
+\cbpat1{	goto EndDirectionSet}\par\pard
+\cbpat1{Reverse}\par\pard
+\cbpat1{	decf index}}{\cf11{,}}{\cf2{w}\par\pard
+\cbpat1{	andlw}} {\cf4{{0}x{0}{3}}}}\par\pard
+\cbpat1{{\cf2{	movwf index}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf15{EndDirectionSet:}}}\par\pard
+\cbpat1{{\cf2{}}{\cf5{; Table lookup to find next step value}}}\par\pard
+\cbpat1{{\cf2{	movlw FullStepDrive}}{\cf11{>>}}{\cf2{}}{\cf4{{8}}} {\cf2{}}{\cf5{; Just in case the table is on another page}}}\par\pard
+\cbpat1{{\cf2{	movwf PCLATH}\par\pard
+\cbpat1{	movf index}}{\cf11{,}} {\cf2{w}}}\par\pard
+\cbpat1{	{\cf13{call}} {\cf2{FullStepDrive}}}\par\pard
+\cbpat1{{\cf5{; Write w to port}}}\par\pard
+\cbpat1{{\cf2{	movwf WriteToPort}} {\cf5{; Temporarily store the w register}}}\par\pard
+\cbpat1{{\cf2{	movlw}} {\cf4{{0}xFC}}}\par\pard
+\cbpat1{{\cf2{	andwf LATA}}{\cf11{,}} {\cf2{f}} {\cf5{; Clear two output bits of LATA}}}\par\pard
+\cbpat1{{\cf2{	movf WriteToPort}}{\cf11{,}} {\cf2{w	}\par\pard
+\cbpat1{	IORWF LATA}}{\cf11{,}} {\cf2{f}} {\cf5{; Write value to port}}}\par\pard
+\cbpat1{{\cf2{	return}}}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf5{; Subroutine used for debugging interrupts}}}\par\pard
+\cbpat1{{\cf2{}}{\cf15{Toggle:}} }\par\pard
+\cbpat1{{\cf2{	banksel LATA	}\par\pard
+\cbpat1{	btfss LATA}}{\cf11{,}} {\cf2{LATA{0}}\par\pard
+\cbpat1{		goto Clear}\par\pard
+\cbpat1{	bcf LATA}}{\cf11{,}}{\cf2{LATA{0}}\par\pard
+\cbpat1{	goto Done}\par\pard
+\cbpat1{Clear}}{\cf5{;}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{bsf}} {\cf2{LATA}}{\cf11{,}}{\cf2{LATA{0}}}}\par\pard
+\cbpat1{{\cf15{Done:}}}\par\pard
+\cbpat1{{\cf2{	return}}}\par\pard
+\cbpat1{	}\par\pard
+\cbpat1{}\par\pard
+\cbpat1{{\cf5{; REQUIRED - tell assembler this is the end of source code}}}\par\pard
+\cbpat1{{\cf2{}}	{\cf13{end}}{\cf2{}}}\par\pard
+\cbpat1{}}

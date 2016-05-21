@@ -1,0 +1,11 @@
+.\outputs\pwmtiva.o: Source\PWMTiva.c
+.\outputs\pwmtiva.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+.\outputs\pwmtiva.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdbool.h
+.\outputs\pwmtiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_gpio.h
+.\outputs\pwmtiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_types.h
+.\outputs\pwmtiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_memmap.h
+.\outputs\pwmtiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/sysctl.h
+.\outputs\pwmtiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/pin_map.h
+.\outputs\pwmtiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/gpio.h
+.\outputs\pwmtiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/pwm.h
+.\outputs\pwmtiva.o: .\Headers\PWMTiva.h

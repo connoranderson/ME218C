@@ -1,0 +1,69 @@
+MPLINK 4.38, Linker
+Linker Map File - Created Fri May 20 16:45:41 2016
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000004    program   0x000002
+                   .org_2       code   0x000005    program   0x0000ce
+      .config_2007_LAB9.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x00006b      
+                            0x002007    0x002007      
+            108 out of 1030 program addresses used, program memory utilization is 10%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    Clear   0x00006a    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                     Done   0x00006b    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+          EndDirectionSet   0x00005b    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                   EndTBL   0x00000a    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+        ExternalInterrupt   0x000045    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                  Forward   0x000054    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+            FullStepDrive   0x000005    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                      ISR   0x000030    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                 ISR_BODY   0x000037    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                      POP   0x00004a    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                     PUSH   0x000030    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                  Reverse   0x000058    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                     Step   0x000052    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+           TimerInterrupt   0x000040    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                   Toggle   0x000064    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+             _.org_2_002F   0x00002f    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                     main   0x00000a    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+            FullStepDrive   0x000005    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                     main   0x00000a    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                   EndTBL   0x00000a    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+             _.org_2_002F   0x00002f    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                     PUSH   0x000030    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                      ISR   0x000030    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                 ISR_BODY   0x000037    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+           TimerInterrupt   0x000040    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+        ExternalInterrupt   0x000045    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                      POP   0x00004a    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                     Step   0x000052    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                  Forward   0x000054    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                  Reverse   0x000058    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+          EndDirectionSet   0x00005b    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                   Toggle   0x000064    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                    Clear   0x00006a    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+                     Done   0x00006b    program     static U:\_ME218cTeams\Team 10\Stepper Code V1\Lab 9 Assembly\Lab9.asm
+
+

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lab9.asm</title>
+<link rel="stylesheet" type="text/css" href="highlight.css">
+</head>
+<body class="hl">
+<pre class="hl">	
+	list P<span class="hl opt">=</span>PIC12F752
+	#<span class="hl kwa">include</span> <span class="hl str">&quot;p12F752.inc&quot;</span>
+	__config <span class="hl opt">(</span>_CP_OFF <span class="hl opt">&amp;</span> _WDT_OFF <span class="hl opt">&amp;</span> _PWRTE_ON <span class="hl opt">&amp;</span> _FOSC_INT <span class="hl opt">&amp;</span> _MCLRE_OFF<span class="hl opt">)</span>
+<span class="hl slc">;	errorlevel -302	</span>
+
+    <span class="hl kwa">ORG</span>     <span class="hl num">0</span>            <span class="hl slc">; processor reset vector</span>
+    goto    main              <span class="hl slc">; go to beginning of program</span>
+
+    <span class="hl kwa">ORG</span>     <span class="hl num">4</span>             <span class="hl slc">; interrupt vector location</span>
+    goto 	ISR
+	<span class="hl kwa">ORG</span>     <span class="hl num">5</span>
+	
+<span class="hl slc">;</span>
+<span class="hl slc">; Variable Defs</span>
+<span class="hl slc">;</span>
+
+WREG_TEMP <span class="hl kwa">equ</span> <span class="hl num">1</span>xF0 <span class="hl slc">; Temporary Registers in ALL Banks for Interrupts</span>
+STATUS_TEMP <span class="hl kwa">equ</span> <span class="hl num">1</span>xF1
+PCLATH_TEMP <span class="hl kwa">equ</span> <span class="hl num">1</span>xF2
+index <span class="hl kwa">equ</span> <span class="hl num">0x40</span> <span class="hl slc">; Index for stepping</span>
+WriteToPort <span class="hl kwa">equ</span> <span class="hl num">0x41</span> 
+DirectionInput <span class="hl kwa">equ</span> RA4 <span class="hl slc">; RA4 Controls Direction</span>
+ModeInput <span class="hl kwa">equ</span> RA5 <span class="hl slc">; RA5 Controls Mode</span>
+
+<span class="hl slc">;</span>
+<span class="hl slc">; Tables</span>
+<span class="hl slc">;</span>
+<span class="hl kwc">FullStepDrive:</span> <span class="hl slc">; Definitions for Stepper Steps</span>
+	addwf PCL<span class="hl opt">,</span> f
+	retlw <span class="hl num">0x03</span> <span class="hl slc">;STEP 1,0,1,0</span>
+	retlw <span class="hl num">0x02</span> <span class="hl slc">;STEP 1,0,0,1</span>
+	retlw <span class="hl num">0x00</span> <span class="hl slc">;STEP 0,1,0,1</span>
+	retlw <span class="hl num">0x01</span> <span class="hl slc">;STEP 0,1,1,0</span>
+<span class="hl kwc">EndTBL:</span>
+	
+<span class="hl kwc">main:</span>
+<span class="hl slc">; ANSEL Definitions</span>
+	banksel ANSELA
+	BCF ANSELA<span class="hl opt">,</span> ANSA0
+	BCF ANSELA<span class="hl opt">,</span> ANSA1
+	BCF ANSELA<span class="hl opt">,</span> ANSA2
+	BCF ANSELA<span class="hl opt">,</span> ANSA4
+	BCF ANSELA<span class="hl opt">,</span> ANSA5
+	
+<span class="hl slc">; Pin Definitions (RA0 and RA1 are outputs)</span>
+	banksel TRISA
+	BCF TRISA<span class="hl opt">,</span> TRISA0
+	BCF TRISA<span class="hl opt">,</span> TRISA1
+	banksel LATA
+	bcf LATA<span class="hl opt">,</span> LATA0
+	bcf LATA<span class="hl opt">,</span> LATA1
+
+<span class="hl slc">; Initialize Timer</span>
+	banksel INTCON
+	<span class="hl kwa">bsf</span> INTCON<span class="hl opt">,</span> GIE
+	banksel PR2
+	movlw <span class="hl num">0xFF</span>
+	movwf PR2 <span class="hl slc">; Set PR2 to 255</span>
+
+	banksel T2CON
+	<span class="hl kwa">bsf</span> T2CON<span class="hl opt">,</span> T2OUTPS0 <span class="hl slc">; Postscale Timer2 to 16:1</span>
+	<span class="hl kwa">bsf</span> T2CON<span class="hl opt">,</span> T2OUTPS1
+	<span class="hl kwa">bsf</span> T2CON<span class="hl opt">,</span> T2OUTPS2 
+	<span class="hl kwa">bsf</span> T2CON<span class="hl opt">,</span> T2OUTPS3 
+	<span class="hl kwa">bsf</span> T2CON<span class="hl opt">,</span> TMR2ON <span class="hl slc">; Turn Timer ON</span>
+	
+	banksel PIE1 <span class="hl slc">; Enable Timer2 Interrupt</span>
+	<span class="hl kwa">bsf</span> PIE1<span class="hl opt">,</span> TMR2IE
+
+<span class="hl slc">; Initialize External Interrupts</span>
+	banksel INTCON
+	bcf INTCON<span class="hl opt">,</span> INTF <span class="hl slc">; Clear interrupts before enabling</span>
+	<span class="hl kwa">bsf</span> INTCON<span class="hl opt">,</span> PEIE
+	<span class="hl kwa">bsf</span> INTCON<span class="hl opt">,</span> INTE
+
+	goto $
+
+<span class="hl kwc">ISR:</span>
+
+<span class="hl kwc">PUSH:</span>
+	movwf WREG_TEMP <span class="hl slc">;save WREG</span>
+	movf STATUS<span class="hl opt">,</span>W <span class="hl slc">;store STATUS in WREG</span>
+	clrf STATUS <span class="hl slc">;change to file register bank0</span>
+	movwf STATUS_TEMP <span class="hl slc">;save STATUS value</span>
+	movf PCLATH<span class="hl opt">,</span>W <span class="hl slc">;store PCLATH in WREG</span>
+	movwf PCLATH_TEMP <span class="hl slc">;save PCLATH value</span>
+	clrf PCLATH <span class="hl slc">;change to program memory page0</span>
+
+<span class="hl kwc">ISR_BODY:</span> 
+<span class="hl slc">;Figure out which interrupt we triggered</span>
+	banksel PIR1 
+	btfsc PIR1<span class="hl opt">,</span> TMR2IF
+		goto TimerInterrupt <span class="hl slc">; If Interrupt came from Timer</span>
+	banksel INTCON
+	btfsc INTCON<span class="hl opt">,</span> INTF
+		goto ExternalInterrupt <span class="hl slc">; If Interrupt came externally</span>
+	goto <span class="hl kwa">POP</span> <span class="hl slc">; At this point, we should have recognized the interrupt, else skip to end</span>
+
+<span class="hl kwc">TimerInterrupt:</span>
+	bcf PIR1<span class="hl opt">,</span> TMR2IF <span class="hl slc">; Clear source of interrupt</span>
+	btfss PORTA<span class="hl opt">,</span> ModeInput <span class="hl slc">; Figure out which mode we're in</span>
+		goto <span class="hl kwa">POP</span><span class="hl slc">;	; Ignore interrupt if not in timer mode</span>
+	<span class="hl kwa">call</span> Step<span class="hl slc">; ; Step if mode is set</span>
+	goto <span class="hl kwa">POP</span><span class="hl slc">;</span>
+
+<span class="hl kwc">ExternalInterrupt:</span>
+	bcf INTCON<span class="hl opt">,</span> INTF <span class="hl slc">; Clear source of interrupt</span>
+	btfsc PORTA<span class="hl opt">,</span> ModeInput <span class="hl slc">; Figure out which mode we're in</span>
+		goto <span class="hl kwa">POP</span><span class="hl slc">;	;  If mode bit is set, ignore button</span>
+	<span class="hl kwa">call</span> Step <span class="hl slc">; Only step if mode is cleared</span>
+	goto <span class="hl kwa">POP</span>
+
+
+<span class="hl kwc">POP:</span> 
+	clrf STATUS <span class="hl slc">;select bank 0</span>
+	movf PCLATH_TEMP<span class="hl opt">,</span>W <span class="hl slc">;store saved PCLATH value in WREG</span>
+	movwf PCLATH <span class="hl slc">;restore PCLATH</span>
+	movf STATUS_TEMP<span class="hl opt">,</span>W <span class="hl slc">;store saved STATUS value in WREG</span>
+	movwf STATUS <span class="hl slc">;restore STATUS</span>
+	swapf WREG_TEMP<span class="hl opt">,</span>F <span class="hl slc">;prepare WREG to be restored</span>
+	swapf WREG_TEMP<span class="hl opt">,</span>W <span class="hl slc">;restore WREG keeping STATUS bits</span>
+	retfie <span class="hl slc">;return from interrupt</span>
+
+<span class="hl kwc">Step:</span>
+<span class="hl slc">; Figure out which direction to step in</span>
+	btfss PORTA<span class="hl opt">,</span> DirectionInput
+		goto Reverse
+Forward	incf index<span class="hl opt">,</span>w
+	andlw <span class="hl num">0x03</span>
+	movwf index
+	goto EndDirectionSet
+Reverse
+	decf index<span class="hl opt">,</span>w
+	andlw <span class="hl num">0x03</span>
+	movwf index
+
+<span class="hl kwc">EndDirectionSet:</span>
+<span class="hl slc">; Table lookup to find next step value</span>
+	movlw FullStepDrive<span class="hl opt">&gt;&gt;</span><span class="hl num">8</span> <span class="hl slc">; Just in case the table is on another page</span>
+	movwf PCLATH
+	movf index<span class="hl opt">,</span> w
+	<span class="hl kwa">call</span> FullStepDrive
+<span class="hl slc">; Write w to port</span>
+	movwf WriteToPort <span class="hl slc">; Temporarily store the w register</span>
+	movlw <span class="hl num">0xFC</span>
+	andwf LATA<span class="hl opt">,</span> f <span class="hl slc">; Clear two output bits of LATA</span>
+	movf WriteToPort<span class="hl opt">,</span> w	
+	IORWF LATA<span class="hl opt">,</span> f <span class="hl slc">; Write value to port</span>
+	return
+
+<span class="hl slc">; Subroutine used for debugging interrupts</span>
+<span class="hl kwc">Toggle:</span> 
+	banksel LATA	
+	btfss LATA<span class="hl opt">,</span> LATA0
+		goto Clear
+	bcf LATA<span class="hl opt">,</span>LATA0
+	goto Done
+Clear<span class="hl slc">;</span>
+	<span class="hl kwa">bsf</span> LATA<span class="hl opt">,</span>LATA0
+<span class="hl kwc">Done:</span>
+	return
+	
+
+<span class="hl slc">; REQUIRED - tell assembler this is the end of source code</span>
+	<span class="hl kwa">end</span>
+</pre>
+</body>
+</html>
+<!--HTML generated by highlight 3.18, http://www.andre-simon.de/-->

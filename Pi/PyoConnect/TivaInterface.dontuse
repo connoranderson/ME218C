@@ -1,0 +1,45 @@
+#
+# Myo stuffs
+#
+
+from PyoConnect import *
+myo = Myo(sys.argv[1] if len(sys.argv) >= 2 else None)
+
+# def onPoseEdge(pose, edge):
+# 	print("onPoseEdge: " + pose + ", " + edge)
+# 	send_event("MYO_POSE_EDGE", {"pose": pose, "edge": edge})
+
+# def onUnlock():
+# 	print("Unlock ! ")
+
+# def onLock():
+# 	print("Lock ! ")
+
+# period_n = 0
+# def sendAttitude():
+# 	global period_n
+# 	period_n += 1
+# 	if (period_n % 5) != 0:
+# 		return
+
+# def onPeriodic():
+
+
+# def onWear(arm, xdirection):
+# 	print("Myo wear!")
+
+# def onUnwear():
+# 	print("Myo unwear! ")
+
+
+myo.onPoseEdge = onPoseEdge
+myo.onLock = onLock
+myo.onUnlock = onUnlock
+myo.onWear = onWear
+myo.onUnwear = onUnwear
+myo.onPeriodic = onPeriodic
+
+myo.connect()
+while True:
+		myo.run()
+		myo.tick()

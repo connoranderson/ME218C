@@ -1,0 +1,88 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Project:</h2>
+U:\_ME218cTeams\Team 10\XBee\UVFrameworkTemplate.uvprojx
+Project File Date:  05/07/2016
+
+<h2>Output:</h2>
+Rebuild target 'Button Test'
+compiling main.c...
+compiling EventCheckers.c...
+compiling TestHarnessService0.c...
+compiling TemplateFSM.c...
+compiling ES_ShortTimer.c...
+compiling ADService.c...
+Source\ADService.c(35): warning:  #177-D: variable "POT_TO_STEP_SPEED" was declared but never referenced
+  static uint8_t POT_TO_STEP_SPEED;
+Source\ADService.c(37): warning:  #177-D: variable "desiredRPM" was declared but never referenced
+  static uint16_t desiredRPM = 0;
+Source\ADService.c: 2 warnings, 0 errors
+compiling Button.c...
+Source\Button.c(158): warning:  #177-D: variable "delayTime" was declared but never referenced
+    uint16_t delayTime;
+Source\Button.c(50): warning:  #550-D: variable "LastButtonState_1" was set but never used
+  static bool LastButtonState_1;
+Source\Button.c(51): warning:  #177-D: variable "LastButtonState_2" was declared but never referenced
+  static bool LastButtonState_2;
+Source\Button.c(52): warning:  #177-D: variable "LastButtonState_3" was declared but never referenced
+  static bool LastButtonState_3;
+Source\Button.c: 4 warnings, 0 errors
+compiling ADMulti.c...
+compiling DCService.c...
+Source\DCService.c(164): warning:  #177-D: variable "delayTime" was declared but never referenced
+    uint16_t delayTime;
+Source\DCService.c(166): warning:  #177-D: variable "counter" was declared but never referenced
+        static uint16_t counter = 0;
+Source\DCService.c(248): warning:  #223-D: function "GetPotValue" declared implicitly
+        uint16_t desiredRPM = GetPotValue()/POT_TO_RPM; // Convert pot value to an RPM
+Source\DCService.c(251): warning:  #223-D: function "GetCurrentSpeed" declared implicitly
+        int16_t error = (desiredRPM - GetCurrentSpeed());
+Source\DCService.c(58): warning:  #177-D: variable "reqPeriod" was declared but never referenced
+  static const uint16_t reqPeriod = 25000;
+Source\DCService.c(60): warning:  #177-D: variable "TimeoutCount" was declared but never referenced
+  static uint32_t TimeoutCount = 0;
+Source\DCService.c: 6 warnings, 0 errors
+compiling PWM_Module.c...
+Source\PWM_Module.c(97): warning:  #940-D: missing return statement at end of non-void function "InitPWM"
+  }
+Source\PWM_Module.c(108): warning:  #940-D: missing return statement at end of non-void function "SetDuty"
+  }
+Source\PWM_Module.c: 2 warnings, 0 errors
+compiling EncoderService.c...
+Source\EncoderService.c(164): warning:  #177-D: variable "delayTime" was declared but never referenced
+    uint16_t delayTime;
+Source\EncoderService.c: 1 warning, 0 errors
+compiling UART.c...
+Source\UART.c(177): warning:  #550-D: variable "ThisEvent" was set but never used
+                                        ES_Event ThisEvent;
+Source\UART.c: 1 warning, 0 errors
+compiling XBee.c...
+assembling startup_rvmdk.S...
+compiling ES_CheckEvents.c...
+compiling ES_DeferRecall.c...
+compiling ES_Framework.c...
+compiling ES_LookupTables.c...
+compiling ES_Port.c...
+compiling ES_PostList.c...
+Source\ES_PostList.c(27): warning:  #177-D: function "PostToList" was declared but never referenced
+  static bool PostToList(  PostFunc_t *const*FuncList, uint8_t ListSize, ES_Event NewEvent);
+Source\ES_PostList.c: 1 warning, 0 errors
+compiling ES_Queue.c...
+compiling ES_Timers.c...
+compiling retarget.c...
+compiling termio.c...
+compiling uartstdio.c...
+linking...
+Program Size: Code=6780 RO-data=1100 RW-data=124 ZI-data=2332  
+After Build - User command #1: fromelf --bin --output .\Outputs\BaseTarget.bin .\Outputs\BaseTarget.axf
+".\Outputs\BaseTarget.axf" - 0 Error(s), 17 Warning(s).
+Load "U:\\_ME218cTeams\\Team 10\\XBee\\Outputs\\BaseTarget.axf" 
+Connecting: Mode=JTAG, Speed=1000000Hz
+Erase Done.
+Programming Done.
+Verify OK.
+</pre>
+</body>
+</html>

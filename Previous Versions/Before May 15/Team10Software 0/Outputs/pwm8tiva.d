@@ -1,0 +1,11 @@
+.\outputs\pwm8tiva.o: Source\PWM8Tiva.c
+.\outputs\pwm8tiva.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdint.h
+.\outputs\pwm8tiva.o: C:\Keil_v5\ARM\ARMCC\bin\..\include\stdbool.h
+.\outputs\pwm8tiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_gpio.h
+.\outputs\pwm8tiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_types.h
+.\outputs\pwm8tiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\inc/hw_memmap.h
+.\outputs\pwm8tiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/sysctl.h
+.\outputs\pwm8tiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/pin_map.h
+.\outputs\pwm8tiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/gpio.h
+.\outputs\pwm8tiva.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/pwm.h
+.\outputs\pwm8tiva.o: .\Headers\PWM8Tiva.h
