@@ -319,10 +319,10 @@ typedef enum {  ES_NO_EVENT = 0,
 // priority in servicing them
 #define TIMER_UNUSED ((pPostFunc)0)
 #define TIMER0_RESP_FUNC TIMER_UNUSED
-#define TIMER1_RESP_FUNC PostLobbyistSM
+#define TIMER1_RESP_FUNC TIMER_UNUSED
 #define TIMER2_RESP_FUNC PostLobbyistSM
 #define TIMER3_RESP_FUNC PostLobbyistSM
-#define TIMER4_RESP_FUNC PostLobbyistSM 
+#define TIMER4_RESP_FUNC TIMER_UNUSED 
 #define TIMER5_RESP_FUNC PostDMC
 #define TIMER6_RESP_FUNC TIMER_UNUSED
 #define TIMER7_RESP_FUNC TIMER_UNUSED
@@ -342,10 +342,9 @@ typedef enum {  ES_NO_EVENT = 0,
 // the timer number matches where the timer event will be routed
 // These symbolic names should be changed to be relevant to your application 
 
-#define RETRY_TIMER 1
 #define PAIR_FAIL_TIMER 2
 #define UNPAIR_TIMER 3
-#define DMC_TIMER 4
+//#define DMC_TIMER 4
 #define DMC_BIT_TIMER 5
 //#define SERVICE0_TIMER 15
 #define DebounceTimer 14

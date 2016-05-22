@@ -385,8 +385,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\TestHarnessService0.c</PathWithFileName>
-      <FilenameWithoutPath>TestHarnessService0.c</FilenameWithoutPath>
+      <PathWithFileName>.\Source\TemplateFSM.c</PathWithFileName>
+      <FilenameWithoutPath>TemplateFSM.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -398,8 +398,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\Source\TemplateFSM.c</PathWithFileName>
-      <FilenameWithoutPath>TemplateFSM.c</FilenameWithoutPath>
+      <PathWithFileName>.\Source\TestHarnessService0.c</PathWithFileName>
+      <FilenameWithoutPath>TestHarnessService0.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

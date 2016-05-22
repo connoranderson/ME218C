@@ -36,7 +36,6 @@
 /*----------------------------- Module Defines ----------------------------*/
 #define ALL_BITS (0xff<<2)
 #define ONE_SEC 1000
-#define RETRY_TIME 200
 #define UNPAIR_TIME ONE_SEC
 
 #define PAIRED 0x01
@@ -63,6 +62,9 @@
 #define BRK BIT0HI
 #define MAN_UNPR BIT1HI
 #define SP_ACT BIT2HI
+
+#define BLUE 0x01
+#define RED 0x00
 
 
 /*---------------------------- Module Functions ---------------------------*/
@@ -93,7 +95,7 @@ static uint8_t *lastCommandFrame1 = &command;
 //static uint8_t *lastCommandFrame3 = &command;
 static uint8_t encryptedChecksum;
 
-static uint8_t Color = 0x00;
+static uint8_t Color;
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -205,6 +207,11 @@ ES_Event RunLobbyistSM( ES_Event ThisEvent )
 						// Update the DMC
 							Color = *(incomingMessage + 1);
 							Color &= BIT7HI;
+							if(Color > 0x00) {
+								Color = BLUE;
+							} else {
+								Color = RED;
+							}
 							UpdateDMC(DMC_PAIRED,Color); 	//Update DMC
 						 // ES_Timer_InitTimer(DMC_TIMER, ONE_SEC); //Start the 1s DMC timer
 						// Recognize our new pac daddy
@@ -216,10 +223,10 @@ ES_Event RunLobbyistSM( ES_Event ThisEvent )
 						CurrentState = PairedAwaitEncryptionKey;
 				}
         break;
-				case ES_TIMEOUT:
-					if(ThisEvent.EventParam == DMC_TIMER) {
-							UpdateDMC(DMC_UNPAIRED,Color); 	//Update DMC
-					}	
+//				case ES_TIMEOUT:
+//					if(ThisEvent.EventParam == DMC_TIMER) {
+//							UpdateDMC(DMC_UNPAIRED,Color); 	//Update DMC
+//					}	
 				break;
         default :
             ; 
@@ -291,11 +298,13 @@ ES_Event RunLobbyistSM( ES_Event ThisEvent )
         case ES_TIMEOUT: //Either the 1s or 45s timer
 				case MANUAL_UNPAIR: // Or if the pair is manual
 				case DECRYPT_FAIL:  // Or if the decryption failed
-					if(ThisEvent.EventParam == DMC_TIMER) {
-						printf("DMC Timeout");
-							UpdateDMC(DMC_PAIRED,Color); 	//Update DMC
-						  //ES_Timer_InitTimer(DMC_TIMER, ONE_SEC); //Start the 1s DMC timer
-					} else if(ThisEvent.EventParam == UNPAIR_TIMER){
+//					if(ThisEvent.EventParam == DMC_TIMER) {
+//						printf("DMC Timeout");
+//							UpdateDMC(DMC_PAIRED,Color); 	//Update DMC
+//						  //ES_Timer_InitTimer(DMC_TIMER, ONE_SEC); //Start the 1s DMC timer
+//					} else 
+
+					if(ThisEvent.EventParam == UNPAIR_TIMER){
 						// Keep track of how long is left on UNPAIR_TIMER
               PairTimeLeft--;
 //              printf("\n\r\nTime until unpair: %ds", PairTimeLeft);
@@ -326,6 +335,7 @@ ES_Event RunLobbyistSM( ES_Event ThisEvent )
 									TransmitStatusPacket(UNPAIRED); 				//Transmit status with the pairing bit cleared.
 								}
 								CurrentState = WaitingForPair;
+								UpdateDMC(DMC_UNPAIRED,Color); 	//Update DMC
               } else if (ThisEvent.EventType == ES_TIMEOUT) {
                  printf("Timer failure on timer: %d", ThisEvent.EventParam);
 							} else {

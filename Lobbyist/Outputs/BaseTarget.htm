@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Outputs\BaseTarget.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Outputs\BaseTarget.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Fri May 20 17:07:46 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5040049: Last Updated: Sat May 21 15:05:43 2016
 <BR><P>
 <H3>Maximum Stack Usage =        192 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -44,7 +44,7 @@ Function Pointers
  <LI><a href="#[3]">NmiSR</a> from startup_rvmdk.o(RESET) referenced from startup_rvmdk.o(RESET)
  <LI><a href="#[18]">PostButtonService</a> from button.o(i.PostButtonService) referenced from es_timers.o(.constdata)
  <LI><a href="#[17]">PostDMC</a> from dmc.o(i.PostDMC) referenced from es_timers.o(.constdata)
- <LI><a href="#[16]">PostLobbyistSM</a> from lobbyistsm.o(i.PostLobbyistSM) referenced 4 times from es_timers.o(.constdata)
+ <LI><a href="#[16]">PostLobbyistSM</a> from lobbyistsm.o(i.PostLobbyistSM) referenced 2 times from es_timers.o(.constdata)
  <LI><a href="#[19]">PostMapKeys</a> from mapkeys.o(i.PostMapKeys) referenced from es_timers.o(.constdata)
  <LI><a href="#[1a]">Reset_Handler</a> from startup_rvmdk.o(RESET) referenced from startup_rvmdk.o(RESET)
  <LI><a href="#[11]">RunButtonService</a> from button.o(i.RunButtonService) referenced from es_framework.o(.constdata)
@@ -768,7 +768,7 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> es_framework.o(.constdata)
 </UL>
-<P><STRONG><a name="[13]"></a>RunLobbyistSM</STRONG> (Thumb, 610 bytes, Stack size 32 bytes, lobbyistsm.o(i.RunLobbyistSM))
+<P><STRONG><a name="[13]"></a>RunLobbyistSM</STRONG> (Thumb, 598 bytes, Stack size 32 bytes, lobbyistsm.o(i.RunLobbyistSM))
 <BR><BR>[Stack]<UL><LI>Max Depth = 192 + Unknown Stack Size
 <LI>Call Chain = RunLobbyistSM &rArr; TransmitStatusPacket &rArr; TransmitMessage &rArr; BeginMessageTransmission &rArr; SendMessage &rArr; __2printf &rArr; _printf_char_file &rArr; _printf_char_common &rArr; __printf
 </UL>

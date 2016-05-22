@@ -443,11 +443,6 @@
               <FilePath>.\Source\Button.c</FilePath>
             </File>
             <File>
-              <FileName>PWM_Module.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\PWM_Module.c</FilePath>
-            </File>
-            <File>
               <FileName>PACSM.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\PACSM.c</FilePath>
@@ -606,11 +601,6 @@
               <FileName>ADMulti.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Headers\ADMulti.h</FilePath>
-            </File>
-            <File>
-              <FileName>PWM_Module.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Headers\PWM_Module.h</FilePath>
             </File>
             <File>
               <FileName>PACSM.h</FileName>
@@ -1228,11 +1218,6 @@
               <FilePath>.\Source\Button.c</FilePath>
             </File>
             <File>
-              <FileName>PWM_Module.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\PWM_Module.c</FilePath>
-            </File>
-            <File>
               <FileName>PACSM.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\PACSM.c</FilePath>
@@ -1391,11 +1376,6 @@
               <FileName>ADMulti.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Headers\ADMulti.h</FilePath>
-            </File>
-            <File>
-              <FileName>PWM_Module.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Headers\PWM_Module.h</FilePath>
             </File>
             <File>
               <FileName>PACSM.h</FileName>

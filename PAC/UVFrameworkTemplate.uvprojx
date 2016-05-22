@@ -423,14 +423,14 @@
               <FilePath>.\Source\EventCheckers.c</FilePath>
             </File>
             <File>
-              <FileName>TestHarnessService0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\TestHarnessService0.c</FilePath>
-            </File>
-            <File>
               <FileName>TemplateFSM.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\TemplateFSM.c</FilePath>
+            </File>
+            <File>
+              <FileName>TestHarnessService0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\TestHarnessService0.c</FilePath>
             </File>
             <File>
               <FileName>ES_ShortTimer.c</FileName>
@@ -1198,14 +1198,14 @@
               <FilePath>.\Source\EventCheckers.c</FilePath>
             </File>
             <File>
-              <FileName>TestHarnessService0.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\TestHarnessService0.c</FilePath>
-            </File>
-            <File>
               <FileName>TemplateFSM.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\TemplateFSM.c</FilePath>
+            </File>
+            <File>
+              <FileName>TestHarnessService0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\TestHarnessService0.c</FilePath>
             </File>
             <File>
               <FileName>ES_ShortTimer.c</FileName>
