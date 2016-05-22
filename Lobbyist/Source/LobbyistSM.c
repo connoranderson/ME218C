@@ -417,6 +417,7 @@ static void InitPackets(void) {
 static bool CheckLobbyistNumber(void) {
 	uint8_t pairData = *(incomingMessage + 1);
 	pairData &= BIT7LO; //(BIT1HI | BIT0HI);
+	LobbyistNumber =  ReadBadge(); // Update the lobbyist number based on the badge.
 	if(pairData == LobbyistNumber){
 		return true;
 	}

@@ -23,11 +23,23 @@
 #define HALF_SEC (ONE_SEC/2)
 #define TWO_SEC (ONE_SEC*2)
 #define FIVE_SEC (ONE_SEC*5)
+#define BADGE_1 100
+#define BADGE_2 200
+#define BADGE_3 300
+#define BADGE_4 400
+#define LOBBYIST_NUMBER1 1
+#define LOBBYIST_NUMBER2 2
+#define LOBBYIST_NUMBER3 3
+#define LOBBYIST_NUMBER4 4
+#define TOLERANCE 50
+
 
 /*---------------------------- Module Functions ---------------------------*/
 /* prototypes for private functions for this service.They should be functions
    relevant to the behavior of this service
 */
+
+static uint8_t ToBadgeNumber(uint16_t badgeAnalogValue)
 
 /*---------------------------- Module Variables ---------------------------*/
 // with the introduction of Gen2, we need a module level Priority variable
@@ -49,15 +61,8 @@
 ****************************************************************************/
 bool InitBadge (void)
 {
-	 	// Initialize Port E pins 0 and 1
-    // Set bit 1 and enable Port E
-    HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R4;
-    // Wait until the peripheral reports that the clock is ready
-    while ((HWREG(SYSCTL_PRGPIO) & SYSCTL_PRGPIO_R4) != SYSCTL_PRGPIO_R4);
-    // Set Port E bits 0 and 1 to be a digital I/O pins
-    HWREG(GPIO_PORTE_BASE+GPIO_O_DEN) |= GPIO_PIN_0 | GPIO_PIN_1;
-    // Make bits 0 and 1 on Port E to be an output
-    HWREG(GPIO_PORTE_BASE+GPIO_O_DIR) &= ~(GPIO_PIN_0 | GPIO_PIN_1);
+// Initialize PE0 and PE1 as ADC for 2 analog inputs
+    ADC_MultiInit(2);
 	
 	return true;
 }
@@ -71,8 +76,35 @@ bool InitBadge (void)
 
 ****************************************************************************/
 uint8_t ReadBadge(void) { 
-	uint8_t LobbyistNumber = HWREG(GPIO_PORTE_BASE+(GPIO_O_DATA+ALL_BITS)) & (BIT0HI | BIT1HI);
-	return LobbyistNumber;
+    ADC_MultiRead(ADResults);
+    uint16_t currentBadgeValue = ADResults[0];
+    printf("\r\n BadgeAnalogValue: %d", currentBadgeValue);
+	uint8_t badgeNumber = ToBadgeNumber(currentBadgeValue);
+	return badgeNumber;
+}
+
+/****************************************************************************
+ Function
+    ToBadgeNumber
+
+ Description
+    Converts an analog badge value to a lobbyist number
+
+****************************************************************************/
+static uint8_t ToBadgeNumber(uint16_t badgeAnalogValue){
+    if(badgeAnalogValue < (BADGE_1 + TOLERANCE) && badgeAnalogValue > (BADGE_1 - TOLERANCE)){
+        return LOBBYIST_NUMBER1;
+    }else if(badgeAnalogValue < (BADGE_2 + TOLERANCE) && badgeAnalogValue > (BADGE_2 - TOLERANCE)){
+        return LOBBYIST_NUMBER2;
+    }else if(badgeAnalogValue < (BADGE_3 + TOLERANCE) && badgeAnalogValue > (BADGE_3 - TOLERANCE)){
+        return LOBBYIST_NUMBER3;
+    }else if(badgeAnalogValue < (BADGE_4 + TOLERANCE) && badgeAnalogValue > (BADGE_4 - TOLERANCE)){
+        return LOBBYIST_NUMBER4;
+    }else{
+        printf("Badge not recognized. Badge no: %d", badgeAnalogValue);
+    }
+
+    return 0;
 }
 
 
