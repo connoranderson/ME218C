@@ -13,6 +13,7 @@
 #include "ES_Port.h"
 #include "termio.h"
 #include "UART.h"
+#include "Badge.h"
 
 #define clrScrn() 	printf("\x1b[2J")
 #define goHome()	printf("\x1b[1,1H")
@@ -39,6 +40,7 @@ int main(void)
 //	printf("Press any key to post key-stroke events to Service 0\n\r");
 //	printf("Press 'd' to test event deferral \n\r");
 //	printf("Press 'r' to test event recall \n\r");
+
 	
 	// now initialize the Events and Services Framework and start it running
 	ErrorType = ES_Initialize(ES_Timer_RATE_1mS);

@@ -163,7 +163,7 @@ ES_Event RunMapKeys( ES_Event ThisEvent )
 							TurnOnLiftFan();
 							printf("Turn on lift fan");
 						break;
-						case 'p' : 
+				 		case 'p' : 
 							TurnOffLiftFan();
 							printf("Turn off lift fan");
 						break;

@@ -63,7 +63,7 @@ main:
 	bsf T2CON, T2OUTPS1
 	bsf T2CON, T2OUTPS2 
 	bsf T2CON, T2OUTPS3 
-;	bsf T2CON, T2CKPS1	; Prescale Timer2 to 16:1 
+	bsf T2CON, T2CKPS1	; Prescale Timer2 to 16:1 
 	bsf T2CON, TMR2ON ; Turn Timer ON
 	
 	banksel PIE1 ; Enable Timer2 Interrupt
@@ -93,9 +93,10 @@ ISR_BODY:
 	banksel PIR1 
 	btfsc PIR1, TMR2IF
 		goto TimerInterrupt ; If Interrupt came from Timer
-	banksel INTCON
-	btfsc INTCON, INTF
-		goto ExternalInterrupt ; If Interrupt came externally
+;	banksel INTCON
+;	btfsc INTCON, INTF
+	bcf INTCON, INTF ; Clear source of interrupt
+;		goto ExternalInterrupt ; If Interrupt came externally
 	goto POP ; At this point, we should have recognized the interrupt, else skip to end
 
 TimerInterrupt:

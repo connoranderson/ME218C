@@ -1,28 +1,29 @@
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 40 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 41 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 42 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 43 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 44 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 48 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 49 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 51 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 52 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 59 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 62 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 63 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 64 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 65 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 67 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 70 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 83 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 86 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 88 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 118 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 120 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 122 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 123 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 148 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 150 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 156 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 158 : Register in operand not in bank 0.  Ensure that bank bits are correct.
-Message[302] U:\_ME218CTEAMS\TEAM 10\STEPPER CODE V4\STEPPERMOTORV4.ASM 161 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 40 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 41 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 42 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 43 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 44 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 48 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 49 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 51 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 52 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 59 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 62 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 63 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 64 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 65 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 66 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 67 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 70 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 83 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 86 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 88 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 119 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 121 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 123 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 124 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 149 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 151 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 157 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 159 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] U:\_ME218CTEAMS\TEAM 10\ME218C\STEPPER CODE\STEPPERMOTORV4.ASM 162 : Register in operand not in bank 0.  Ensure that bank bits are correct.

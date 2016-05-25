@@ -31,3 +31,4 @@
 .\outputs\badge.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/pin_map.h
 .\outputs\badge.o: C:\ti\TivaWare_C_Series-2.1.0.12573\driverlib/gpio.h
 .\outputs\badge.o: .\Headers\Badge.h
+.\outputs\badge.o: .\Headers\ADMulti.h

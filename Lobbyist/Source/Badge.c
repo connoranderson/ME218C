@@ -16,6 +16,7 @@
 #include "driverlib/gpio.h"
 
 #include "Badge.h"
+#include "ADMulti.h"
 
 /*----------------------------- Module Defines ----------------------------*/
 // these times assume a 1.000mS/tick timing
@@ -23,15 +24,15 @@
 #define HALF_SEC (ONE_SEC/2)
 #define TWO_SEC (ONE_SEC*2)
 #define FIVE_SEC (ONE_SEC*5)
-#define BADGE_1 100
-#define BADGE_2 200
-#define BADGE_3 300
-#define BADGE_4 400
-#define LOBBYIST_NUMBER1 1
-#define LOBBYIST_NUMBER2 2
-#define LOBBYIST_NUMBER3 3
-#define LOBBYIST_NUMBER4 4
-#define TOLERANCE 50
+#define BADGE_1 3900
+#define BADGE_2 3674
+#define BADGE_3 3464
+#define BADGE_4 3285
+#define LOBBYIST_NUMBER1 0
+#define LOBBYIST_NUMBER2 1
+#define LOBBYIST_NUMBER3 2
+#define LOBBYIST_NUMBER4 3
+#define TOLERANCE 70
 
 
 /*---------------------------- Module Functions ---------------------------*/
@@ -39,12 +40,12 @@
    relevant to the behavior of this service
 */
 
-static uint8_t ToBadgeNumber(uint16_t badgeAnalogValue)
+static uint8_t ToBadgeNumber(uint16_t badgeAnalogValue);
 
 /*---------------------------- Module Variables ---------------------------*/
 // with the introduction of Gen2, we need a module level Priority variable
 
-
+static uint32_t ADResults[2];
 
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
@@ -59,10 +60,11 @@ static uint8_t ToBadgeNumber(uint16_t badgeAnalogValue)
  Author
     Connor Anderson and Will Roderick, 05/05/2016
 ****************************************************************************/
-bool InitBadge (void)
+bool InitBadge(void)
 {
 // Initialize PE0 and PE1 as ADC for 2 analog inputs
     ADC_MultiInit(2);
+		HWREG(GPIO_PORTE_BASE + GPIO_O_PDR) |= BIT0HI; // Enable an internal pull down resistor for us in our voltage divider
 	
 	return true;
 }
@@ -76,9 +78,8 @@ bool InitBadge (void)
 
 ****************************************************************************/
 uint8_t ReadBadge(void) { 
-    ADC_MultiRead(ADResults);
-    uint16_t currentBadgeValue = ADResults[0];
-    printf("\r\n BadgeAnalogValue: %d", currentBadgeValue);
+  ADC_MultiRead(ADResults);
+  uint16_t currentBadgeValue = ADResults[0];
 	uint8_t badgeNumber = ToBadgeNumber(currentBadgeValue);
 	return badgeNumber;
 }

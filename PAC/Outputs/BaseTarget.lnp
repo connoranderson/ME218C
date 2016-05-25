@@ -1,8 +1,8 @@
 --cpu Cortex-M4.fp
 ".\outputs\main.o"
 ".\outputs\eventcheckers.o"
-".\outputs\testharnessservice0.o"
 ".\outputs\templatefsm.o"
+".\outputs\testharnessservice0.o"
 ".\outputs\es_shorttimer.o"
 ".\outputs\button.o"
 ".\outputs\pacsm.o"

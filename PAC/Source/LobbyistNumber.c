@@ -74,15 +74,15 @@ uint8_t GetLobbyistNumber(void)
   uint8_t LobbyistNumberReading = HWREG(GPIO_PORTD_BASE+(GPIO_O_DATA+ALL_BITS)) & (GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
 	uint8_t LobbyistNumber = 0x00;
 	if((LobbyistNumberReading & BIT0HI) != 0x00) {
-		LobbyistNumber = 0x01;
+		LobbyistNumber = 0x00;
 	} else if((LobbyistNumberReading & BIT1HI) != 0x00) {
-		LobbyistNumber = 0x02;
+		LobbyistNumber = 0x01;
 	} else if((LobbyistNumberReading & BIT2HI) != 0x00) {
-		LobbyistNumber = 0x03;
+		LobbyistNumber = 0x02;
 	} else if((LobbyistNumberReading & BIT3HI) != 0x00) {
-		LobbyistNumber = 0x04;
+		LobbyistNumber = 0x03;
 	}
-	printf("Lobbyist number reading and: %d \r\n", LobbyistNumberReading & BIT0HI);
+	printf("Lobbyist number reading: %d \r\n", LobbyistNumberReading);
 	printf("Lobbyist number: %d \r\n", LobbyistNumber);
 	return LobbyistNumber;
 }

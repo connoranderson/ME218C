@@ -23,3 +23,4 @@
 .\outputs\main.o: .\Headers\ES_Events.h
 .\outputs\main.o: .\Headers\ES_Timers.h
 .\outputs\main.o: .\Headers\UART.h
+.\outputs\main.o: .\Headers\Badge.h

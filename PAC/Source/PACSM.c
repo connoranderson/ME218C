@@ -129,6 +129,19 @@ bool InitPACSM ( uint8_t Priority )
 	InitXBee();
 	InitColor();
 	InitMyoInputs();
+	
+	//Initialize the glove LED
+	// Initialize Port E pin 4
+    // Set bit 1 and enable Port A
+    HWREG(SYSCTL_RCGCGPIO) |= SYSCTL_RCGCGPIO_R4;
+    // Wait until the peripheral reports that the clock is ready
+    while ((HWREG(SYSCTL_PRGPIO) & SYSCTL_PRGPIO_R4) != SYSCTL_PRGPIO_R4);
+    // Set Port E bit 4 to be a digital I/O pin
+    HWREG(GPIO_PORTE_BASE+GPIO_O_DEN) |= (GPIO_PIN_4);
+    // Make pin 4 an output
+    HWREG(GPIO_PORTE_BASE+GPIO_O_DIR) |= (GPIO_PIN_4);
+		// Set PE4 low
+		HWREG(GPIO_PORTE_BASE + (GPIO_O_DATA + ALL_BITS)) &= (BIT4LO);
 // End of InitializePACSM (return True)
   if (ES_PostToService(MyPriority, ThisEvent) == true)
   {
@@ -187,7 +200,7 @@ ES_Event RunPACSM( ES_Event ThisEvent )
     case Unpaired :
 			if (ThisEvent.EventType == PAIR_REQUEST) {
 				if(PairRequestFlag == false) {										// If we are not already pairing
-					LobbyistNumber = DESIRED_LOBBYIST; // USE: GetLobbyistNumber(); Check pin to update number and color being sent
+					LobbyistNumber = GetLobbyistNumber(); 					//Check pin to update number and color being sent
 					InitPackets();																	// Set up the packet headers
 					InitiatePairing();															// Initiate pairing
 					ES_Timer_InitTimer(PAIR_FAIL_TIMER, ONE_SEC);   // Start 1s timer
@@ -203,6 +216,8 @@ ES_Event RunPACSM( ES_Event ThisEvent )
 			}
 			if (ThisEvent.EventType == ES_TIMEOUT && ThisEvent.EventParam == PAIR_FAIL_TIMER){ // If the pairing did not succeed after 1s
 				CurrentState = Unpaired;													// Set the current state to unpaired
+				// Set PE4 low
+				HWREG(GPIO_PORTE_BASE + (GPIO_O_DATA + ALL_BITS)) &= (BIT4LO);
 				ES_Timer_StopTimer(RETRY_TIMER);									// Stop the retry timer
 				PairRequestFlag = false;													// Indicate that the PAC is not currently attempting to pair
 				printf("Entering the unpaired state \r\n");
@@ -216,6 +231,8 @@ ES_Event RunPACSM( ES_Event ThisEvent )
 				if(PairByte==CORRECT_PAIR_STATUS) {					// Test the error encryption and pair bits
 					CurrentState = Paired;
 					printf("Entering the paired state \r\n");
+					// Set PE4 high
+					HWREG(GPIO_PORTE_BASE + (GPIO_O_DATA + ALL_BITS)) |= (BIT4HI);
 					ES_Timer_InitTimer(UNPAIR_TIMER, UNPAIR_TIME);
 					ES_Timer_InitTimer(PAIR_FAIL_TIMER, ONE_SEC);
 					ES_Timer_InitTimer(RETRY_TIMER, RETRY_TIME);
@@ -224,6 +241,7 @@ ES_Event RunPACSM( ES_Event ThisEvent )
 					TimerFlag = false;
 					ACKFlag = false;
 					IsEncryptionPacket = true;
+					
 				} //else {
 					//printf("Error in pair or decryption in unpaired \r\n");
 				//}
@@ -276,6 +294,8 @@ ES_Event RunPACSM( ES_Event ThisEvent )
 				ES_Timer_StopTimer(PAIR_FAIL_TIMER);
 				ES_Timer_StopTimer(UNPAIR_TIMER);
 				printf("Entering the unpaired state from pair fail timer \r\n");
+				// Set PE4 low
+				HWREG(GPIO_PORTE_BASE + (GPIO_O_DATA + ALL_BITS)) &= (BIT4LO);
 			}
 			if (ThisEvent.EventType == ES_TIMEOUT && ThisEvent.EventParam == UNPAIR_TIMER){			//// THIS IS TECHNICALLY NOT NEEDED IF WE USE THE SM's FROM THE CHARTS
 				CurrentState = Unpaired;																													// Move to the unpaired state
@@ -283,6 +303,8 @@ ES_Event RunPACSM( ES_Event ThisEvent )
 				ES_Timer_StopTimer(PAIR_FAIL_TIMER);																							
 				ES_Timer_StopTimer(UNPAIR_TIMER);
 				printf("Entering the unpaired state from unpair timer \r\n");
+				// Set PE4 low
+				HWREG(GPIO_PORTE_BASE + (GPIO_O_DATA + ALL_BITS)) &= (BIT4LO);
 			}
 			if (ThisEvent.EventType == MANUAL_UNPAIR){
 				CurrentState = Unpaired;																													// Move to the unpaired state
@@ -290,6 +312,8 @@ ES_Event RunPACSM( ES_Event ThisEvent )
 				ES_Timer_StopTimer(PAIR_FAIL_TIMER);
 				ES_Timer_StopTimer(UNPAIR_TIMER);
 				printf("Entering the unpaired state from manual unpair\r\n");
+				// Set PE4 low
+				HWREG(GPIO_PORTE_BASE + (GPIO_O_DATA + ALL_BITS)) &= (BIT4LO);
 			}
       break;
   }

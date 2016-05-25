@@ -487,6 +487,16 @@
               <FileType>1</FileType>
               <FilePath>.\Source\LiftFan.c</FilePath>
             </File>
+            <File>
+              <FileName>DMC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\DMC.c</FilePath>
+            </File>
+            <File>
+              <FileName>Badge.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Badge.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -651,6 +661,16 @@
               <FileName>LiftFan.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Headers\LiftFan.h</FilePath>
+            </File>
+            <File>
+              <FileName>DMC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\DMC.h</FilePath>
+            </File>
+            <File>
+              <FileName>Badge.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\Badge.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1277,6 +1297,16 @@
               <FileType>1</FileType>
               <FilePath>.\Source\LiftFan.c</FilePath>
             </File>
+            <File>
+              <FileName>DMC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\DMC.c</FilePath>
+            </File>
+            <File>
+              <FileName>Badge.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Badge.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1441,6 +1471,16 @@
               <FileName>LiftFan.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Headers\LiftFan.h</FilePath>
+            </File>
+            <File>
+              <FileName>DMC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\DMC.h</FilePath>
+            </File>
+            <File>
+              <FileName>Badge.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Headers\Badge.h</FilePath>
             </File>
           </Files>
         </Group>

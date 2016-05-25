@@ -1,4 +1,4 @@
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE  1
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
   00000076            00042 STATUS_TEMP                             equ     0x76
   00000077            00043 PCLATH_TEMP                             equ     0x77
                       00044 
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE  2
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -78,11 +78,11 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
   0000005A            00057 MAX_COUNTS                                      equ             0x5A
                       00058 
                       00059 
-0000                  00060                                                                 org             0
-0000   2833           00061                                                                 goto    Main
-0004                  00062                                                                 org     4
-0004   2875           00063                                                                 goto    ISR
-0005                  00064                                                                 org             5
+                      00060                                                                 org             0
+0000   2???           00061                                                                 goto    Main
+                      00062                                                                 org     4
+0004   2???           00063                                                                 goto    ISR
+                      00064                                                                 org             5
                       00065 
                       00066 ;
                       00067 ; Listing of LED Dimming Array
@@ -116,7 +116,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 001E   34D9           00095     RETLW 0xD9
 001F   34DB           00096     RETLW 0xDB
 0020   34DE           00097     RETLW 0xDE
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE  3
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -175,7 +175,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 004B   1081           00148         BCF OPTION_REG, PS1
 004C   1101           00149         BCF OPTION_REG, PS2
                       00150 
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE  4
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -234,7 +234,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 006B   1683 1303      00197         banksel         IOCAP           ; Select the bank with the IOCAP register
 006D   1408           00198         bsf             IOCAP, IOCAP0   ; Enable the interrupt on positive edge
                       00199 
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE  5
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE  5
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -248,7 +248,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0071   1283 1303      00205         banksel INTCON
 0073   178B           00206         bsf INTCON, GIE 
                       00207 
-0074   2874           00208         goto $ ;Stay here after execution is done
+0074   2???           00208         goto $ ;Stay here after execution is done
                       00209 
                       00210         ;######         END OF MAIN             #######
                       00211 
@@ -270,30 +270,30 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 007C   1283 1303      00227                 banksel         PIR1                    ; Select the bank with the PIR1 register
 007E   188C           00228                 btfsc           PIR1, TMR2IF    ; Check to see if Timer 2 caused the interrupt, skip if 
                             not
-007F   2964           00229                 GOTO            PWM     ; Go to PWM
+007F   2???           00229                 GOTO            PWM     ; Go to PWM
                       00230 
 0080   1283 1303      00231                 banksel IOCAF   ;Interrupt on rising edge
 0082   1808           00232                 btfsc IOCAF, IOCAF0             ; If Interrupt was from Start bit (Edge)
-0083   208F           00233                 call START_BIT; Call start bit response routine
+0083   2???           00233                 call START_BIT; Call start bit response routine
                       00234 
                       00235 
 0084   1283 1303      00236                 banksel INTCON
 0086   1E8B           00237                 btfss   INTCON, TMR0IE  ;Skip the timer 0 check if its interrupt is disabled.
-0087   288A           00238                 goto    TIMER1_CHECK
+0087   2???           00238                 goto    TIMER1_CHECK
                       00239         
 0088   190B           00240                 btfsc INTCON, TMR0IF            ; If Interrupt was from comms timer.
-0089   20AF           00241                 call RECEIVE; Call timer 0 response routine
+0089   2???           00241                 call RECEIVE; Call timer 0 response routine
                       00242 
 008A                  00243 TIMER1_CHECK:   
 008A   1283 1303      00244                 banksel         PIR1            ; Select the bank with the PIR1 register
 008C   180C           00245                 btfsc           PIR1, TMR1IF    ; Check to see if Timer 1 caused the interrupt, skip if 
                             not
-008D   2109           00246                 call            TIMER1_INTERRUPTSOURCE  ; Go to LED_TIMEOUT
+008D   2???           00246                 call            TIMER1_INTERRUPTSOURCE  ; Go to LED_TIMEOUT
                       00247                 
-008E   2989           00248                 GOTO POP
+008E   2???           00248                 GOTO POP
                       00249 
                       00250 ;This is the waiting mode of the receive SM.
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE  6
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE  6
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -352,7 +352,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00301         
                       00302         ;Set up TMR0 for the bit period.
 00B5   1683 1303      00303         banksel OPTION_REG
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE  7
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE  7
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -381,7 +381,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00324         ;Decrement bits left counter, skip if zero
 00C4   0BF3           00325         DECFSZ          BITS_LEFT
 00C5   0008           00326         RETURN
-00C6   28C7           00327         goto            LAST_BIT_READ
+00C6   2???           00327         goto            LAST_BIT_READ
                       00328 
                       00329 ;This part of the code interprets the transmission and takes actions based on it.
 00C7                  00330 LAST_BIT_READ:
@@ -411,7 +411,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 00D9   3901           00354         andlw   0x01
 00DA   0279           00355         SUBWF   IS_PAIRED, W
 00DB   1D70           00356         BTFSS PACKET, 2 ; See if input is noisy (ie a start bit of 0), ignore if it is
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE  8
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE  8
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -419,7 +419,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 
 00DC   0008           00357                 RETURN
 00DD   1D03           00358         BTFSS   STATUS, Z ;If the things are the same, don't change anything
-00DE   20E5           00359         CALL    START_MOVING
+00DE   2???           00359         CALL    START_MOVING
                       00360 
                       00361         ;Set the LED color variable accordingly.
 00DF   01FA           00362         CLRF    COLOR
@@ -470,7 +470,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00407 ;If direction is changed mid-step, the timer must be set shorter not to overrun the mechanism.
                       00408 ;Do a crappy two's complement. Not really tested for robustness.
                       00409 ;MID_STEP:
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE  9
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE  9
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -508,8 +508,8 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00439 
                       00440                 ;Determine timer 1 interrup source. Motor vs. LEDs
 010C   1871           00441                 btfsc MOTOR_STATE, 0 ;If MOTOR_STATE is set (Info is on bit 0)
-010D   2110           00442                 CALL STOP_MOVING ;Stop moving. Make sure it doesnt return back here
-010E   213A           00443                 CALL DIM_LEDS ;Timer 1 interrupt was to turn off LEDs
+010D   2???           00442                 CALL STOP_MOVING ;Stop moving. Make sure it doesnt return back here
+010E   2???           00443                 CALL DIM_LEDS ;Timer 1 interrupt was to turn off LEDs
 010F   0008           00444                 RETURN
                       00445 
 0110                  00446 STOP_MOVING:
@@ -521,15 +521,15 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0117   1D70           00452                 BTFSS PACKET, 2 ; See if start bit is set
 0118   0008           00453                         RETURN
 0119   1879           00454                 BTFSC   IS_PAIRED, 0 ; Only turn on LEDs if paired
-011A   211E           00455                 CALL TURN_LEDS_ON
+011A   2???           00455                 CALL TURN_LEDS_ON
 011B   1C79           00456                 BTFSS   IS_PAIRED, 0
-011C   2140           00457                 CALL    TURN_LEDS_OFF
+011C   2???           00457                 CALL    TURN_LEDS_OFF
                       00458 
 011D   0008           00459                 RETURN
                       00460 
                       00461 ;Turns on the appropriate color of the LEDs and changes TMR1 config.
 011E                  00462 TURN_LEDS_ON:
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 10
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 10
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -578,17 +578,17 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00502 
                       00503 ;This dims the LEDs
 013A                  00504 DIM_LEDS:
-013A   215A           00505                 CALL LED_ON_MAX
+013A   2???           00505                 CALL LED_ON_MAX
 013B   0BFD           00506                 DECFSZ LED_Counter
-013C   293E           00507                 GOTO CONTINUE_LEDS
-013D   2152           00508                 CALL RESET_TIME
+013C   2???           00507                 GOTO CONTINUE_LEDS
+013D   2???           00508                 CALL RESET_TIME
                       00509 
 013E                  00510 CONTINUE_LEDS:          
                       00511                                                                         ;decrement the counter
                       00512                 ;If the counter is 0, turn the LEDs off
 013E   0BF4           00513                 DECFSZ          COUNTS_LEFT, F
 013F   0008           00514                 RETURN
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 11
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 11
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -617,13 +617,13 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00535 
 0152                  00536 RESET_TIME:
 0152   0BFC           00537                 decfsz LED_Timeval
-0153   2956           00538                 GOTO CONTINUE_RESET
+0153   2???           00538                 GOTO CONTINUE_RESET
 0154   0AFC           00539                 incf    LED_Timeval
 0155   0AFC           00540                 incf    LED_Timeval
 0156                  00541 CONTINUE_RESET:
 0156   087C           00542                 movf LED_Timeval, W
 0157   00FD           00543                 movwf LED_Counter
-0158   215F           00544                 Call LED_ON_MIN
+0158   2???           00544                 Call LED_ON_MIN
 0159   0008           00545                 RETURN
                       00546 
 015A                  00547 LED_ON_MAX:
@@ -647,97 +647,73 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0166   1112           00565                 bcf T2CON, TMR2ON ; Turn Timer2 OFF
 0167   1283 1303      00566                 banksel PIR1
 0169   108C           00567                 BCF             PIR1, TMR2IF
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 12
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 12
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
 016A   187B           00568                 BTFSC   LED_ON, 0; Test the LED_On_Flag, skip if clear
-016B   297C           00569                 GOTO    PWM_GO_LO; Go to LOW_TIME
-016C   296D           00570                 GOTO    PWM_GO_HI; Go to HIGH_TIME
+016B   2???           00569                 GOTO    PWM_GO_LO; Go to LOW_TIME
+016C   2???           00570                 GOTO    PWM_GO_HI; Go to HIGH_TIME
                       00571 
 016D                  00572 PWM_GO_HI:      ; Go to the next look up table value
                       00573 
-                      00574         ; ORIGINAL CODE
-                      00575                 ;       movlw           0xFF
-                      00576                 ;       movwf           testvar
-                      00577                 ;        movf           index, W
-                      00578                 ;        call           DIM_LED_ARRAY           ; Call the step table
-                      00579                 ;       subwf           testvar, w
-                      00580 
-                      00581         ; NEW CODE
-                      00582         ;       movlw 0x2D
-                      00583         ;       movwf testvar
-                      00584         ;       movf index, W
-                      00585         ;       subwf testvar,W
-                      00586 
-                      00587         ; NEWER CODE
-                      00588         ;movf index2, W
-                      00589         ;       movf COUNTS_LEFT, W
-016D   087F           00590                 movf LED_Upperval, W
-                      00591 
-                      00592         ;movf index, W
-                      00593 
-016E   1283 1703      00594                          banksel        PR2                             ; Select the bank with PR2
-0170   0091           00595                          movwf          PR2                             ; Move 0xFF to PR2 so that the t
+016D   087F           00574                 movf LED_Upperval, W
+                      00575 
+016E   1283 1703      00576                          banksel        PR2                             ; Select the bank with PR2
+0170   0091           00577                          movwf          PR2                             ; Move 0xFF to PR2 so that the t
                             imer counts through 255 (not including pre or post scalers)
-                      00596                 
-0171   1283 1703      00597                         banksel LATA
-0173   187A           00598                         btfsc COLOR,0                   ; Test the color flag, skip if set
-0174   1505           00599                         BSF LATA, BLUE_LED                              ; Turn on blue LED
-0175   1C7A           00600                         btfss COLOR,0                   ; Test the color flag, skip if clear
-0176   1485           00601                         BSF LATA, RED_LED                               ; Turn on blue LED
-0177   147B           00602                         BSF LED_ON,0                    ; Set the on flag
-                      00603 
-                      00604                         ; Turn Timer2 ON
-0178   1283 1703      00605                         banksel T2CON
-017A   1512           00606                         bsf T2CON, TMR2ON ; Turn Timer2 ON
-                      00607 
-017B   2989           00608                         GOTO POP
-                      00609 
-                      00610 
-017C                  00611 PWM_GO_LO:      ; Go to the next look up table value
-                      00612         ; ORIGINAL CODE                  
-                      00613                          ;movf          index, W
-                      00614                         ; call          DIM_LED_ARRAY           ; Call the step table
-                      00615         ; NEW CODE
-                      00616         ;               movf            index, W
-                      00617         ;movf COUNTS_LEFT, W
-017C   087E           00618                         movf LED_Lowerval, W
-                      00619 
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 13
+                      00578                 
+0171   1283 1703      00579                         banksel LATA
+0173   187A           00580                         btfsc COLOR,0                   ; Test the color flag, skip if set
+0174   1505           00581                         BSF LATA, BLUE_LED                              ; Turn on blue LED
+0175   1C7A           00582                         btfss COLOR,0                   ; Test the color flag, skip if clear
+0176   1485           00583                         BSF LATA, RED_LED                               ; Turn on blue LED
+0177   147B           00584                         BSF LED_ON,0                    ; Set the on flag
+                      00585 
+                      00586                         ; Turn Timer2 ON
+0178   1283 1703      00587                         banksel T2CON
+017A   1512           00588                         bsf T2CON, TMR2ON ; Turn Timer2 ON
+                      00589 
+017B   2???           00590                         GOTO POP
+                      00591 
+                      00592 
+017C                  00593 PWM_GO_LO:      ; Go to the next look up table value
+017C   087E           00594                         movf LED_Lowerval, W
+                      00595 
+017D   1283 1703      00596                          banksel        PR2                             ; Select the bank with PR2
+017F   0091           00597                          movwf          PR2                             ; Move 0xFF to PR2 so that the t
+                            imer counts through 255 (not including pre or post scalers)
+                      00598 
+0180   1283 1703      00599                         banksel LATA
+0182   1105           00600                         BCF             LATA, BLUE_LED
+0183   1085           00601                         BCF             LATA, RED_LED
+0184   107B           00602                         BCF     LED_ON,0                ; Clear the on flag
+                      00603                         ; Turn Timer2 ON
+0185   1283 1703      00604                         banksel T2CON
+0187   1512           00605                         bsf T2CON, TMR2ON ; Turn Timer2 ON
+                      00606 
+0188   2???           00607                 GOTO POP
+                      00608                 
+0189                  00609 POP: 
+0189   0183           00610         clrf STATUS ;select bank 0
+018A   0877           00611         movf PCLATH_TEMP,W ;store saved PCLATH value in WREG
+018B   008A           00612         movwf PCLATH ;restore PCLATH
+018C   0876           00613         movf STATUS_TEMP,W ;store saved STATUS value in WREG
+018D   0083           00614         movwf STATUS ;restore STATUS
+018E   0EF5           00615         swapf WREG_TEMP,F ;prepare WREG to be restored
+018F   0E75           00616         swapf WREG_TEMP,W ;restore WREG keeping STATUS bits
+0190   0009           00617         retfie ;return from interrupt
+                      00618 
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 13
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-017D   1283 1703      00620                          banksel        PR2                             ; Select the bank with PR2
-017F   0091           00621                          movwf          PR2                             ; Move 0xFF to PR2 so that the t
-                            imer counts through 255 (not including pre or post scalers)
-                      00622 
-0180   1283 1703      00623                         banksel LATA
-0182   1105           00624                         BCF             LATA, BLUE_LED
-0183   1085           00625                         BCF             LATA, RED_LED
-0184   107B           00626                         BCF     LED_ON,0                ; Clear the on flag
-                      00627                         ; Turn Timer2 ON
-0185   1283 1703      00628                         banksel T2CON
-0187   1512           00629                         bsf T2CON, TMR2ON ; Turn Timer2 ON
-                      00630 
-0188   2989           00631                 GOTO POP
-                      00632                 
-0189                  00633 POP: 
-0189   0183           00634         clrf STATUS ;select bank 0
-018A   0877           00635         movf PCLATH_TEMP,W ;store saved PCLATH value in WREG
-018B   008A           00636         movwf PCLATH ;restore PCLATH
-018C   0876           00637         movf STATUS_TEMP,W ;store saved STATUS value in WREG
-018D   0083           00638         movwf STATUS ;restore STATUS
-018E   0EF5           00639         swapf WREG_TEMP,F ;prepare WREG to be restored
-018F   0E75           00640         swapf WREG_TEMP,W ;restore WREG keeping STATUS bits
-0190   0009           00641         retfie ;return from interrupt
-                      00642 
-                      00643         END
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 14
+3FE6                  00619         END
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 14
 
 
 SYMBOL TABLE
@@ -796,7 +772,7 @@ C2CON1                            0000009C
 C2HYS                             00000001
 C2IE                              00000005
 C2IF                              00000005
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 15
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 15
 
 
 SYMBOL TABLE
@@ -855,7 +831,7 @@ CWGCS1                            00000002
 CWGDBR                            00000194
 CWGEN                             00000007
 CWGFBK0                           00000003
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 16
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 16
 
 
 SYMBOL TABLE
@@ -914,7 +890,7 @@ FVRBUFEN                          00000005
 FVRBUFSS                          00000004
 FVRCON                            00000090
 FVREN                             00000007
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 17
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 17
 
 
 SYMBOL TABLE
@@ -973,7 +949,7 @@ IOCAP5                            00000005
 IRCF0                             00000004
 IRCF1                             00000005
 IRP                               00000007
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 18
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 18
 
 
 SYMBOL TABLE
@@ -1032,7 +1008,7 @@ PIE1                              0000008C
 PIE2                              0000008D
 PIE3                              0000008E
 PIR1                              0000000C
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 19
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 19
 
 
 SYMBOL TABLE
@@ -1091,7 +1067,7 @@ T1GPOL                            00000006
 T1GSEL                            00000004
 T1GSPM                            00000004
 T1GSS0                            00000000
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 20
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 20
 
 
 SYMBOL TABLE
@@ -1150,7 +1126,7 @@ WPUA                              0000010C
 WPUA0                             00000000
 WPUA1                             00000001
 WPUA2                             00000002
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 21
+MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  19:30:24         PAGE 21
 
 
 SYMBOL TABLE
@@ -1163,6 +1139,7 @@ WREG_TEMP                         00000075
 WREN                              00000002
 WUA4                              00000004
 Z                                 00000002
+_.org_2_0074                      00000074
 _BOREN_DIS                        00003CFF
 _BOREN_EN                         00003FFF
 _BOREN_SLEEP_DIS                  00003EFF
@@ -1189,30 +1166,7 @@ _WRT_FOURTH                       00003BFF
 _WRT_HALF                         000037FF
 _WRT_OFF                          00003FFF
 __12F752                          00000001
-
-
-MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
-
-0000 : X---XXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-00C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0100 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0140 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0180 : XXXXXXXXXXXXXXXX X--------------- ---------------- ----------------
-2000 : -------X-------- ---------------- ---------------- ----------------
-
-All other memory blocks unused.
-
-Program Memory Words Used:   398
-Program Memory Words Free:   626
-
-MPASM  5.39                    DMC CONNOR.ASM   5-22-2016  1:17:40         PAGE 22
-
-
-
-
-
+__DEBUG                           1
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed

@@ -105,12 +105,13 @@ Section Cross References
     lobbyistsm.o(i.RunLobbyistSM) refers to liftfan.o(i.InitLiftFan) for InitLiftFan
     lobbyistsm.o(i.RunLobbyistSM) refers to badge.o(i.InitBadge) for InitBadge
     lobbyistsm.o(i.RunLobbyistSM) refers to xbee.o(i.GetMessageData) for GetMessageData
+    lobbyistsm.o(i.RunLobbyistSM) refers to badge.o(i.ReadBadge) for ReadBadge
     lobbyistsm.o(i.RunLobbyistSM) refers to xbee.o(i.GetApiIdentifier) for GetApiIdentifier
+    lobbyistsm.o(i.RunLobbyistSM) refers to xbee.o(i.GetSenderAddress) for GetSenderAddress
     lobbyistsm.o(i.RunLobbyistSM) refers to xbee.o(i.GetMessageDataSize) for GetMessageDataSize
     lobbyistsm.o(i.RunLobbyistSM) refers to es_timers.o(i.ES_Timer_InitTimer) for ES_Timer_InitTimer
     lobbyistsm.o(i.RunLobbyistSM) refers to liftfan.o(i.TurnOnLiftFan) for TurnOnLiftFan
     lobbyistsm.o(i.RunLobbyistSM) refers to lobbyistsm.o(i.UpdateDMC) for UpdateDMC
-    lobbyistsm.o(i.RunLobbyistSM) refers to xbee.o(i.GetSenderAddress) for GetSenderAddress
     lobbyistsm.o(i.RunLobbyistSM) refers to lobbyistsm.o(i.TransmitStatusPacket) for TransmitStatusPacket
     lobbyistsm.o(i.RunLobbyistSM) refers to encryption.o(i.SetKey) for SetKey
     lobbyistsm.o(i.RunLobbyistSM) refers to liftfan.o(i.TurnOffLiftFan) for TurnOffLiftFan
@@ -204,6 +205,16 @@ Section Cross References
     dmc.o(i.RunDMC) refers to noretval__2printf.o(.text) for __2printf
     dmc.o(i.RunDMC) refers to es_shorttimer.o(i.ES_ShortTimerStart) for ES_ShortTimerStart
     dmc.o(i.RunDMC) refers to dmc.o(.data) for .data
+    badge.o(i.InitBadge) refers to admulti.o(i.ADC_MultiInit) for ADC_MultiInit
+    badge.o(i.ReadBadge) refers to _printf_percent.o(.ARM.Collect$$_printf_percent$$00000000) for _printf_percent
+    badge.o(i.ReadBadge) refers to _printf_d.o(.ARM.Collect$$_printf_percent$$00000009) for _printf_d
+    badge.o(i.ReadBadge) refers to _printf_dec.o(.text) for _printf_int_dec
+    badge.o(i.ReadBadge) refers to admulti.o(i.ADC_MultiRead) for ADC_MultiRead
+    badge.o(i.ReadBadge) refers to noretval__2printf.o(.text) for __2printf
+    badge.o(i.ReadBadge) refers to badge.o(.data) for .data
+    admulti.o(i.ADC_MultiInit) refers to admulti.o(.data) for .data
+    admulti.o(i.ADC_MultiInit) refers to admulti.o(.constdata) for .constdata
+    admulti.o(i.ADC_MultiRead) refers to admulti.o(.data) for .data
     startup_rvmdk.o(STACK) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
     startup_rvmdk.o(HEAP) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
     startup_rvmdk.o(RESET) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
@@ -610,7 +621,6 @@ Removing Unused input sections from the image.
     Removing pwm8tiva.o(.bss), (16 bytes).
     Removing pwm8tiva.o(.constdata), (48 bytes).
     Removing pwm8tiva.o(.data), (8 bytes).
-    Removing badge.o(i.ReadBadge), (16 bytes).
     Removing es_deferrecall.o(i.ES_RecallEvents), (44 bytes).
     Removing es_framework.o(i.ES_PostAll), (72 bytes).
     Removing es_framework.o(i.ES_PostToServiceLIFO), (56 bytes).
@@ -861,7 +871,7 @@ Removing Unused input sections from the image.
     Removing uart.o(i.UARTTxIntModeSet), (12 bytes).
     Removing uart.o(.constdata), (128 bytes).
 
-270 unused section(s) (total 10532 bytes) removed from the image.
+269 unused section(s) (total 10516 bytes) removed from the image.
 
 ==============================================================================
 
@@ -872,73 +882,73 @@ Image Symbol Table
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
     RESET                                    0x00000000   Section      648  startup_rvmdk.o(RESET)
-    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardshut.o ABSOLUTE
     ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit1.o ABSOLUTE
     ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit2.o ABSOLUTE
     ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit3.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardshut.o ABSOLUTE
     ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_zi.o ABSOLUTE
     ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_copy.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  rtentry4.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit.o ABSOLUTE
     ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit2.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  rtentry4.o ABSOLUTE
     ../clib/angel/kernel.s                   0x00000000   Number         0  rtentry2.o ABSOLUTE
     ../clib/angel/kernel.s                   0x00000000   Number         0  rtentry.o ABSOLUTE
     ../clib/angel/rt.s                       0x00000000   Number         0  rt_raise.o ABSOLUTE
     ../clib/angel/scatter.s                  0x00000000   Number         0  __scatter.o ABSOLUTE
     ../clib/angel/startup.s                  0x00000000   Number         0  __main.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  indicate_semi.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  libspace.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  sys_stackheap_outer.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  use_no_semi.o ABSOLUTE
-    ../clib/angel/sys.s                      0x00000000   Number         0  indicate_semi.o ABSOLUTE
     ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_command.o ABSOLUTE
-    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  no_argv.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  _get_argv_nomalloc.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/heapalloc.c                      0x00000000   Number         0  hrguard.o ABSOLUTE
     ../clib/heapaux.c                        0x00000000   Number         0  heapauxi.o ABSOLUTE
-    ../clib/libinit.s                        0x00000000   Number         0  libshutdown.o ABSOLUTE
     ../clib/libinit.s                        0x00000000   Number         0  libinit.o ABSOLUTE
     ../clib/libinit.s                        0x00000000   Number         0  libinit2.o ABSOLUTE
     ../clib/libinit.s                        0x00000000   Number         0  libshutdown2.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libshutdown.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  _printf_dec.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_flags.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_ss.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_ss.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_wp.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_ss_wp.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_ss_wp.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_wp.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  _printf_char_common.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  _printf_intcommon.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  noretval__2printf.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  _printf_char.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  _printf_dec.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_wp.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  _printf_str.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __2printf.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  _printf_char_file.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  __printf_nopercent.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  _printf_char.o ABSOLUTE
     ../clib/printf.c                         0x00000000   Number         0  __printf.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_ss_wp.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_ss_wp.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_wp.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_flags_ss.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_ss.o ABSOLUTE
-    ../clib/printf.c                         0x00000000   Number         0  __printf_flags.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  noretval__2printf.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  __2printf.o ABSOLUTE
+    ../clib/printf.c                         0x00000000   Number         0  _printf_str.o ABSOLUTE
+    ../clib/printf_percent.s                 0x00000000   Number         0  _printf_d.o ABSOLUTE
+    ../clib/printf_percent.s                 0x00000000   Number         0  _printf_s.o ABSOLUTE
     ../clib/printf_percent.s                 0x00000000   Number         0  _printf_percent_end.o ABSOLUTE
     ../clib/printf_percent.s                 0x00000000   Number         0  _printf_percent.o ABSOLUTE
-    ../clib/printf_percent.s                 0x00000000   Number         0  _printf_s.o ABSOLUTE
-    ../clib/printf_percent.s                 0x00000000   Number         0  _printf_d.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_pvfn_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_segv_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_formal.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  __raise.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_abrt_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_fpe_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtred_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_stak_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_pvfn_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_cppl_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_general.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  __raise.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_exit.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_segv_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_formal.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_other.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtred_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_outer.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_stak_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_exit.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_inner.o ABSOLUTE
     ../clib/signal.s                         0x00000000   Number         0  defsig.o ABSOLUTE
-    ../clib/stdio.c                          0x00000000   Number         0  getc.o ABSOLUTE
     ../clib/stdio.c                          0x00000000   Number         0  puts.o ABSOLUTE
+    ../clib/stdio.c                          0x00000000   Number         0  getc.o ABSOLUTE
     ../clib/stdlib.c                         0x00000000   Number         0  rand.o ABSOLUTE
     ../clib/stdlib.c                         0x00000000   Number         0  rand.o ABSOLUTE
     ../clib/stdlib.c                         0x00000000   Number         0  exit.o ABSOLUTE
@@ -949,6 +959,7 @@ Image Symbol Table
     ../fplib/dretinf.s                       0x00000000   Number         0  dretinf.o ABSOLUTE
     ../fplib/fpinit.s                        0x00000000   Number         0  fpinit.o ABSOLUTE
     ../fplib/usenofp.s                       0x00000000   Number         0  usenofp.o ABSOLUTE
+    Source\ADMulti.c                         0x00000000   Number         0  admulti.o ABSOLUTE
     Source\Badge.c                           0x00000000   Number         0  badge.o ABSOLUTE
     Source\Button.c                          0x00000000   Number         0  button.o ABSOLUTE
     Source\DMC.c                             0x00000000   Number         0  dmc.o ABSOLUTE
@@ -1062,146 +1073,153 @@ Image Symbol Table
     .text                                    0x00000634   Section       74  sys_stackheap_outer.o(.text)
     .text                                    0x0000067e   Section        0  exit.o(.text)
     .text                                    0x0000068c   Section        8  libspace.o(.text)
-    i.AssemblePacket                         0x00000694   Section        0  xbee.o(i.AssemblePacket)
-    AssemblePacket                           0x00000695   Thumb Code    74  xbee.o(i.AssemblePacket)
-    i.BeginMessageTransmission               0x000006e4   Section        0  uart.o(i.BeginMessageTransmission)
-    i.CPUgetPRIMASK_cpsid                    0x00000720   Section        0  es_port.o(i.CPUgetPRIMASK_cpsid)
-    i.CPUsetPRIMASK                          0x00000728   Section        0  es_port.o(i.CPUsetPRIMASK)
-    i.Check4ButtonPress                      0x00000730   Section        0  eventcheckers.o(i.Check4ButtonPress)
-    i.Check4Keystroke                        0x00000768   Section        0  eventcheckers.o(i.Check4Keystroke)
-    i.CheckForErrors                         0x00000798   Section        0  xbee.o(i.CheckForErrors)
-    i.ComputeChecksum                        0x000007d6   Section        0  xbee.o(i.ComputeChecksum)
-    i.DecryptMessage                         0x000007f0   Section        0  encryption.o(i.DecryptMessage)
-    i.ES_CheckUserEvents                     0x0000081c   Section        0  es_checkevents.o(i.ES_CheckUserEvents)
-    i.ES_DeQueue                             0x00000844   Section        0  es_queue.o(i.ES_DeQueue)
-    i.ES_EnQueueFIFO                         0x00000898   Section        0  es_queue.o(i.ES_EnQueueFIFO)
-    i.ES_GetMSBitSet                         0x000008e0   Section        0  es_lookuptables.o(i.ES_GetMSBitSet)
-    i.ES_InitQueue                           0x00000914   Section        0  es_queue.o(i.ES_InitQueue)
-    i.ES_Initialize                          0x00000924   Section        0  es_framework.o(i.ES_Initialize)
-    i.ES_PostToService                       0x00000970   Section        0  es_framework.o(i.ES_PostToService)
-    i.ES_Run                                 0x000009a8   Section        0  es_framework.o(i.ES_Run)
-    i.ES_ShortTimerInit                      0x00000a08   Section        0  es_shorttimer.o(i.ES_ShortTimerInit)
-    i.ES_ShortTimerStart                     0x00000a40   Section        0  es_shorttimer.o(i.ES_ShortTimerStart)
-    i.ES_Timer_Init                          0x00000aa0   Section        0  es_timers.o(i.ES_Timer_Init)
-    i.ES_Timer_InitTimer                     0x00000aa4   Section        0  es_timers.o(i.ES_Timer_InitTimer)
-    i.ES_Timer_StopTimer                     0x00000ae0   Section        0  es_timers.o(i.ES_Timer_StopTimer)
-    i.ES_Timer_Tick_Resp                     0x00000b04   Section        0  es_timers.o(i.ES_Timer_Tick_Resp)
-    i.ExecuteControl                         0x00000b70   Section        0  lobbyistsm.o(i.ExecuteControl)
-    ExecuteControl                           0x00000b71   Thumb Code    70  lobbyistsm.o(i.ExecuteControl)
-    i.GPIODirModeSet                         0x00000c08   Section        0  gpio.o(i.GPIODirModeSet)
-    i.GPIOPadConfigSet                       0x00000c30   Section        0  gpio.o(i.GPIOPadConfigSet)
-    i.GPIOPinConfigure                       0x00000d6c   Section        0  gpio.o(i.GPIOPinConfigure)
-    i.GPIOPinTypeUART                        0x00000db4   Section        0  gpio.o(i.GPIOPinTypeUART)
-    i.GetApiIdentifier                       0x00000dd0   Section        0  xbee.o(i.GetApiIdentifier)
-    i.GetMessage                             0x00000ddc   Section        0  uart.o(i.GetMessage)
-    i.GetMessageData                         0x00000de8   Section        0  xbee.o(i.GetMessageData)
-    i.GetMessageDataSize                     0x00000df2   Section        0  xbee.o(i.GetMessageDataSize)
-    i.GetMessageSize                         0x00000e00   Section        0  uart.o(i.GetMessageSize)
-    i.GetSenderAddress                       0x00000e0c   Section        0  xbee.o(i.GetSenderAddress)
-    i.InitBadge                              0x00000e24   Section        0  badge.o(i.InitBadge)
-    i.InitButtonService                      0x00000e60   Section        0  button.o(i.InitButtonService)
-    i.InitDMC                                0x00000ee0   Section        0  dmc.o(i.InitDMC)
-    i.InitLiftFan                            0x00000f50   Section        0  liftfan.o(i.InitLiftFan)
-    i.InitLobbyistSM                         0x00000f9c   Section        0  lobbyistsm.o(i.InitLobbyistSM)
-    i.InitMapKeys                            0x00000fbc   Section        0  mapkeys.o(i.InitMapKeys)
-    i.InitSteering                           0x00000fc8   Section        0  steering.o(i.InitSteering)
-    i.InitUart1                              0x00001050   Section        0  uart.o(i.InitUart1)
-    i.InitXBee                               0x00001118   Section        0  xbee.o(i.InitXBee)
-    i.IntEnable                              0x00001124   Section        0  interrupt.o(i.IntEnable)
-    i.IntMasterEnable                        0x00001188   Section        0  interrupt.o(i.IntMasterEnable)
-    i.LoadData                               0x00001198   Section        0  uart.o(i.LoadData)
-    i.PWMInit                                0x000011a4   Section        0  pwm.o(i.PWMInit)
-    i.PostButtonService                      0x00001248   Section        0  button.o(i.PostButtonService)
-    i.PostDMC                                0x00001258   Section        0  dmc.o(i.PostDMC)
-    i.PostLobbyistSM                         0x00001268   Section        0  lobbyistsm.o(i.PostLobbyistSM)
-    i.PostMapKeys                            0x00001278   Section        0  mapkeys.o(i.PostMapKeys)
-    i.RotateCipher                           0x00001288   Section        0  encryption.o(i.RotateCipher)
-    i.RunButtonService                       0x000012a0   Section        0  button.o(i.RunButtonService)
-    i.RunDMC                                 0x000012fc   Section        0  dmc.o(i.RunDMC)
-    i.RunLobbyistSM                          0x000013ec   Section        0  lobbyistsm.o(i.RunLobbyistSM)
-    i.RunMapKeys                             0x000017fc   Section        0  mapkeys.o(i.RunMapKeys)
-    i.SendMessage                            0x0000198c   Section        0  uart.o(i.SendMessage)
-    i.SetDutyCycleLeftMotor                  0x000019ac   Section        0  pwm.o(i.SetDutyCycleLeftMotor)
-    i.SetDutyCycleRightMotor                 0x000019e4   Section        0  pwm.o(i.SetDutyCycleRightMotor)
-    i.SetKey                                 0x00001a1c   Section        0  encryption.o(i.SetKey)
-    i.ShortTimerAHandler                     0x00001a34   Section        0  es_shorttimer.o(i.ShortTimerAHandler)
-    i.ShortTimerBHandler                     0x00001a68   Section        0  es_shorttimer.o(i.ShortTimerBHandler)
-    i.SysCtlClockSet                         0x00001aa0   Section        0  sysctl.o(i.SysCtlClockSet)
-    i.SysCtlPeripheralEnable                 0x00001bc0   Section        0  sysctl.o(i.SysCtlPeripheralEnable)
-    i.SysTickEnable                          0x00001be8   Section        0  systick.o(i.SysTickEnable)
-    i.SysTickIntEnable                       0x00001bf6   Section        0  systick.o(i.SysTickIntEnable)
-    i.SysTickIntHandler                      0x00001c04   Section        0  es_port.o(i.SysTickIntHandler)
-    i.SysTickPeriodSet                       0x00001c18   Section        0  systick.o(i.SysTickPeriodSet)
-    i.TERMIO_GetChar                         0x00001c22   Section        0  termio.o(i.TERMIO_GetChar)
-    i.TERMIO_Init                            0x00001c28   Section        0  termio.o(i.TERMIO_Init)
-    i.TERMIO_PutChar                         0x00001c78   Section        0  termio.o(i.TERMIO_PutChar)
-    i.TimerConfigure                         0x00001c84   Section        0  timer.o(i.TimerConfigure)
-    i.TimerEnable                            0x00001ce4   Section        0  timer.o(i.TimerEnable)
-    i.TimerIntClear                          0x00001cf2   Section        0  timer.o(i.TimerIntClear)
-    i.TimerIntEnable                         0x00001cf6   Section        0  timer.o(i.TimerIntEnable)
-    i.TimerLoadSet                           0x00001cfe   Section        0  timer.o(i.TimerLoadSet)
-    i.TimerPrescaleSet                       0x00001d10   Section        0  timer.o(i.TimerPrescaleSet)
-    i.TransmitMessage                        0x00001d24   Section        0  xbee.o(i.TransmitMessage)
-    i.TransmitStatusPacket                   0x00001d44   Section        0  lobbyistsm.o(i.TransmitStatusPacket)
-    TransmitStatusPacket                     0x00001d45   Thumb Code    22  lobbyistsm.o(i.TransmitStatusPacket)
-    i.TurnOffLiftFan                         0x00001d60   Section        0  liftfan.o(i.TurnOffLiftFan)
-    i.TurnOnLiftFan                          0x00001d74   Section        0  liftfan.o(i.TurnOnLiftFan)
-    i.UART1_ISR                              0x00001d88   Section        0  uart.o(i.UART1_ISR)
-    i.UARTCharPut                            0x00001e4c   Section        0  uart.o(i.UARTCharPut)
-    i.UARTClockSourceSet                     0x00001e58   Section        0  uart.o(i.UARTClockSourceSet)
-    i.UARTStdioConfig                        0x00001e60   Section        0  uartstdio.o(i.UARTStdioConfig)
-    i.UARTgetc                               0x00001ebc   Section        0  uartstdio.o(i.UARTgetc)
-    i.UpdateDMC                              0x00001ed4   Section        0  lobbyistsm.o(i.UpdateDMC)
-    UpdateDMC                                0x00001ed5   Thumb Code    60  lobbyistsm.o(i.UpdateDMC)
-    i.UpdateSteering                         0x00001f20   Section        0  steering.o(i.UpdateSteering)
-    i._HW_Process_Pending_Ints               0x0000203c   Section        0  es_port.o(i._HW_Process_Pending_Ints)
-    i._HW_Timer_Init                         0x0000205c   Section        0  es_port.o(i._HW_Timer_Init)
-    i._sys_exit                              0x00002072   Section        0  retarget.o(i._sys_exit)
-    i.ferror                                 0x00002074   Section        0  retarget.o(i.ferror)
-    i.fgetc                                  0x0000207a   Section        0  retarget.o(i.fgetc)
-    i.fputc                                  0x0000207e   Section        0  retarget.o(i.fputc)
-    i.kbhit                                  0x0000208c   Section        0  termio.o(i.kbhit)
-    i.main                                   0x000020a0   Section        0  main.o(i.main)
-    x$fpl$dfix                               0x00002198   Section       94  dfix.o(x$fpl$dfix)
-    $v0                                      0x00002198   Number         0  dfix.o(x$fpl$dfix)
-    x$fpl$dflt                               0x000021f6   Section       46  dflt_clz.o(x$fpl$dflt)
-    $v0                                      0x000021f6   Number         0  dflt_clz.o(x$fpl$dflt)
-    x$fpl$dmul                               0x00002224   Section      340  dmul.o(x$fpl$dmul)
-    $v0                                      0x00002224   Number         0  dmul.o(x$fpl$dmul)
-    x$fpl$dnaninf                            0x00002378   Section      156  dnaninf.o(x$fpl$dnaninf)
-    $v0                                      0x00002378   Number         0  dnaninf.o(x$fpl$dnaninf)
-    x$fpl$dretinf                            0x00002414   Section       12  dretinf.o(x$fpl$dretinf)
-    $v0                                      0x00002414   Number         0  dretinf.o(x$fpl$dretinf)
-    x$fpl$fpinit                             0x00002420   Section       10  fpinit.o(x$fpl$fpinit)
-    $v0                                      0x00002420   Number         0  fpinit.o(x$fpl$fpinit)
-    x$fpl$usenofp                            0x0000242a   Section        0  usenofp.o(x$fpl$usenofp)
-    .constdata                               0x0000242c   Section        8  es_checkevents.o(.constdata)
-    ES_EventList                             0x0000242c   Data           8  es_checkevents.o(.constdata)
-    .constdata                               0x00002434   Section       64  es_framework.o(.constdata)
-    ServDescList                             0x00002434   Data          32  es_framework.o(.constdata)
-    EventQueues                              0x00002454   Data          32  es_framework.o(.constdata)
-    .constdata                               0x00002474   Section       32  es_lookuptables.o(.constdata)
-    .constdata                               0x00002494   Section       15  es_lookuptables.o(.constdata)
-    .constdata                               0x000024a4   Section       64  es_timers.o(.constdata)
-    Timer2PostFunc                           0x000024a4   Data          64  es_timers.o(.constdata)
-    .constdata                               0x000024e4   Section       28  uartstdio.o(.constdata)
-    g_pcHex                                  0x000024e4   Data           4  uartstdio.o(.constdata)
-    g_ui32UARTBase                           0x000024e8   Data          12  uartstdio.o(.constdata)
-    g_ui32UARTPeriph                         0x000024f4   Data          12  uartstdio.o(.constdata)
-    .constdata                               0x00002500   Section      528  gpio.o(.constdata)
-    g_ppui32GPIOIntMapBlizzard               0x00002500   Data         192  gpio.o(.constdata)
-    g_ppui32GPIOIntMapSnowflake              0x000025c0   Data         192  gpio.o(.constdata)
-    g_pui32GPIOBaseAddrs                     0x00002680   Data         144  gpio.o(.constdata)
-    .constdata                               0x00002710   Section      268  interrupt.o(.constdata)
-    g_pui32Priority                          0x00002710   Data          32  interrupt.o(.constdata)
-    g_pui32Regs                              0x00002730   Data         156  interrupt.o(.constdata)
-    g_pui32EnRegs                            0x000027cc   Data          20  interrupt.o(.constdata)
-    g_pui32Dii16Regs                         0x000027e0   Data          20  interrupt.o(.constdata)
-    g_pui32PendRegs                          0x000027f4   Data          20  interrupt.o(.constdata)
-    g_pui32UnpendRegs                        0x00002808   Data          20  interrupt.o(.constdata)
-    .conststring                             0x0000281c   Section       72  uart.o(.conststring)
-    .conststring                             0x00002864   Section      100  lobbyistsm.o(.conststring)
-    .conststring                             0x000028c8   Section       17  uartstdio.o(.conststring)
+    i.ADC_MultiInit                          0x00000694   Section        0  admulti.o(i.ADC_MultiInit)
+    i.ADC_MultiRead                          0x0000075c   Section        0  admulti.o(i.ADC_MultiRead)
+    i.AssemblePacket                         0x00000794   Section        0  xbee.o(i.AssemblePacket)
+    AssemblePacket                           0x00000795   Thumb Code    74  xbee.o(i.AssemblePacket)
+    i.BeginMessageTransmission               0x000007e4   Section        0  uart.o(i.BeginMessageTransmission)
+    i.CPUgetPRIMASK_cpsid                    0x00000820   Section        0  es_port.o(i.CPUgetPRIMASK_cpsid)
+    i.CPUsetPRIMASK                          0x00000828   Section        0  es_port.o(i.CPUsetPRIMASK)
+    i.Check4ButtonPress                      0x00000830   Section        0  eventcheckers.o(i.Check4ButtonPress)
+    i.Check4Keystroke                        0x00000868   Section        0  eventcheckers.o(i.Check4Keystroke)
+    i.CheckForErrors                         0x00000898   Section        0  xbee.o(i.CheckForErrors)
+    i.ComputeChecksum                        0x000008d6   Section        0  xbee.o(i.ComputeChecksum)
+    i.DecryptMessage                         0x000008f0   Section        0  encryption.o(i.DecryptMessage)
+    i.ES_CheckUserEvents                     0x0000091c   Section        0  es_checkevents.o(i.ES_CheckUserEvents)
+    i.ES_DeQueue                             0x00000944   Section        0  es_queue.o(i.ES_DeQueue)
+    i.ES_EnQueueFIFO                         0x00000998   Section        0  es_queue.o(i.ES_EnQueueFIFO)
+    i.ES_GetMSBitSet                         0x000009e0   Section        0  es_lookuptables.o(i.ES_GetMSBitSet)
+    i.ES_InitQueue                           0x00000a14   Section        0  es_queue.o(i.ES_InitQueue)
+    i.ES_Initialize                          0x00000a24   Section        0  es_framework.o(i.ES_Initialize)
+    i.ES_PostToService                       0x00000a70   Section        0  es_framework.o(i.ES_PostToService)
+    i.ES_Run                                 0x00000aa8   Section        0  es_framework.o(i.ES_Run)
+    i.ES_ShortTimerInit                      0x00000b08   Section        0  es_shorttimer.o(i.ES_ShortTimerInit)
+    i.ES_ShortTimerStart                     0x00000b40   Section        0  es_shorttimer.o(i.ES_ShortTimerStart)
+    i.ES_Timer_Init                          0x00000ba0   Section        0  es_timers.o(i.ES_Timer_Init)
+    i.ES_Timer_InitTimer                     0x00000ba4   Section        0  es_timers.o(i.ES_Timer_InitTimer)
+    i.ES_Timer_StopTimer                     0x00000be0   Section        0  es_timers.o(i.ES_Timer_StopTimer)
+    i.ES_Timer_Tick_Resp                     0x00000c04   Section        0  es_timers.o(i.ES_Timer_Tick_Resp)
+    i.ExecuteControl                         0x00000c70   Section        0  lobbyistsm.o(i.ExecuteControl)
+    ExecuteControl                           0x00000c71   Thumb Code    70  lobbyistsm.o(i.ExecuteControl)
+    i.GPIODirModeSet                         0x00000d08   Section        0  gpio.o(i.GPIODirModeSet)
+    i.GPIOPadConfigSet                       0x00000d30   Section        0  gpio.o(i.GPIOPadConfigSet)
+    i.GPIOPinConfigure                       0x00000e6c   Section        0  gpio.o(i.GPIOPinConfigure)
+    i.GPIOPinTypeUART                        0x00000eb4   Section        0  gpio.o(i.GPIOPinTypeUART)
+    i.GetApiIdentifier                       0x00000ed0   Section        0  xbee.o(i.GetApiIdentifier)
+    i.GetMessage                             0x00000edc   Section        0  uart.o(i.GetMessage)
+    i.GetMessageData                         0x00000ee8   Section        0  xbee.o(i.GetMessageData)
+    i.GetMessageDataSize                     0x00000ef2   Section        0  xbee.o(i.GetMessageDataSize)
+    i.GetMessageSize                         0x00000f00   Section        0  uart.o(i.GetMessageSize)
+    i.GetSenderAddress                       0x00000f0c   Section        0  xbee.o(i.GetSenderAddress)
+    i.InitBadge                              0x00000f24   Section        0  badge.o(i.InitBadge)
+    i.InitButtonService                      0x00000f40   Section        0  button.o(i.InitButtonService)
+    i.InitDMC                                0x00000fc0   Section        0  dmc.o(i.InitDMC)
+    i.InitLiftFan                            0x00001030   Section        0  liftfan.o(i.InitLiftFan)
+    i.InitLobbyistSM                         0x0000107c   Section        0  lobbyistsm.o(i.InitLobbyistSM)
+    i.InitMapKeys                            0x0000109c   Section        0  mapkeys.o(i.InitMapKeys)
+    i.InitSteering                           0x000010a8   Section        0  steering.o(i.InitSteering)
+    i.InitUart1                              0x00001130   Section        0  uart.o(i.InitUart1)
+    i.InitXBee                               0x000011f8   Section        0  xbee.o(i.InitXBee)
+    i.IntEnable                              0x00001204   Section        0  interrupt.o(i.IntEnable)
+    i.IntMasterEnable                        0x00001268   Section        0  interrupt.o(i.IntMasterEnable)
+    i.LoadData                               0x00001278   Section        0  uart.o(i.LoadData)
+    i.PWMInit                                0x00001284   Section        0  pwm.o(i.PWMInit)
+    i.PostButtonService                      0x00001328   Section        0  button.o(i.PostButtonService)
+    i.PostDMC                                0x00001338   Section        0  dmc.o(i.PostDMC)
+    i.PostLobbyistSM                         0x00001348   Section        0  lobbyistsm.o(i.PostLobbyistSM)
+    i.PostMapKeys                            0x00001358   Section        0  mapkeys.o(i.PostMapKeys)
+    i.ReadBadge                              0x00001368   Section        0  badge.o(i.ReadBadge)
+    i.RotateCipher                           0x000013d8   Section        0  encryption.o(i.RotateCipher)
+    i.RunButtonService                       0x000013f0   Section        0  button.o(i.RunButtonService)
+    i.RunDMC                                 0x0000144c   Section        0  dmc.o(i.RunDMC)
+    i.RunLobbyistSM                          0x0000153c   Section        0  lobbyistsm.o(i.RunLobbyistSM)
+    i.RunMapKeys                             0x00001968   Section        0  mapkeys.o(i.RunMapKeys)
+    i.SendMessage                            0x00001af8   Section        0  uart.o(i.SendMessage)
+    i.SetDutyCycleLeftMotor                  0x00001b18   Section        0  pwm.o(i.SetDutyCycleLeftMotor)
+    i.SetDutyCycleRightMotor                 0x00001b50   Section        0  pwm.o(i.SetDutyCycleRightMotor)
+    i.SetKey                                 0x00001b88   Section        0  encryption.o(i.SetKey)
+    i.ShortTimerAHandler                     0x00001ba0   Section        0  es_shorttimer.o(i.ShortTimerAHandler)
+    i.ShortTimerBHandler                     0x00001bd4   Section        0  es_shorttimer.o(i.ShortTimerBHandler)
+    i.SysCtlClockSet                         0x00001c0c   Section        0  sysctl.o(i.SysCtlClockSet)
+    i.SysCtlPeripheralEnable                 0x00001d2c   Section        0  sysctl.o(i.SysCtlPeripheralEnable)
+    i.SysTickEnable                          0x00001d54   Section        0  systick.o(i.SysTickEnable)
+    i.SysTickIntEnable                       0x00001d62   Section        0  systick.o(i.SysTickIntEnable)
+    i.SysTickIntHandler                      0x00001d70   Section        0  es_port.o(i.SysTickIntHandler)
+    i.SysTickPeriodSet                       0x00001d84   Section        0  systick.o(i.SysTickPeriodSet)
+    i.TERMIO_GetChar                         0x00001d8e   Section        0  termio.o(i.TERMIO_GetChar)
+    i.TERMIO_Init                            0x00001d94   Section        0  termio.o(i.TERMIO_Init)
+    i.TERMIO_PutChar                         0x00001de4   Section        0  termio.o(i.TERMIO_PutChar)
+    i.TimerConfigure                         0x00001df0   Section        0  timer.o(i.TimerConfigure)
+    i.TimerEnable                            0x00001e50   Section        0  timer.o(i.TimerEnable)
+    i.TimerIntClear                          0x00001e5e   Section        0  timer.o(i.TimerIntClear)
+    i.TimerIntEnable                         0x00001e62   Section        0  timer.o(i.TimerIntEnable)
+    i.TimerLoadSet                           0x00001e6a   Section        0  timer.o(i.TimerLoadSet)
+    i.TimerPrescaleSet                       0x00001e7c   Section        0  timer.o(i.TimerPrescaleSet)
+    i.TransmitMessage                        0x00001e90   Section        0  xbee.o(i.TransmitMessage)
+    i.TransmitStatusPacket                   0x00001eb0   Section        0  lobbyistsm.o(i.TransmitStatusPacket)
+    TransmitStatusPacket                     0x00001eb1   Thumb Code    22  lobbyistsm.o(i.TransmitStatusPacket)
+    i.TurnOffLiftFan                         0x00001ecc   Section        0  liftfan.o(i.TurnOffLiftFan)
+    i.TurnOnLiftFan                          0x00001ee0   Section        0  liftfan.o(i.TurnOnLiftFan)
+    i.UART1_ISR                              0x00001ef4   Section        0  uart.o(i.UART1_ISR)
+    i.UARTCharPut                            0x00001fb8   Section        0  uart.o(i.UARTCharPut)
+    i.UARTClockSourceSet                     0x00001fc4   Section        0  uart.o(i.UARTClockSourceSet)
+    i.UARTStdioConfig                        0x00001fcc   Section        0  uartstdio.o(i.UARTStdioConfig)
+    i.UARTgetc                               0x00002028   Section        0  uartstdio.o(i.UARTgetc)
+    i.UpdateDMC                              0x00002040   Section        0  lobbyistsm.o(i.UpdateDMC)
+    UpdateDMC                                0x00002041   Thumb Code    60  lobbyistsm.o(i.UpdateDMC)
+    i.UpdateSteering                         0x0000208c   Section        0  steering.o(i.UpdateSteering)
+    i._HW_Process_Pending_Ints               0x000021a8   Section        0  es_port.o(i._HW_Process_Pending_Ints)
+    i._HW_Timer_Init                         0x000021c8   Section        0  es_port.o(i._HW_Timer_Init)
+    i._sys_exit                              0x000021de   Section        0  retarget.o(i._sys_exit)
+    i.ferror                                 0x000021e0   Section        0  retarget.o(i.ferror)
+    i.fgetc                                  0x000021e6   Section        0  retarget.o(i.fgetc)
+    i.fputc                                  0x000021ea   Section        0  retarget.o(i.fputc)
+    i.kbhit                                  0x000021f8   Section        0  termio.o(i.kbhit)
+    i.main                                   0x0000220c   Section        0  main.o(i.main)
+    x$fpl$dfix                               0x00002304   Section       94  dfix.o(x$fpl$dfix)
+    $v0                                      0x00002304   Number         0  dfix.o(x$fpl$dfix)
+    x$fpl$dflt                               0x00002362   Section       46  dflt_clz.o(x$fpl$dflt)
+    $v0                                      0x00002362   Number         0  dflt_clz.o(x$fpl$dflt)
+    x$fpl$dmul                               0x00002390   Section      340  dmul.o(x$fpl$dmul)
+    $v0                                      0x00002390   Number         0  dmul.o(x$fpl$dmul)
+    x$fpl$dnaninf                            0x000024e4   Section      156  dnaninf.o(x$fpl$dnaninf)
+    $v0                                      0x000024e4   Number         0  dnaninf.o(x$fpl$dnaninf)
+    x$fpl$dretinf                            0x00002580   Section       12  dretinf.o(x$fpl$dretinf)
+    $v0                                      0x00002580   Number         0  dretinf.o(x$fpl$dretinf)
+    x$fpl$fpinit                             0x0000258c   Section       10  fpinit.o(x$fpl$fpinit)
+    $v0                                      0x0000258c   Number         0  fpinit.o(x$fpl$fpinit)
+    x$fpl$usenofp                            0x00002596   Section        0  usenofp.o(x$fpl$usenofp)
+    .constdata                               0x00002598   Section       48  admulti.o(.constdata)
+    HowMany2Mask                             0x00002598   Data          16  admulti.o(.constdata)
+    HowMany2Mux                              0x000025a8   Data          16  admulti.o(.constdata)
+    HowMany2CTL                              0x000025b8   Data          16  admulti.o(.constdata)
+    .constdata                               0x000025c8   Section        8  es_checkevents.o(.constdata)
+    ES_EventList                             0x000025c8   Data           8  es_checkevents.o(.constdata)
+    .constdata                               0x000025d0   Section       64  es_framework.o(.constdata)
+    ServDescList                             0x000025d0   Data          32  es_framework.o(.constdata)
+    EventQueues                              0x000025f0   Data          32  es_framework.o(.constdata)
+    .constdata                               0x00002610   Section       32  es_lookuptables.o(.constdata)
+    .constdata                               0x00002630   Section       15  es_lookuptables.o(.constdata)
+    .constdata                               0x00002640   Section       64  es_timers.o(.constdata)
+    Timer2PostFunc                           0x00002640   Data          64  es_timers.o(.constdata)
+    .constdata                               0x00002680   Section       28  uartstdio.o(.constdata)
+    g_pcHex                                  0x00002680   Data           4  uartstdio.o(.constdata)
+    g_ui32UARTBase                           0x00002684   Data          12  uartstdio.o(.constdata)
+    g_ui32UARTPeriph                         0x00002690   Data          12  uartstdio.o(.constdata)
+    .constdata                               0x0000269c   Section      528  gpio.o(.constdata)
+    g_ppui32GPIOIntMapBlizzard               0x0000269c   Data         192  gpio.o(.constdata)
+    g_ppui32GPIOIntMapSnowflake              0x0000275c   Data         192  gpio.o(.constdata)
+    g_pui32GPIOBaseAddrs                     0x0000281c   Data         144  gpio.o(.constdata)
+    .constdata                               0x000028ac   Section      268  interrupt.o(.constdata)
+    g_pui32Priority                          0x000028ac   Data          32  interrupt.o(.constdata)
+    g_pui32Regs                              0x000028cc   Data         156  interrupt.o(.constdata)
+    g_pui32EnRegs                            0x00002968   Data          20  interrupt.o(.constdata)
+    g_pui32Dii16Regs                         0x0000297c   Data          20  interrupt.o(.constdata)
+    g_pui32PendRegs                          0x00002990   Data          20  interrupt.o(.constdata)
+    g_pui32UnpendRegs                        0x000029a4   Data          20  interrupt.o(.constdata)
+    .conststring                             0x000029b8   Section       72  uart.o(.conststring)
+    .conststring                             0x00002a00   Section      100  lobbyistsm.o(.conststring)
+    .conststring                             0x00002a64   Section       17  uartstdio.o(.conststring)
     .data                                    0x20000000   Section        1  eventcheckers.o(.data)
     LastPinState                             0x20000000   Data           1  eventcheckers.o(.data)
     .data                                    0x20000001   Section        2  es_shorttimer.o(.data)
@@ -1220,83 +1238,88 @@ Image Symbol Table
     outgoingMessageSize                      0x20000013   Data           1  uart.o(.data)
     outgoingMessage                          0x20000014   Data           4  uart.o(.data)
     incomingMessage                          0x20000018   Data           4  uart.o(.data)
-    .data                                    0x2000001c   Section       28  lobbyistsm.o(.data)
+    .data                                    0x2000001c   Section       32  lobbyistsm.o(.data)
     LobbyistNumber                           0x2000001c   Data           1  lobbyistsm.o(.data)
     CurrentState                             0x2000001d   Data           1  lobbyistsm.o(.data)
     MyPriority                               0x2000001e   Data           1  lobbyistsm.o(.data)
     PairTimeLeft                             0x2000001f   Data           1  lobbyistsm.o(.data)
     encryptedChecksum                        0x20000020   Data           1  lobbyistsm.o(.data)
     Color                                    0x20000021   Data           1  lobbyistsm.o(.data)
-    pairedAddress                            0x20000022   Data           2  lobbyistsm.o(.data)
-    StatusPacketArray                        0x20000024   Data           3  lobbyistsm.o(.data)
-    StatusPacket                             0x20000028   Data           4  lobbyistsm.o(.data)
-    incomingMessage                          0x2000002c   Data           4  lobbyistsm.o(.data)
-    decryptedMessage                         0x20000030   Data           4  lobbyistsm.o(.data)
-    lastCommandFrame1                        0x20000034   Data           4  lobbyistsm.o(.data)
-    .data                                    0x20000038   Section        1  lobbyistsm.o(.data)
-    command                                  0x20000038   Data           1  lobbyistsm.o(.data)
-    .data                                    0x20000039   Section        8  lobbyistsm.o(.data)
-    incomingmessagearr                       0x20000039   Data           8  lobbyistsm.o(.data)
-    .data                                    0x20000041   Section        8  lobbyistsm.o(.data)
-    decryptedMessageArr                      0x20000041   Data           8  lobbyistsm.o(.data)
-    .data                                    0x20000049   Section        1  mapkeys.o(.data)
-    MyPriority                               0x20000049   Data           1  mapkeys.o(.data)
-    .data                                    0x2000004c   Section       16  encryption.o(.data)
-    currentCipherPosition                    0x2000004c   Data           1  encryption.o(.data)
-    encryptionKey                            0x20000050   Data           4  encryption.o(.data)
-    encryptedMessage                         0x20000054   Data           4  encryption.o(.data)
-    decryptedMessage                         0x20000058   Data           4  encryption.o(.data)
-    .data                                    0x2000005c   Section        2  steering.o(.data)
-    DutyCycleLeftMotor                       0x2000005c   Data           1  steering.o(.data)
-    DutyCycleRightMotor                      0x2000005d   Data           1  steering.o(.data)
-    .data                                    0x2000005e   Section        4  dmc.o(.data)
-    Color                                    0x2000005e   Data           1  dmc.o(.data)
-    Pairing                                  0x2000005f   Data           1  dmc.o(.data)
-    BitCount                                 0x20000060   Data           1  dmc.o(.data)
-    MyPriority                               0x20000061   Data           1  dmc.o(.data)
-    .data                                    0x20000062   Section        6  es_framework.o(.data)
-    ThisEvent                                0x20000064   Data           4  es_framework.o(.data)
-    .data                                    0x20000068   Section        4  es_port.o(.data)
-    TickCount                                0x20000068   Data           1  es_port.o(.data)
-    SysTickCounter                           0x2000006a   Data           2  es_port.o(.data)
-    .data                                    0x2000006c   Section        4  es_queue.o(.data)
-    .data                                    0x20000070   Section       10  es_timers.o(.data)
-    NextTimer2Process                        0x20000070   Data           1  es_timers.o(.data)
-    NeedsProcessing                          0x20000072   Data           2  es_timers.o(.data)
-    TMR_ActiveFlags                          0x20000074   Data           2  es_timers.o(.data)
-    NewEvent                                 0x20000076   Data           4  es_timers.o(.data)
-    .data                                    0x2000007c   Section        4  retarget.o(.data)
-    .data                                    0x20000080   Section        4  retarget.o(.data)
-    .data                                    0x20000084   Section        8  uartstdio.o(.data)
-    bLastWasCR                               0x20000084   Data           1  uartstdio.o(.data)
-    g_ui32Base                               0x20000088   Data           4  uartstdio.o(.data)
-    .bss                                     0x2000008c   Section       32  xbee.o(.bss)
-    outgoingMessageArray                     0x2000008c   Data          32  xbee.o(.bss)
-    .bss                                     0x200000ac   Section       50  uart.o(.bss)
-    outgoingMessageArray                     0x200000ac   Data          50  uart.o(.bss)
-    .bss                                     0x200000de   Section       50  uart.o(.bss)
-    incomingMessageArray                     0x200000de   Data          50  uart.o(.bss)
-    .bss                                     0x20000110   Section       32  encryption.o(.bss)
-    encryptionKeyArr                         0x20000110   Data          32  encryption.o(.bss)
-    .bss                                     0x20000130   Section       32  encryption.o(.bss)
-    encryptedMessageArr                      0x20000130   Data          32  encryption.o(.bss)
-    .bss                                     0x20000150   Section       32  encryption.o(.bss)
-    decryptedMessageArr                      0x20000150   Data          32  encryption.o(.bss)
-    .bss                                     0x20000170   Section       12  es_framework.o(.bss)
-    Queue0                                   0x20000170   Data          12  es_framework.o(.bss)
-    .bss                                     0x2000017c   Section       16  es_framework.o(.bss)
-    Queue1                                   0x2000017c   Data          16  es_framework.o(.bss)
+    lastPairedAddress                        0x20000022   Data           2  lobbyistsm.o(.data)
+    pairedAddress                            0x20000024   Data           2  lobbyistsm.o(.data)
+    StatusPacketArray                        0x20000026   Data           3  lobbyistsm.o(.data)
+    StatusPacket                             0x2000002c   Data           4  lobbyistsm.o(.data)
+    incomingMessage                          0x20000030   Data           4  lobbyistsm.o(.data)
+    decryptedMessage                         0x20000034   Data           4  lobbyistsm.o(.data)
+    lastCommandFrame1                        0x20000038   Data           4  lobbyistsm.o(.data)
+    .data                                    0x2000003c   Section        1  lobbyistsm.o(.data)
+    command                                  0x2000003c   Data           1  lobbyistsm.o(.data)
+    .data                                    0x2000003d   Section        8  lobbyistsm.o(.data)
+    incomingmessagearr                       0x2000003d   Data           8  lobbyistsm.o(.data)
+    .data                                    0x20000045   Section        8  lobbyistsm.o(.data)
+    decryptedMessageArr                      0x20000045   Data           8  lobbyistsm.o(.data)
+    .data                                    0x2000004d   Section        1  mapkeys.o(.data)
+    MyPriority                               0x2000004d   Data           1  mapkeys.o(.data)
+    .data                                    0x20000050   Section       16  encryption.o(.data)
+    currentCipherPosition                    0x20000050   Data           1  encryption.o(.data)
+    encryptionKey                            0x20000054   Data           4  encryption.o(.data)
+    encryptedMessage                         0x20000058   Data           4  encryption.o(.data)
+    decryptedMessage                         0x2000005c   Data           4  encryption.o(.data)
+    .data                                    0x20000060   Section        2  steering.o(.data)
+    DutyCycleLeftMotor                       0x20000060   Data           1  steering.o(.data)
+    DutyCycleRightMotor                      0x20000061   Data           1  steering.o(.data)
+    .data                                    0x20000062   Section        4  dmc.o(.data)
+    Color                                    0x20000062   Data           1  dmc.o(.data)
+    Pairing                                  0x20000063   Data           1  dmc.o(.data)
+    BitCount                                 0x20000064   Data           1  dmc.o(.data)
+    MyPriority                               0x20000065   Data           1  dmc.o(.data)
+    .data                                    0x20000068   Section        8  badge.o(.data)
+    ADResults                                0x20000068   Data           8  badge.o(.data)
+    .data                                    0x20000070   Section        1  admulti.o(.data)
+    NumChannelsConverting                    0x20000070   Data           1  admulti.o(.data)
+    .data                                    0x20000072   Section        6  es_framework.o(.data)
+    ThisEvent                                0x20000074   Data           4  es_framework.o(.data)
+    .data                                    0x20000078   Section        4  es_port.o(.data)
+    TickCount                                0x20000078   Data           1  es_port.o(.data)
+    SysTickCounter                           0x2000007a   Data           2  es_port.o(.data)
+    .data                                    0x2000007c   Section        4  es_queue.o(.data)
+    .data                                    0x20000080   Section       10  es_timers.o(.data)
+    NextTimer2Process                        0x20000080   Data           1  es_timers.o(.data)
+    NeedsProcessing                          0x20000082   Data           2  es_timers.o(.data)
+    TMR_ActiveFlags                          0x20000084   Data           2  es_timers.o(.data)
+    NewEvent                                 0x20000086   Data           4  es_timers.o(.data)
+    .data                                    0x2000008c   Section        4  retarget.o(.data)
+    .data                                    0x20000090   Section        4  retarget.o(.data)
+    .data                                    0x20000094   Section        8  uartstdio.o(.data)
+    bLastWasCR                               0x20000094   Data           1  uartstdio.o(.data)
+    g_ui32Base                               0x20000098   Data           4  uartstdio.o(.data)
+    .bss                                     0x2000009c   Section       32  xbee.o(.bss)
+    outgoingMessageArray                     0x2000009c   Data          32  xbee.o(.bss)
+    .bss                                     0x200000bc   Section       50  uart.o(.bss)
+    outgoingMessageArray                     0x200000bc   Data          50  uart.o(.bss)
+    .bss                                     0x200000ee   Section       50  uart.o(.bss)
+    incomingMessageArray                     0x200000ee   Data          50  uart.o(.bss)
+    .bss                                     0x20000120   Section       32  encryption.o(.bss)
+    encryptionKeyArr                         0x20000120   Data          32  encryption.o(.bss)
+    .bss                                     0x20000140   Section       32  encryption.o(.bss)
+    encryptedMessageArr                      0x20000140   Data          32  encryption.o(.bss)
+    .bss                                     0x20000160   Section       32  encryption.o(.bss)
+    decryptedMessageArr                      0x20000160   Data          32  encryption.o(.bss)
+    .bss                                     0x20000180   Section       12  es_framework.o(.bss)
+    Queue0                                   0x20000180   Data          12  es_framework.o(.bss)
     .bss                                     0x2000018c   Section       16  es_framework.o(.bss)
-    Queue2                                   0x2000018c   Data          16  es_framework.o(.bss)
+    Queue1                                   0x2000018c   Data          16  es_framework.o(.bss)
     .bss                                     0x2000019c   Section       16  es_framework.o(.bss)
-    Queue3                                   0x2000019c   Data          16  es_framework.o(.bss)
-    .bss                                     0x200001ac   Section       32  es_timers.o(.bss)
-    TMR_TimerArray                           0x200001ac   Data          32  es_timers.o(.bss)
-    .bss                                     0x200001cc   Section       96  libspace.o(.bss)
-    HEAP                                     0x20000230   Section        0  startup_rvmdk.o(HEAP)
-    STACK                                    0x20000230   Section     2048  startup_rvmdk.o(STACK)
-    HeapMem                                  0x20000230   Data           0  startup_rvmdk.o(HEAP)
-    StackMem                                 0x20000230   Data           0  startup_rvmdk.o(STACK)
+    Queue2                                   0x2000019c   Data          16  es_framework.o(.bss)
+    .bss                                     0x200001ac   Section       16  es_framework.o(.bss)
+    Queue3                                   0x200001ac   Data          16  es_framework.o(.bss)
+    .bss                                     0x200001bc   Section       32  es_timers.o(.bss)
+    TMR_TimerArray                           0x200001bc   Data          32  es_timers.o(.bss)
+    .bss                                     0x200001dc   Section       96  libspace.o(.bss)
+    HEAP                                     0x20000240   Section        0  startup_rvmdk.o(HEAP)
+    STACK                                    0x20000240   Section     2048  startup_rvmdk.o(STACK)
+    HeapMem                                  0x20000240   Data           0  startup_rvmdk.o(HEAP)
+    StackMem                                 0x20000240   Data           0  startup_rvmdk.o(STACK)
 
     Global Symbols
 
@@ -1417,120 +1440,123 @@ Image Symbol Table
     __user_libspace                          0x0000068d   Thumb Code     8  libspace.o(.text)
     __user_perproc_libspace                  0x0000068d   Thumb Code     0  libspace.o(.text)
     __user_perthread_libspace                0x0000068d   Thumb Code     0  libspace.o(.text)
-    BeginMessageTransmission                 0x000006e5   Thumb Code    46  uart.o(i.BeginMessageTransmission)
-    CPUgetPRIMASK_cpsid                      0x00000721   Thumb Code     8  es_port.o(i.CPUgetPRIMASK_cpsid)
-    CPUsetPRIMASK                            0x00000729   Thumb Code     6  es_port.o(i.CPUsetPRIMASK)
-    Check4ButtonPress                        0x00000731   Thumb Code    46  eventcheckers.o(i.Check4ButtonPress)
-    Check4Keystroke                          0x00000769   Thumb Code    44  eventcheckers.o(i.Check4Keystroke)
-    CheckForErrors                           0x00000799   Thumb Code    62  xbee.o(i.CheckForErrors)
-    ComputeChecksum                          0x000007d7   Thumb Code    26  xbee.o(i.ComputeChecksum)
-    DecryptMessage                           0x000007f1   Thumb Code    40  encryption.o(i.DecryptMessage)
-    ES_CheckUserEvents                       0x0000081d   Thumb Code    34  es_checkevents.o(i.ES_CheckUserEvents)
-    ES_DeQueue                               0x00000845   Thumb Code    80  es_queue.o(i.ES_DeQueue)
-    ES_EnQueueFIFO                           0x00000899   Thumb Code    66  es_queue.o(i.ES_EnQueueFIFO)
-    ES_GetMSBitSet                           0x000008e1   Thumb Code    48  es_lookuptables.o(i.ES_GetMSBitSet)
-    ES_InitQueue                             0x00000915   Thumb Code    16  es_queue.o(i.ES_InitQueue)
-    ES_Initialize                            0x00000925   Thumb Code    72  es_framework.o(i.ES_Initialize)
-    ES_PostToService                         0x00000971   Thumb Code    42  es_framework.o(i.ES_PostToService)
-    ES_Run                                   0x000009a9   Thumb Code    84  es_framework.o(i.ES_Run)
-    ES_ShortTimerInit                        0x00000a09   Thumb Code    40  es_shorttimer.o(i.ES_ShortTimerInit)
-    ES_ShortTimerStart                       0x00000a41   Thumb Code    90  es_shorttimer.o(i.ES_ShortTimerStart)
-    ES_Timer_Init                            0x00000aa1   Thumb Code     4  es_timers.o(i.ES_Timer_Init)
-    ES_Timer_InitTimer                       0x00000aa5   Thumb Code    44  es_timers.o(i.ES_Timer_InitTimer)
-    ES_Timer_StopTimer                       0x00000ae1   Thumb Code    28  es_timers.o(i.ES_Timer_StopTimer)
-    ES_Timer_Tick_Resp                       0x00000b05   Thumb Code    90  es_timers.o(i.ES_Timer_Tick_Resp)
-    GPIODirModeSet                           0x00000c09   Thumb Code    40  gpio.o(i.GPIODirModeSet)
-    GPIOPadConfigSet                         0x00000c31   Thumb Code   314  gpio.o(i.GPIOPadConfigSet)
-    GPIOPinConfigure                         0x00000d6d   Thumb Code    64  gpio.o(i.GPIOPinConfigure)
-    GPIOPinTypeUART                          0x00000db5   Thumb Code    28  gpio.o(i.GPIOPinTypeUART)
-    GetApiIdentifier                         0x00000dd1   Thumb Code    10  xbee.o(i.GetApiIdentifier)
-    GetMessage                               0x00000ddd   Thumb Code     6  uart.o(i.GetMessage)
-    GetMessageData                           0x00000de9   Thumb Code    10  xbee.o(i.GetMessageData)
-    GetMessageDataSize                       0x00000df3   Thumb Code    12  xbee.o(i.GetMessageDataSize)
-    GetMessageSize                           0x00000e01   Thumb Code     6  uart.o(i.GetMessageSize)
-    GetSenderAddress                         0x00000e0d   Thumb Code    22  xbee.o(i.GetSenderAddress)
-    InitBadge                                0x00000e25   Thumb Code    42  badge.o(i.InitBadge)
-    InitButtonService                        0x00000e61   Thumb Code   104  button.o(i.InitButtonService)
-    InitDMC                                  0x00000ee1   Thumb Code    86  dmc.o(i.InitDMC)
-    InitLiftFan                              0x00000f51   Thumb Code    54  liftfan.o(i.InitLiftFan)
-    InitLobbyistSM                           0x00000f9d   Thumb Code    28  lobbyistsm.o(i.InitLobbyistSM)
-    InitMapKeys                              0x00000fbd   Thumb Code     8  mapkeys.o(i.InitMapKeys)
-    InitSteering                             0x00000fc9   Thumb Code    92  steering.o(i.InitSteering)
-    InitUart1                                0x00001051   Thumb Code   180  uart.o(i.InitUart1)
-    InitXBee                                 0x00001119   Thumb Code    10  xbee.o(i.InitXBee)
-    IntEnable                                0x00001125   Thumb Code    92  interrupt.o(i.IntEnable)
-    IntMasterEnable                          0x00001189   Thumb Code    14  interrupt.o(i.IntMasterEnable)
-    LoadData                                 0x00001199   Thumb Code     8  uart.o(i.LoadData)
-    PWMInit                                  0x000011a5   Thumb Code   138  pwm.o(i.PWMInit)
-    PostButtonService                        0x00001249   Thumb Code    10  button.o(i.PostButtonService)
-    PostDMC                                  0x00001259   Thumb Code    10  dmc.o(i.PostDMC)
-    PostLobbyistSM                           0x00001269   Thumb Code    10  lobbyistsm.o(i.PostLobbyistSM)
-    PostMapKeys                              0x00001279   Thumb Code    10  mapkeys.o(i.PostMapKeys)
-    RotateCipher                             0x00001289   Thumb Code    20  encryption.o(i.RotateCipher)
-    RunButtonService                         0x000012a1   Thumb Code    70  button.o(i.RunButtonService)
-    RunDMC                                   0x000012fd   Thumb Code   186  dmc.o(i.RunDMC)
-    RunLobbyistSM                            0x000013ed   Thumb Code   598  lobbyistsm.o(i.RunLobbyistSM)
-    RunMapKeys                               0x000017fd   Thumb Code   248  mapkeys.o(i.RunMapKeys)
-    SendMessage                              0x0000198d   Thumb Code    24  uart.o(i.SendMessage)
-    SetDutyCycleLeftMotor                    0x000019ad   Thumb Code    52  pwm.o(i.SetDutyCycleLeftMotor)
-    SetDutyCycleRightMotor                   0x000019e5   Thumb Code    52  pwm.o(i.SetDutyCycleRightMotor)
-    SetKey                                   0x00001a1d   Thumb Code    20  encryption.o(i.SetKey)
-    ShortTimerAHandler                       0x00001a35   Thumb Code    42  es_shorttimer.o(i.ShortTimerAHandler)
-    ShortTimerBHandler                       0x00001a69   Thumb Code    46  es_shorttimer.o(i.ShortTimerBHandler)
-    SysCtlClockSet                           0x00001aa1   Thumb Code   270  sysctl.o(i.SysCtlClockSet)
-    SysCtlPeripheralEnable                   0x00001bc1   Thumb Code    36  sysctl.o(i.SysCtlPeripheralEnable)
-    SysTickEnable                            0x00001be9   Thumb Code    14  systick.o(i.SysTickEnable)
-    SysTickIntEnable                         0x00001bf7   Thumb Code    14  systick.o(i.SysTickIntEnable)
-    SysTickIntHandler                        0x00001c05   Thumb Code    16  es_port.o(i.SysTickIntHandler)
-    SysTickPeriodSet                         0x00001c19   Thumb Code    10  systick.o(i.SysTickPeriodSet)
-    TERMIO_GetChar                           0x00001c23   Thumb Code     4  termio.o(i.TERMIO_GetChar)
-    TERMIO_Init                              0x00001c29   Thumb Code    62  termio.o(i.TERMIO_Init)
-    TERMIO_PutChar                           0x00001c79   Thumb Code     8  termio.o(i.TERMIO_PutChar)
-    TimerConfigure                           0x00001c85   Thumb Code    88  timer.o(i.TimerConfigure)
-    TimerEnable                              0x00001ce5   Thumb Code    14  timer.o(i.TimerEnable)
-    TimerIntClear                            0x00001cf3   Thumb Code     4  timer.o(i.TimerIntClear)
-    TimerIntEnable                           0x00001cf7   Thumb Code     8  timer.o(i.TimerIntEnable)
-    TimerLoadSet                             0x00001cff   Thumb Code    18  timer.o(i.TimerLoadSet)
-    TimerPrescaleSet                         0x00001d11   Thumb Code    18  timer.o(i.TimerPrescaleSet)
-    TransmitMessage                          0x00001d25   Thumb Code    28  xbee.o(i.TransmitMessage)
-    TurnOffLiftFan                           0x00001d61   Thumb Code    16  liftfan.o(i.TurnOffLiftFan)
-    TurnOnLiftFan                            0x00001d75   Thumb Code    16  liftfan.o(i.TurnOnLiftFan)
-    UART1_ISR                                0x00001d89   Thumb Code   160  uart.o(i.UART1_ISR)
-    UARTCharPut                              0x00001e4d   Thumb Code    12  uart.o(i.UARTCharPut)
-    UARTClockSourceSet                       0x00001e59   Thumb Code     6  uart.o(i.UARTClockSourceSet)
-    UARTStdioConfig                          0x00001e61   Thumb Code    82  uartstdio.o(i.UARTStdioConfig)
-    UARTgetc                                 0x00001ebd   Thumb Code    20  uartstdio.o(i.UARTgetc)
-    UpdateSteering                           0x00001f21   Thumb Code   226  steering.o(i.UpdateSteering)
-    _HW_Process_Pending_Ints                 0x0000203d   Thumb Code    26  es_port.o(i._HW_Process_Pending_Ints)
-    _HW_Timer_Init                           0x0000205d   Thumb Code    22  es_port.o(i._HW_Timer_Init)
-    _sys_exit                                0x00002073   Thumb Code     2  retarget.o(i._sys_exit)
-    ferror                                   0x00002075   Thumb Code     6  retarget.o(i.ferror)
-    fgetc                                    0x0000207b   Thumb Code     4  retarget.o(i.fgetc)
-    fputc                                    0x0000207f   Thumb Code    14  retarget.o(i.fputc)
-    kbhit                                    0x0000208d   Thumb Code    16  termio.o(i.kbhit)
-    main                                     0x000020a1   Thumb Code    84  main.o(i.main)
-    __aeabi_d2iz                             0x00002199   Thumb Code     0  dfix.o(x$fpl$dfix)
-    _dfix                                    0x00002199   Thumb Code    94  dfix.o(x$fpl$dfix)
-    __aeabi_i2d                              0x000021f7   Thumb Code     0  dflt_clz.o(x$fpl$dflt)
-    _dflt                                    0x000021f7   Thumb Code    46  dflt_clz.o(x$fpl$dflt)
-    __aeabi_dmul                             0x00002225   Thumb Code     0  dmul.o(x$fpl$dmul)
-    _dmul                                    0x00002225   Thumb Code   332  dmul.o(x$fpl$dmul)
-    __fpl_dnaninf                            0x00002379   Thumb Code   156  dnaninf.o(x$fpl$dnaninf)
-    __fpl_dretinf                            0x00002415   Thumb Code    12  dretinf.o(x$fpl$dretinf)
-    _fp_init                                 0x00002421   Thumb Code    10  fpinit.o(x$fpl$fpinit)
-    __fplib_config_fpu_vfp                   0x00002429   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    __fplib_config_pureend_doubles           0x00002429   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    __I$use$fp                               0x0000242a   Number         0  usenofp.o(x$fpl$usenofp)
-    BitNum2SetMask                           0x00002474   Data          32  es_lookuptables.o(.constdata)
-    Nybble2MSBitNum                          0x00002494   Data          15  es_lookuptables.o(.constdata)
-    Region$$Table$$Base                      0x000028dc   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x000028fc   Number         0  anon$$obj.o(Region$$Table)
-    Ready                                    0x20000062   Data           2  es_framework.o(.data)
-    _PRIMASK_temp                            0x2000006c   Data           4  es_queue.o(.data)
-    __stdout                                 0x2000007c   Data           4  retarget.o(.data)
-    __stdin                                  0x20000080   Data           4  retarget.o(.data)
-    __libspace_start                         0x200001cc   Data          96  libspace.o(.bss)
-    __temporary_stack_top$libspace           0x2000022c   Data           0  libspace.o(.bss)
+    ADC_MultiInit                            0x00000695   Thumb Code   170  admulti.o(i.ADC_MultiInit)
+    ADC_MultiRead                            0x0000075d   Thumb Code    46  admulti.o(i.ADC_MultiRead)
+    BeginMessageTransmission                 0x000007e5   Thumb Code    46  uart.o(i.BeginMessageTransmission)
+    CPUgetPRIMASK_cpsid                      0x00000821   Thumb Code     8  es_port.o(i.CPUgetPRIMASK_cpsid)
+    CPUsetPRIMASK                            0x00000829   Thumb Code     6  es_port.o(i.CPUsetPRIMASK)
+    Check4ButtonPress                        0x00000831   Thumb Code    46  eventcheckers.o(i.Check4ButtonPress)
+    Check4Keystroke                          0x00000869   Thumb Code    44  eventcheckers.o(i.Check4Keystroke)
+    CheckForErrors                           0x00000899   Thumb Code    62  xbee.o(i.CheckForErrors)
+    ComputeChecksum                          0x000008d7   Thumb Code    26  xbee.o(i.ComputeChecksum)
+    DecryptMessage                           0x000008f1   Thumb Code    40  encryption.o(i.DecryptMessage)
+    ES_CheckUserEvents                       0x0000091d   Thumb Code    34  es_checkevents.o(i.ES_CheckUserEvents)
+    ES_DeQueue                               0x00000945   Thumb Code    80  es_queue.o(i.ES_DeQueue)
+    ES_EnQueueFIFO                           0x00000999   Thumb Code    66  es_queue.o(i.ES_EnQueueFIFO)
+    ES_GetMSBitSet                           0x000009e1   Thumb Code    48  es_lookuptables.o(i.ES_GetMSBitSet)
+    ES_InitQueue                             0x00000a15   Thumb Code    16  es_queue.o(i.ES_InitQueue)
+    ES_Initialize                            0x00000a25   Thumb Code    72  es_framework.o(i.ES_Initialize)
+    ES_PostToService                         0x00000a71   Thumb Code    42  es_framework.o(i.ES_PostToService)
+    ES_Run                                   0x00000aa9   Thumb Code    84  es_framework.o(i.ES_Run)
+    ES_ShortTimerInit                        0x00000b09   Thumb Code    40  es_shorttimer.o(i.ES_ShortTimerInit)
+    ES_ShortTimerStart                       0x00000b41   Thumb Code    90  es_shorttimer.o(i.ES_ShortTimerStart)
+    ES_Timer_Init                            0x00000ba1   Thumb Code     4  es_timers.o(i.ES_Timer_Init)
+    ES_Timer_InitTimer                       0x00000ba5   Thumb Code    44  es_timers.o(i.ES_Timer_InitTimer)
+    ES_Timer_StopTimer                       0x00000be1   Thumb Code    28  es_timers.o(i.ES_Timer_StopTimer)
+    ES_Timer_Tick_Resp                       0x00000c05   Thumb Code    90  es_timers.o(i.ES_Timer_Tick_Resp)
+    GPIODirModeSet                           0x00000d09   Thumb Code    40  gpio.o(i.GPIODirModeSet)
+    GPIOPadConfigSet                         0x00000d31   Thumb Code   314  gpio.o(i.GPIOPadConfigSet)
+    GPIOPinConfigure                         0x00000e6d   Thumb Code    64  gpio.o(i.GPIOPinConfigure)
+    GPIOPinTypeUART                          0x00000eb5   Thumb Code    28  gpio.o(i.GPIOPinTypeUART)
+    GetApiIdentifier                         0x00000ed1   Thumb Code    10  xbee.o(i.GetApiIdentifier)
+    GetMessage                               0x00000edd   Thumb Code     6  uart.o(i.GetMessage)
+    GetMessageData                           0x00000ee9   Thumb Code    10  xbee.o(i.GetMessageData)
+    GetMessageDataSize                       0x00000ef3   Thumb Code    12  xbee.o(i.GetMessageDataSize)
+    GetMessageSize                           0x00000f01   Thumb Code     6  uart.o(i.GetMessageSize)
+    GetSenderAddress                         0x00000f0d   Thumb Code    22  xbee.o(i.GetSenderAddress)
+    InitBadge                                0x00000f25   Thumb Code    22  badge.o(i.InitBadge)
+    InitButtonService                        0x00000f41   Thumb Code   104  button.o(i.InitButtonService)
+    InitDMC                                  0x00000fc1   Thumb Code    86  dmc.o(i.InitDMC)
+    InitLiftFan                              0x00001031   Thumb Code    54  liftfan.o(i.InitLiftFan)
+    InitLobbyistSM                           0x0000107d   Thumb Code    28  lobbyistsm.o(i.InitLobbyistSM)
+    InitMapKeys                              0x0000109d   Thumb Code     8  mapkeys.o(i.InitMapKeys)
+    InitSteering                             0x000010a9   Thumb Code    92  steering.o(i.InitSteering)
+    InitUart1                                0x00001131   Thumb Code   180  uart.o(i.InitUart1)
+    InitXBee                                 0x000011f9   Thumb Code    10  xbee.o(i.InitXBee)
+    IntEnable                                0x00001205   Thumb Code    92  interrupt.o(i.IntEnable)
+    IntMasterEnable                          0x00001269   Thumb Code    14  interrupt.o(i.IntMasterEnable)
+    LoadData                                 0x00001279   Thumb Code     8  uart.o(i.LoadData)
+    PWMInit                                  0x00001285   Thumb Code   138  pwm.o(i.PWMInit)
+    PostButtonService                        0x00001329   Thumb Code    10  button.o(i.PostButtonService)
+    PostDMC                                  0x00001339   Thumb Code    10  dmc.o(i.PostDMC)
+    PostLobbyistSM                           0x00001349   Thumb Code    10  lobbyistsm.o(i.PostLobbyistSM)
+    PostMapKeys                              0x00001359   Thumb Code    10  mapkeys.o(i.PostMapKeys)
+    ReadBadge                                0x00001369   Thumb Code    70  badge.o(i.ReadBadge)
+    RotateCipher                             0x000013d9   Thumb Code    20  encryption.o(i.RotateCipher)
+    RunButtonService                         0x000013f1   Thumb Code    70  button.o(i.RunButtonService)
+    RunDMC                                   0x0000144d   Thumb Code   186  dmc.o(i.RunDMC)
+    RunLobbyistSM                            0x0000153d   Thumb Code   626  lobbyistsm.o(i.RunLobbyistSM)
+    RunMapKeys                               0x00001969   Thumb Code   248  mapkeys.o(i.RunMapKeys)
+    SendMessage                              0x00001af9   Thumb Code    24  uart.o(i.SendMessage)
+    SetDutyCycleLeftMotor                    0x00001b19   Thumb Code    52  pwm.o(i.SetDutyCycleLeftMotor)
+    SetDutyCycleRightMotor                   0x00001b51   Thumb Code    52  pwm.o(i.SetDutyCycleRightMotor)
+    SetKey                                   0x00001b89   Thumb Code    20  encryption.o(i.SetKey)
+    ShortTimerAHandler                       0x00001ba1   Thumb Code    42  es_shorttimer.o(i.ShortTimerAHandler)
+    ShortTimerBHandler                       0x00001bd5   Thumb Code    46  es_shorttimer.o(i.ShortTimerBHandler)
+    SysCtlClockSet                           0x00001c0d   Thumb Code   270  sysctl.o(i.SysCtlClockSet)
+    SysCtlPeripheralEnable                   0x00001d2d   Thumb Code    36  sysctl.o(i.SysCtlPeripheralEnable)
+    SysTickEnable                            0x00001d55   Thumb Code    14  systick.o(i.SysTickEnable)
+    SysTickIntEnable                         0x00001d63   Thumb Code    14  systick.o(i.SysTickIntEnable)
+    SysTickIntHandler                        0x00001d71   Thumb Code    16  es_port.o(i.SysTickIntHandler)
+    SysTickPeriodSet                         0x00001d85   Thumb Code    10  systick.o(i.SysTickPeriodSet)
+    TERMIO_GetChar                           0x00001d8f   Thumb Code     4  termio.o(i.TERMIO_GetChar)
+    TERMIO_Init                              0x00001d95   Thumb Code    62  termio.o(i.TERMIO_Init)
+    TERMIO_PutChar                           0x00001de5   Thumb Code     8  termio.o(i.TERMIO_PutChar)
+    TimerConfigure                           0x00001df1   Thumb Code    88  timer.o(i.TimerConfigure)
+    TimerEnable                              0x00001e51   Thumb Code    14  timer.o(i.TimerEnable)
+    TimerIntClear                            0x00001e5f   Thumb Code     4  timer.o(i.TimerIntClear)
+    TimerIntEnable                           0x00001e63   Thumb Code     8  timer.o(i.TimerIntEnable)
+    TimerLoadSet                             0x00001e6b   Thumb Code    18  timer.o(i.TimerLoadSet)
+    TimerPrescaleSet                         0x00001e7d   Thumb Code    18  timer.o(i.TimerPrescaleSet)
+    TransmitMessage                          0x00001e91   Thumb Code    28  xbee.o(i.TransmitMessage)
+    TurnOffLiftFan                           0x00001ecd   Thumb Code    16  liftfan.o(i.TurnOffLiftFan)
+    TurnOnLiftFan                            0x00001ee1   Thumb Code    16  liftfan.o(i.TurnOnLiftFan)
+    UART1_ISR                                0x00001ef5   Thumb Code   160  uart.o(i.UART1_ISR)
+    UARTCharPut                              0x00001fb9   Thumb Code    12  uart.o(i.UARTCharPut)
+    UARTClockSourceSet                       0x00001fc5   Thumb Code     6  uart.o(i.UARTClockSourceSet)
+    UARTStdioConfig                          0x00001fcd   Thumb Code    82  uartstdio.o(i.UARTStdioConfig)
+    UARTgetc                                 0x00002029   Thumb Code    20  uartstdio.o(i.UARTgetc)
+    UpdateSteering                           0x0000208d   Thumb Code   226  steering.o(i.UpdateSteering)
+    _HW_Process_Pending_Ints                 0x000021a9   Thumb Code    26  es_port.o(i._HW_Process_Pending_Ints)
+    _HW_Timer_Init                           0x000021c9   Thumb Code    22  es_port.o(i._HW_Timer_Init)
+    _sys_exit                                0x000021df   Thumb Code     2  retarget.o(i._sys_exit)
+    ferror                                   0x000021e1   Thumb Code     6  retarget.o(i.ferror)
+    fgetc                                    0x000021e7   Thumb Code     4  retarget.o(i.fgetc)
+    fputc                                    0x000021eb   Thumb Code    14  retarget.o(i.fputc)
+    kbhit                                    0x000021f9   Thumb Code    16  termio.o(i.kbhit)
+    main                                     0x0000220d   Thumb Code    84  main.o(i.main)
+    __aeabi_d2iz                             0x00002305   Thumb Code     0  dfix.o(x$fpl$dfix)
+    _dfix                                    0x00002305   Thumb Code    94  dfix.o(x$fpl$dfix)
+    __aeabi_i2d                              0x00002363   Thumb Code     0  dflt_clz.o(x$fpl$dflt)
+    _dflt                                    0x00002363   Thumb Code    46  dflt_clz.o(x$fpl$dflt)
+    __aeabi_dmul                             0x00002391   Thumb Code     0  dmul.o(x$fpl$dmul)
+    _dmul                                    0x00002391   Thumb Code   332  dmul.o(x$fpl$dmul)
+    __fpl_dnaninf                            0x000024e5   Thumb Code   156  dnaninf.o(x$fpl$dnaninf)
+    __fpl_dretinf                            0x00002581   Thumb Code    12  dretinf.o(x$fpl$dretinf)
+    _fp_init                                 0x0000258d   Thumb Code    10  fpinit.o(x$fpl$fpinit)
+    __fplib_config_fpu_vfp                   0x00002595   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __fplib_config_pureend_doubles           0x00002595   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __I$use$fp                               0x00002596   Number         0  usenofp.o(x$fpl$usenofp)
+    BitNum2SetMask                           0x00002610   Data          32  es_lookuptables.o(.constdata)
+    Nybble2MSBitNum                          0x00002630   Data          15  es_lookuptables.o(.constdata)
+    Region$$Table$$Base                      0x00002a78   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x00002a98   Number         0  anon$$obj.o(Region$$Table)
+    Ready                                    0x20000072   Data           2  es_framework.o(.data)
+    _PRIMASK_temp                            0x2000007c   Data           4  es_queue.o(.data)
+    __stdout                                 0x2000008c   Data           4  retarget.o(.data)
+    __stdin                                  0x20000090   Data           4  retarget.o(.data)
+    __libspace_start                         0x200001dc   Data          96  libspace.o(.bss)
+    __temporary_stack_top$libspace           0x2000023c   Data           0  libspace.o(.bss)
 
 
 
@@ -1540,257 +1566,265 @@ Memory Map of the image
 
   Image Entry point : 0x0000026d
 
-  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00002988, Max: 0x00040000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x00000000, Size: 0x00002b34, Max: 0x00040000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x000028fc, Max: 0x00040000, ABSOLUTE)
+    Execution Region ER_IROM1 (Base: 0x00000000, Size: 0x00002a98, Max: 0x00040000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000000   0x00000288   Code   RO          720  * RESET               startup_rvmdk.o
-    0x00000288   0x00000008   Code   RO         2782  * !!!main             c_w.l(__main.o)
-    0x00000290   0x00000034   Code   RO         2958    !!!scatter          c_w.l(__scatter.o)
-    0x000002c4   0x0000001a   Code   RO         2960    !!handler_copy      c_w.l(__scatter_copy.o)
+    0x00000000   0x00000288   Code   RO          749  * RESET               startup_rvmdk.o
+    0x00000288   0x00000008   Code   RO         2811  * !!!main             c_w.l(__main.o)
+    0x00000290   0x00000034   Code   RO         2987    !!!scatter          c_w.l(__scatter.o)
+    0x000002c4   0x0000001a   Code   RO         2989    !!handler_copy      c_w.l(__scatter_copy.o)
     0x000002de   0x00000002   PAD
-    0x000002e0   0x0000001c   Code   RO         2962    !!handler_zi        c_w.l(__scatter_zi.o)
-    0x000002fc   0x00000000   Code   RO         2770    .ARM.Collect$$_printf_percent$$00000000  c_w.l(_printf_percent.o)
-    0x000002fc   0x00000006   Code   RO         2769    .ARM.Collect$$_printf_percent$$00000009  c_w.l(_printf_d.o)
-    0x00000302   0x00000006   Code   RO         2768    .ARM.Collect$$_printf_percent$$00000014  c_w.l(_printf_s.o)
-    0x00000308   0x00000004   Code   RO         2803    .ARM.Collect$$_printf_percent$$00000017  c_w.l(_printf_percent_end.o)
-    0x0000030c   0x00000002   Code   RO         2888    .ARM.Collect$$libinit$$00000000  c_w.l(libinit.o)
-    0x0000030e   0x00000004   Code   RO         2804    .ARM.Collect$$libinit$$00000001  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2808    .ARM.Collect$$libinit$$00000008  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2810    .ARM.Collect$$libinit$$0000000A  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2812    .ARM.Collect$$libinit$$0000000C  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2815    .ARM.Collect$$libinit$$0000000F  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2817    .ARM.Collect$$libinit$$00000011  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2819    .ARM.Collect$$libinit$$00000013  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2821    .ARM.Collect$$libinit$$00000015  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2823    .ARM.Collect$$libinit$$00000017  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2825    .ARM.Collect$$libinit$$00000019  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2827    .ARM.Collect$$libinit$$0000001B  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2829    .ARM.Collect$$libinit$$0000001D  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2831    .ARM.Collect$$libinit$$0000001F  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2833    .ARM.Collect$$libinit$$00000021  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2835    .ARM.Collect$$libinit$$00000023  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2839    .ARM.Collect$$libinit$$0000002A  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2841    .ARM.Collect$$libinit$$0000002C  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2843    .ARM.Collect$$libinit$$0000002E  c_w.l(libinit2.o)
-    0x00000312   0x00000000   Code   RO         2845    .ARM.Collect$$libinit$$00000030  c_w.l(libinit2.o)
-    0x00000312   0x00000002   Code   RO         2846    .ARM.Collect$$libinit$$00000031  c_w.l(libinit2.o)
-    0x00000314   0x00000002   Code   RO         2922    .ARM.Collect$$libshutdown$$00000000  c_w.l(libshutdown.o)
-    0x00000316   0x00000000   Code   RO         2927    .ARM.Collect$$libshutdown$$00000003  c_w.l(libshutdown2.o)
-    0x00000316   0x00000000   Code   RO         2930    .ARM.Collect$$libshutdown$$00000006  c_w.l(libshutdown2.o)
-    0x00000316   0x00000000   Code   RO         2933    .ARM.Collect$$libshutdown$$00000009  c_w.l(libshutdown2.o)
-    0x00000316   0x00000000   Code   RO         2935    .ARM.Collect$$libshutdown$$0000000B  c_w.l(libshutdown2.o)
-    0x00000316   0x00000000   Code   RO         2938    .ARM.Collect$$libshutdown$$0000000E  c_w.l(libshutdown2.o)
-    0x00000316   0x00000002   Code   RO         2939    .ARM.Collect$$libshutdown$$0000000F  c_w.l(libshutdown2.o)
-    0x00000318   0x00000000   Code   RO         2796    .ARM.Collect$$rtentry$$00000000  c_w.l(rtentry.o)
-    0x00000318   0x00000000   Code   RO         2853    .ARM.Collect$$rtentry$$00000002  c_w.l(rtentry2.o)
-    0x00000318   0x00000006   Code   RO         2865    .ARM.Collect$$rtentry$$00000004  c_w.l(rtentry4.o)
-    0x0000031e   0x00000000   Code   RO         2855    .ARM.Collect$$rtentry$$00000009  c_w.l(rtentry2.o)
-    0x0000031e   0x00000004   Code   RO         2856    .ARM.Collect$$rtentry$$0000000A  c_w.l(rtentry2.o)
-    0x00000322   0x00000000   Code   RO         2858    .ARM.Collect$$rtentry$$0000000C  c_w.l(rtentry2.o)
-    0x00000322   0x00000008   Code   RO         2859    .ARM.Collect$$rtentry$$0000000D  c_w.l(rtentry2.o)
-    0x0000032a   0x00000002   Code   RO         2894    .ARM.Collect$$rtexit$$00000000  c_w.l(rtexit.o)
-    0x0000032c   0x00000000   Code   RO         2904    .ARM.Collect$$rtexit$$00000002  c_w.l(rtexit2.o)
-    0x0000032c   0x00000004   Code   RO         2905    .ARM.Collect$$rtexit$$00000003  c_w.l(rtexit2.o)
-    0x00000330   0x00000006   Code   RO         2906    .ARM.Collect$$rtexit$$00000004  c_w.l(rtexit2.o)
+    0x000002e0   0x0000001c   Code   RO         2991    !!handler_zi        c_w.l(__scatter_zi.o)
+    0x000002fc   0x00000000   Code   RO         2799    .ARM.Collect$$_printf_percent$$00000000  c_w.l(_printf_percent.o)
+    0x000002fc   0x00000006   Code   RO         2798    .ARM.Collect$$_printf_percent$$00000009  c_w.l(_printf_d.o)
+    0x00000302   0x00000006   Code   RO         2797    .ARM.Collect$$_printf_percent$$00000014  c_w.l(_printf_s.o)
+    0x00000308   0x00000004   Code   RO         2832    .ARM.Collect$$_printf_percent$$00000017  c_w.l(_printf_percent_end.o)
+    0x0000030c   0x00000002   Code   RO         2917    .ARM.Collect$$libinit$$00000000  c_w.l(libinit.o)
+    0x0000030e   0x00000004   Code   RO         2833    .ARM.Collect$$libinit$$00000001  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2837    .ARM.Collect$$libinit$$00000008  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2839    .ARM.Collect$$libinit$$0000000A  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2841    .ARM.Collect$$libinit$$0000000C  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2844    .ARM.Collect$$libinit$$0000000F  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2846    .ARM.Collect$$libinit$$00000011  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2848    .ARM.Collect$$libinit$$00000013  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2850    .ARM.Collect$$libinit$$00000015  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2852    .ARM.Collect$$libinit$$00000017  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2854    .ARM.Collect$$libinit$$00000019  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2856    .ARM.Collect$$libinit$$0000001B  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2858    .ARM.Collect$$libinit$$0000001D  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2860    .ARM.Collect$$libinit$$0000001F  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2862    .ARM.Collect$$libinit$$00000021  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2864    .ARM.Collect$$libinit$$00000023  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2868    .ARM.Collect$$libinit$$0000002A  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2870    .ARM.Collect$$libinit$$0000002C  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2872    .ARM.Collect$$libinit$$0000002E  c_w.l(libinit2.o)
+    0x00000312   0x00000000   Code   RO         2874    .ARM.Collect$$libinit$$00000030  c_w.l(libinit2.o)
+    0x00000312   0x00000002   Code   RO         2875    .ARM.Collect$$libinit$$00000031  c_w.l(libinit2.o)
+    0x00000314   0x00000002   Code   RO         2951    .ARM.Collect$$libshutdown$$00000000  c_w.l(libshutdown.o)
+    0x00000316   0x00000000   Code   RO         2956    .ARM.Collect$$libshutdown$$00000003  c_w.l(libshutdown2.o)
+    0x00000316   0x00000000   Code   RO         2959    .ARM.Collect$$libshutdown$$00000006  c_w.l(libshutdown2.o)
+    0x00000316   0x00000000   Code   RO         2962    .ARM.Collect$$libshutdown$$00000009  c_w.l(libshutdown2.o)
+    0x00000316   0x00000000   Code   RO         2964    .ARM.Collect$$libshutdown$$0000000B  c_w.l(libshutdown2.o)
+    0x00000316   0x00000000   Code   RO         2967    .ARM.Collect$$libshutdown$$0000000E  c_w.l(libshutdown2.o)
+    0x00000316   0x00000002   Code   RO         2968    .ARM.Collect$$libshutdown$$0000000F  c_w.l(libshutdown2.o)
+    0x00000318   0x00000000   Code   RO         2825    .ARM.Collect$$rtentry$$00000000  c_w.l(rtentry.o)
+    0x00000318   0x00000000   Code   RO         2882    .ARM.Collect$$rtentry$$00000002  c_w.l(rtentry2.o)
+    0x00000318   0x00000006   Code   RO         2894    .ARM.Collect$$rtentry$$00000004  c_w.l(rtentry4.o)
+    0x0000031e   0x00000000   Code   RO         2884    .ARM.Collect$$rtentry$$00000009  c_w.l(rtentry2.o)
+    0x0000031e   0x00000004   Code   RO         2885    .ARM.Collect$$rtentry$$0000000A  c_w.l(rtentry2.o)
+    0x00000322   0x00000000   Code   RO         2887    .ARM.Collect$$rtentry$$0000000C  c_w.l(rtentry2.o)
+    0x00000322   0x00000008   Code   RO         2888    .ARM.Collect$$rtentry$$0000000D  c_w.l(rtentry2.o)
+    0x0000032a   0x00000002   Code   RO         2923    .ARM.Collect$$rtexit$$00000000  c_w.l(rtexit.o)
+    0x0000032c   0x00000000   Code   RO         2933    .ARM.Collect$$rtexit$$00000002  c_w.l(rtexit2.o)
+    0x0000032c   0x00000004   Code   RO         2934    .ARM.Collect$$rtexit$$00000003  c_w.l(rtexit2.o)
+    0x00000330   0x00000006   Code   RO         2935    .ARM.Collect$$rtexit$$00000004  c_w.l(rtexit2.o)
     0x00000336   0x00000002   PAD
-    0x00000338   0x00000006   Code   RO         1788    .emb_text           driverlib.lib(sysctl.o)
+    0x00000338   0x00000006   Code   RO         1817    .emb_text           driverlib.lib(sysctl.o)
     0x0000033e   0x00000002   PAD
-    0x00000340   0x00000026   Code   RO         2724    .emb_text           driverlib.lib(cpu.o)
+    0x00000340   0x00000026   Code   RO         2753    .emb_text           driverlib.lib(cpu.o)
     0x00000366   0x00000002   PAD
-    0x00000368   0x00000018   Code   RO          721    .text               startup_rvmdk.o
-    0x00000380   0x00000002   Code   RO         2736    .text               c_w.l(use_no_semi.o)
+    0x00000368   0x00000018   Code   RO          750    .text               startup_rvmdk.o
+    0x00000380   0x00000002   Code   RO         2765    .text               c_w.l(use_no_semi.o)
     0x00000382   0x00000002   PAD
-    0x00000384   0x00000018   Code   RO         2740    .text               c_w.l(noretval__2printf.o)
-    0x0000039c   0x00000068   Code   RO         2742    .text               c_w.l(__printf.o)
-    0x00000404   0x00000052   Code   RO         2744    .text               c_w.l(_printf_str.o)
+    0x00000384   0x00000018   Code   RO         2769    .text               c_w.l(noretval__2printf.o)
+    0x0000039c   0x00000068   Code   RO         2771    .text               c_w.l(__printf.o)
+    0x00000404   0x00000052   Code   RO         2773    .text               c_w.l(_printf_str.o)
     0x00000456   0x00000002   PAD
-    0x00000458   0x00000074   Code   RO         2746    .text               c_w.l(_printf_dec.o)
-    0x000004cc   0x00000004   Code   RO         2771    .text               c_w.l(getc.o)
-    0x000004d0   0x0000002c   Code   RO         2773    .text               c_w.l(puts.o)
-    0x000004fc   0x00000006   Code   RO         2780    .text               c_w.l(heapauxi.o)
-    0x00000502   0x000000b2   Code   RO         2797    .text               c_w.l(_printf_intcommon.o)
-    0x000005b4   0x0000002c   Code   RO         2799    .text               c_w.l(_printf_char.o)
-    0x000005e0   0x00000024   Code   RO         2801    .text               c_w.l(_printf_char_file.o)
-    0x00000604   0x00000030   Code   RO         2867    .text               c_w.l(_printf_char_common.o)
-    0x00000634   0x0000004a   Code   RO         2873    .text               c_w.l(sys_stackheap_outer.o)
-    0x0000067e   0x0000000c   Code   RO         2877    .text               c_w.l(exit.o)
+    0x00000458   0x00000074   Code   RO         2775    .text               c_w.l(_printf_dec.o)
+    0x000004cc   0x00000004   Code   RO         2800    .text               c_w.l(getc.o)
+    0x000004d0   0x0000002c   Code   RO         2802    .text               c_w.l(puts.o)
+    0x000004fc   0x00000006   Code   RO         2809    .text               c_w.l(heapauxi.o)
+    0x00000502   0x000000b2   Code   RO         2826    .text               c_w.l(_printf_intcommon.o)
+    0x000005b4   0x0000002c   Code   RO         2828    .text               c_w.l(_printf_char.o)
+    0x000005e0   0x00000024   Code   RO         2830    .text               c_w.l(_printf_char_file.o)
+    0x00000604   0x00000030   Code   RO         2896    .text               c_w.l(_printf_char_common.o)
+    0x00000634   0x0000004a   Code   RO         2902    .text               c_w.l(sys_stackheap_outer.o)
+    0x0000067e   0x0000000c   Code   RO         2906    .text               c_w.l(exit.o)
     0x0000068a   0x00000002   PAD
-    0x0000068c   0x00000008   Code   RO         2891    .text               c_w.l(libspace.o)
-    0x00000694   0x00000050   Code   RO          278    i.AssemblePacket    xbee.o
-    0x000006e4   0x0000003c   Code   RO          346    i.BeginMessageTransmission  uart.o
-    0x00000720   0x00000008   Code   RO          852    i.CPUgetPRIMASK_cpsid  es_port.o
-    0x00000728   0x00000006   Code   RO          858    i.CPUsetPRIMASK     es_port.o
-    0x0000072e   0x00000002   PAD
-    0x00000730   0x00000038   Code   RO           89    i.Check4ButtonPress  eventcheckers.o
-    0x00000768   0x00000030   Code   RO           90    i.Check4Keystroke   eventcheckers.o
-    0x00000798   0x0000003e   Code   RO          279    i.CheckForErrors    xbee.o
-    0x000007d6   0x0000001a   Code   RO          280    i.ComputeChecksum   xbee.o
-    0x000007f0   0x0000002c   Code   RO          500    i.DecryptMessage    encryption.o
-    0x0000081c   0x00000028   Code   RO          727    i.ES_CheckUserEvents  es_checkevents.o
-    0x00000844   0x00000054   Code   RO          880    i.ES_DeQueue        es_queue.o
-    0x00000898   0x00000048   Code   RO          881    i.ES_EnQueueFIFO    es_queue.o
-    0x000008e0   0x00000034   Code   RO          801    i.ES_GetMSBitSet    es_lookuptables.o
-    0x00000914   0x00000010   Code   RO          883    i.ES_InitQueue      es_queue.o
-    0x00000924   0x0000004c   Code   RO          753    i.ES_Initialize     es_framework.o
-    0x00000970   0x00000038   Code   RO          755    i.ES_PostToService  es_framework.o
-    0x000009a8   0x00000060   Code   RO          757    i.ES_Run            es_framework.o
-    0x00000a08   0x00000038   Code   RO          167    i.ES_ShortTimerInit  es_shorttimer.o
-    0x00000a40   0x00000060   Code   RO          168    i.ES_ShortTimerStart  es_shorttimer.o
-    0x00000aa0   0x00000004   Code   RO          923    i.ES_Timer_Init     es_timers.o
-    0x00000aa4   0x0000003c   Code   RO          924    i.ES_Timer_InitTimer  es_timers.o
-    0x00000ae0   0x00000024   Code   RO          927    i.ES_Timer_StopTimer  es_timers.o
-    0x00000b04   0x0000006c   Code   RO          928    i.ES_Timer_Tick_Resp  es_timers.o
-    0x00000b70   0x00000098   Code   RO          408    i.ExecuteControl    lobbyistsm.o
-    0x00000c08   0x00000028   Code   RO         1118    i.GPIODirModeSet    driverlib.lib(gpio.o)
-    0x00000c30   0x0000013a   Code   RO         1128    i.GPIOPadConfigSet  driverlib.lib(gpio.o)
-    0x00000d6a   0x00000002   PAD
-    0x00000d6c   0x00000048   Code   RO         1129    i.GPIOPinConfigure  driverlib.lib(gpio.o)
-    0x00000db4   0x0000001c   Code   RO         1154    i.GPIOPinTypeUART   driverlib.lib(gpio.o)
-    0x00000dd0   0x0000000a   Code   RO          281    i.GetApiIdentifier  xbee.o
-    0x00000dda   0x00000002   PAD
-    0x00000ddc   0x0000000c   Code   RO          347    i.GetMessage        uart.o
-    0x00000de8   0x0000000a   Code   RO          282    i.GetMessageData    xbee.o
-    0x00000df2   0x0000000c   Code   RO          283    i.GetMessageDataSize  xbee.o
-    0x00000dfe   0x00000002   PAD
-    0x00000e00   0x0000000c   Code   RO          348    i.GetMessageSize    uart.o
-    0x00000e0c   0x00000016   Code   RO          284    i.GetSenderAddress  xbee.o
-    0x00000e22   0x00000002   PAD
-    0x00000e24   0x0000003c   Code   RO          700    i.InitBadge         badge.o
-    0x00000e60   0x00000080   Code   RO          216    i.InitButtonService  button.o
-    0x00000ee0   0x00000070   Code   RO          674    i.InitDMC           dmc.o
-    0x00000f50   0x0000004c   Code   RO          650    i.InitLiftFan       liftfan.o
-    0x00000f9c   0x00000020   Code   RO          409    i.InitLobbyistSM    lobbyistsm.o
-    0x00000fbc   0x0000000c   Code   RO          471    i.InitMapKeys       mapkeys.o
-    0x00000fc8   0x00000088   Code   RO          550    i.InitSteering      steering.o
-    0x00001050   0x000000c8   Code   RO          349    i.InitUart1         uart.o
-    0x00001118   0x0000000a   Code   RO          285    i.InitXBee          xbee.o
-    0x00001122   0x00000002   PAD
-    0x00001124   0x00000064   Code   RO         1440    i.IntEnable         driverlib.lib(interrupt.o)
-    0x00001188   0x0000000e   Code   RO         1443    i.IntMasterEnable   driverlib.lib(interrupt.o)
-    0x00001196   0x00000002   PAD
-    0x00001198   0x0000000c   Code   RO          350    i.LoadData          uart.o
-    0x000011a4   0x000000a4   Code   RO          622    i.PWMInit           pwm.o
-    0x00001248   0x00000010   Code   RO          217    i.PostButtonService  button.o
-    0x00001258   0x00000010   Code   RO          675    i.PostDMC           dmc.o
-    0x00001268   0x00000010   Code   RO          410    i.PostLobbyistSM    lobbyistsm.o
-    0x00001278   0x00000010   Code   RO          472    i.PostMapKeys       mapkeys.o
-    0x00001288   0x00000018   Code   RO          504    i.RotateCipher      encryption.o
-    0x000012a0   0x0000005c   Code   RO          218    i.RunButtonService  button.o
-    0x000012fc   0x000000f0   Code   RO          676    i.RunDMC            dmc.o
-    0x000013ec   0x00000410   Code   RO          412    i.RunLobbyistSM     lobbyistsm.o
-    0x000017fc   0x00000190   Code   RO          473    i.RunMapKeys        mapkeys.o
-    0x0000198c   0x00000020   Code   RO          351    i.SendMessage       uart.o
-    0x000019ac   0x00000038   Code   RO          623    i.SetDutyCycleLeftMotor  pwm.o
-    0x000019e4   0x00000038   Code   RO          624    i.SetDutyCycleRightMotor  pwm.o
-    0x00001a1c   0x00000018   Code   RO          505    i.SetKey            encryption.o
-    0x00001a34   0x00000034   Code   RO          169    i.ShortTimerAHandler  es_shorttimer.o
-    0x00001a68   0x00000038   Code   RO          170    i.ShortTimerBHandler  es_shorttimer.o
-    0x00001aa0   0x00000120   Code   RO         1793    i.SysCtlClockSet    driverlib.lib(sysctl.o)
-    0x00001bc0   0x00000028   Code   RO         1822    i.SysCtlPeripheralEnable  driverlib.lib(sysctl.o)
-    0x00001be8   0x0000000e   Code   RO         2131    i.SysTickEnable     driverlib.lib(systick.o)
-    0x00001bf6   0x0000000e   Code   RO         2133    i.SysTickIntEnable  driverlib.lib(systick.o)
-    0x00001c04   0x00000014   Code   RO          818    i.SysTickIntHandler  es_port.o
-    0x00001c18   0x0000000a   Code   RO         2137    i.SysTickPeriodSet  driverlib.lib(systick.o)
-    0x00001c22   0x00000004   Code   RO         1021    i.TERMIO_GetChar    termio.o
-    0x00001c26   0x00000002   PAD
-    0x00001c28   0x00000050   Code   RO         1022    i.TERMIO_Init       termio.o
-    0x00001c78   0x0000000c   Code   RO         1023    i.TERMIO_PutChar    termio.o
-    0x00001c84   0x00000060   Code   RO         2197    i.TimerConfigure    driverlib.lib(timer.o)
-    0x00001ce4   0x0000000e   Code   RO         2206    i.TimerEnable       driverlib.lib(timer.o)
-    0x00001cf2   0x00000004   Code   RO         2207    i.TimerIntClear     driverlib.lib(timer.o)
-    0x00001cf6   0x00000008   Code   RO         2209    i.TimerIntEnable    driverlib.lib(timer.o)
-    0x00001cfe   0x00000012   Code   RO         2215    i.TimerLoadSet      driverlib.lib(timer.o)
-    0x00001d10   0x00000012   Code   RO         2224    i.TimerPrescaleSet  driverlib.lib(timer.o)
-    0x00001d22   0x00000002   PAD
-    0x00001d24   0x00000020   Code   RO          286    i.TransmitMessage   xbee.o
-    0x00001d44   0x0000001c   Code   RO          413    i.TransmitStatusPacket  lobbyistsm.o
-    0x00001d60   0x00000014   Code   RO          651    i.TurnOffLiftFan    liftfan.o
-    0x00001d74   0x00000014   Code   RO          652    i.TurnOnLiftFan     liftfan.o
-    0x00001d88   0x000000c4   Code   RO          353    i.UART1_ISR         uart.o
-    0x00001e4c   0x0000000c   Code   RO         2443    i.UARTCharPut       driverlib.lib(uart.o)
-    0x00001e58   0x00000006   Code   RO         2447    i.UARTClockSourceSet  driverlib.lib(uart.o)
-    0x00001e5e   0x00000002   PAD
-    0x00001e60   0x0000005c   Code   RO         1061    i.UARTStdioConfig   uartstdio.o
-    0x00001ebc   0x00000018   Code   RO         1062    i.UARTgetc          uartstdio.o
-    0x00001ed4   0x0000004c   Code   RO          414    i.UpdateDMC         lobbyistsm.o
-    0x00001f20   0x0000011c   Code   RO          551    i.UpdateSteering    steering.o
-    0x0000203c   0x00000020   Code   RO          820    i._HW_Process_Pending_Ints  es_port.o
-    0x0000205c   0x00000016   Code   RO          821    i._HW_Timer_Init    es_port.o
-    0x00002072   0x00000002   Code   RO          974    i._sys_exit         retarget.o
-    0x00002074   0x00000006   Code   RO          976    i.ferror            retarget.o
-    0x0000207a   0x00000004   Code   RO          977    i.fgetc             retarget.o
-    0x0000207e   0x0000000e   Code   RO          978    i.fputc             retarget.o
-    0x0000208c   0x00000014   Code   RO         1024    i.kbhit             termio.o
-    0x000020a0   0x000000f8   Code   RO            1    i.main              main.o
-    0x00002198   0x0000005e   Code   RO         2784    x$fpl$dfix          fz_wm.l(dfix.o)
-    0x000021f6   0x0000002e   Code   RO         2789    x$fpl$dflt          fz_wm.l(dflt_clz.o)
-    0x00002224   0x00000154   Code   RO         2794    x$fpl$dmul          fz_wm.l(dmul.o)
-    0x00002378   0x0000009c   Code   RO         2847    x$fpl$dnaninf       fz_wm.l(dnaninf.o)
-    0x00002414   0x0000000c   Code   RO         2849    x$fpl$dretinf       fz_wm.l(dretinf.o)
-    0x00002420   0x0000000a   Code   RO         2871    x$fpl$fpinit        fz_wm.l(fpinit.o)
-    0x0000242a   0x00000000   Code   RO         2851    x$fpl$usenofp       fz_wm.l(usenofp.o)
-    0x0000242a   0x00000002   PAD
-    0x0000242c   0x00000008   Data   RO          728    .constdata          es_checkevents.o
-    0x00002434   0x00000040   Data   RO          762    .constdata          es_framework.o
-    0x00002474   0x00000020   Data   RO          802    .constdata          es_lookuptables.o
-    0x00002494   0x0000000f   Data   RO          803    .constdata          es_lookuptables.o
-    0x000024a3   0x00000001   PAD
-    0x000024a4   0x00000040   Data   RO          930    .constdata          es_timers.o
-    0x000024e4   0x0000001c   Data   RO         1067    .constdata          uartstdio.o
-    0x00002500   0x00000210   Data   RO         1161    .constdata          driverlib.lib(gpio.o)
-    0x00002710   0x0000010c   Data   RO         1456    .constdata          driverlib.lib(interrupt.o)
-    0x0000281c   0x00000048   Data   RO          356    .conststring        uart.o
-    0x00002864   0x00000064   Data   RO          415    .conststring        lobbyistsm.o
-    0x000028c8   0x00000011   Data   RO         1068    .conststring        uartstdio.o
-    0x000028d9   0x00000003   PAD
-    0x000028dc   0x00000020   Data   RO         2956    Region$$Table       anon$$obj.o
+    0x0000068c   0x00000008   Code   RO         2920    .text               c_w.l(libspace.o)
+    0x00000694   0x000000c8   Code   RO          723    i.ADC_MultiInit     admulti.o
+    0x0000075c   0x00000038   Code   RO          724    i.ADC_MultiRead     admulti.o
+    0x00000794   0x00000050   Code   RO          281    i.AssemblePacket    xbee.o
+    0x000007e4   0x0000003c   Code   RO          349    i.BeginMessageTransmission  uart.o
+    0x00000820   0x00000008   Code   RO          881    i.CPUgetPRIMASK_cpsid  es_port.o
+    0x00000828   0x00000006   Code   RO          887    i.CPUsetPRIMASK     es_port.o
+    0x0000082e   0x00000002   PAD
+    0x00000830   0x00000038   Code   RO           92    i.Check4ButtonPress  eventcheckers.o
+    0x00000868   0x00000030   Code   RO           93    i.Check4Keystroke   eventcheckers.o
+    0x00000898   0x0000003e   Code   RO          282    i.CheckForErrors    xbee.o
+    0x000008d6   0x0000001a   Code   RO          283    i.ComputeChecksum   xbee.o
+    0x000008f0   0x0000002c   Code   RO          500    i.DecryptMessage    encryption.o
+    0x0000091c   0x00000028   Code   RO          756    i.ES_CheckUserEvents  es_checkevents.o
+    0x00000944   0x00000054   Code   RO          909    i.ES_DeQueue        es_queue.o
+    0x00000998   0x00000048   Code   RO          910    i.ES_EnQueueFIFO    es_queue.o
+    0x000009e0   0x00000034   Code   RO          830    i.ES_GetMSBitSet    es_lookuptables.o
+    0x00000a14   0x00000010   Code   RO          912    i.ES_InitQueue      es_queue.o
+    0x00000a24   0x0000004c   Code   RO          782    i.ES_Initialize     es_framework.o
+    0x00000a70   0x00000038   Code   RO          784    i.ES_PostToService  es_framework.o
+    0x00000aa8   0x00000060   Code   RO          786    i.ES_Run            es_framework.o
+    0x00000b08   0x00000038   Code   RO          170    i.ES_ShortTimerInit  es_shorttimer.o
+    0x00000b40   0x00000060   Code   RO          171    i.ES_ShortTimerStart  es_shorttimer.o
+    0x00000ba0   0x00000004   Code   RO          952    i.ES_Timer_Init     es_timers.o
+    0x00000ba4   0x0000003c   Code   RO          953    i.ES_Timer_InitTimer  es_timers.o
+    0x00000be0   0x00000024   Code   RO          956    i.ES_Timer_StopTimer  es_timers.o
+    0x00000c04   0x0000006c   Code   RO          957    i.ES_Timer_Tick_Resp  es_timers.o
+    0x00000c70   0x00000098   Code   RO          411    i.ExecuteControl    lobbyistsm.o
+    0x00000d08   0x00000028   Code   RO         1147    i.GPIODirModeSet    driverlib.lib(gpio.o)
+    0x00000d30   0x0000013a   Code   RO         1157    i.GPIOPadConfigSet  driverlib.lib(gpio.o)
+    0x00000e6a   0x00000002   PAD
+    0x00000e6c   0x00000048   Code   RO         1158    i.GPIOPinConfigure  driverlib.lib(gpio.o)
+    0x00000eb4   0x0000001c   Code   RO         1183    i.GPIOPinTypeUART   driverlib.lib(gpio.o)
+    0x00000ed0   0x0000000a   Code   RO          284    i.GetApiIdentifier  xbee.o
+    0x00000eda   0x00000002   PAD
+    0x00000edc   0x0000000c   Code   RO          350    i.GetMessage        uart.o
+    0x00000ee8   0x0000000a   Code   RO          285    i.GetMessageData    xbee.o
+    0x00000ef2   0x0000000c   Code   RO          286    i.GetMessageDataSize  xbee.o
+    0x00000efe   0x00000002   PAD
+    0x00000f00   0x0000000c   Code   RO          351    i.GetMessageSize    uart.o
+    0x00000f0c   0x00000016   Code   RO          287    i.GetSenderAddress  xbee.o
+    0x00000f22   0x00000002   PAD
+    0x00000f24   0x0000001c   Code   RO          700    i.InitBadge         badge.o
+    0x00000f40   0x00000080   Code   RO          219    i.InitButtonService  button.o
+    0x00000fc0   0x00000070   Code   RO          674    i.InitDMC           dmc.o
+    0x00001030   0x0000004c   Code   RO          650    i.InitLiftFan       liftfan.o
+    0x0000107c   0x00000020   Code   RO          412    i.InitLobbyistSM    lobbyistsm.o
+    0x0000109c   0x0000000c   Code   RO          471    i.InitMapKeys       mapkeys.o
+    0x000010a8   0x00000088   Code   RO          550    i.InitSteering      steering.o
+    0x00001130   0x000000c8   Code   RO          352    i.InitUart1         uart.o
+    0x000011f8   0x0000000a   Code   RO          288    i.InitXBee          xbee.o
+    0x00001202   0x00000002   PAD
+    0x00001204   0x00000064   Code   RO         1469    i.IntEnable         driverlib.lib(interrupt.o)
+    0x00001268   0x0000000e   Code   RO         1472    i.IntMasterEnable   driverlib.lib(interrupt.o)
+    0x00001276   0x00000002   PAD
+    0x00001278   0x0000000c   Code   RO          353    i.LoadData          uart.o
+    0x00001284   0x000000a4   Code   RO          622    i.PWMInit           pwm.o
+    0x00001328   0x00000010   Code   RO          220    i.PostButtonService  button.o
+    0x00001338   0x00000010   Code   RO          675    i.PostDMC           dmc.o
+    0x00001348   0x00000010   Code   RO          413    i.PostLobbyistSM    lobbyistsm.o
+    0x00001358   0x00000010   Code   RO          472    i.PostMapKeys       mapkeys.o
+    0x00001368   0x00000070   Code   RO          701    i.ReadBadge         badge.o
+    0x000013d8   0x00000018   Code   RO          504    i.RotateCipher      encryption.o
+    0x000013f0   0x0000005c   Code   RO          221    i.RunButtonService  button.o
+    0x0000144c   0x000000f0   Code   RO          676    i.RunDMC            dmc.o
+    0x0000153c   0x0000042c   Code   RO          415    i.RunLobbyistSM     lobbyistsm.o
+    0x00001968   0x00000190   Code   RO          473    i.RunMapKeys        mapkeys.o
+    0x00001af8   0x00000020   Code   RO          354    i.SendMessage       uart.o
+    0x00001b18   0x00000038   Code   RO          623    i.SetDutyCycleLeftMotor  pwm.o
+    0x00001b50   0x00000038   Code   RO          624    i.SetDutyCycleRightMotor  pwm.o
+    0x00001b88   0x00000018   Code   RO          505    i.SetKey            encryption.o
+    0x00001ba0   0x00000034   Code   RO          172    i.ShortTimerAHandler  es_shorttimer.o
+    0x00001bd4   0x00000038   Code   RO          173    i.ShortTimerBHandler  es_shorttimer.o
+    0x00001c0c   0x00000120   Code   RO         1822    i.SysCtlClockSet    driverlib.lib(sysctl.o)
+    0x00001d2c   0x00000028   Code   RO         1851    i.SysCtlPeripheralEnable  driverlib.lib(sysctl.o)
+    0x00001d54   0x0000000e   Code   RO         2160    i.SysTickEnable     driverlib.lib(systick.o)
+    0x00001d62   0x0000000e   Code   RO         2162    i.SysTickIntEnable  driverlib.lib(systick.o)
+    0x00001d70   0x00000014   Code   RO          847    i.SysTickIntHandler  es_port.o
+    0x00001d84   0x0000000a   Code   RO         2166    i.SysTickPeriodSet  driverlib.lib(systick.o)
+    0x00001d8e   0x00000004   Code   RO         1050    i.TERMIO_GetChar    termio.o
+    0x00001d92   0x00000002   PAD
+    0x00001d94   0x00000050   Code   RO         1051    i.TERMIO_Init       termio.o
+    0x00001de4   0x0000000c   Code   RO         1052    i.TERMIO_PutChar    termio.o
+    0x00001df0   0x00000060   Code   RO         2226    i.TimerConfigure    driverlib.lib(timer.o)
+    0x00001e50   0x0000000e   Code   RO         2235    i.TimerEnable       driverlib.lib(timer.o)
+    0x00001e5e   0x00000004   Code   RO         2236    i.TimerIntClear     driverlib.lib(timer.o)
+    0x00001e62   0x00000008   Code   RO         2238    i.TimerIntEnable    driverlib.lib(timer.o)
+    0x00001e6a   0x00000012   Code   RO         2244    i.TimerLoadSet      driverlib.lib(timer.o)
+    0x00001e7c   0x00000012   Code   RO         2253    i.TimerPrescaleSet  driverlib.lib(timer.o)
+    0x00001e8e   0x00000002   PAD
+    0x00001e90   0x00000020   Code   RO          289    i.TransmitMessage   xbee.o
+    0x00001eb0   0x0000001c   Code   RO          416    i.TransmitStatusPacket  lobbyistsm.o
+    0x00001ecc   0x00000014   Code   RO          651    i.TurnOffLiftFan    liftfan.o
+    0x00001ee0   0x00000014   Code   RO          652    i.TurnOnLiftFan     liftfan.o
+    0x00001ef4   0x000000c4   Code   RO          356    i.UART1_ISR         uart.o
+    0x00001fb8   0x0000000c   Code   RO         2472    i.UARTCharPut       driverlib.lib(uart.o)
+    0x00001fc4   0x00000006   Code   RO         2476    i.UARTClockSourceSet  driverlib.lib(uart.o)
+    0x00001fca   0x00000002   PAD
+    0x00001fcc   0x0000005c   Code   RO         1090    i.UARTStdioConfig   uartstdio.o
+    0x00002028   0x00000018   Code   RO         1091    i.UARTgetc          uartstdio.o
+    0x00002040   0x0000004c   Code   RO          417    i.UpdateDMC         lobbyistsm.o
+    0x0000208c   0x0000011c   Code   RO          551    i.UpdateSteering    steering.o
+    0x000021a8   0x00000020   Code   RO          849    i._HW_Process_Pending_Ints  es_port.o
+    0x000021c8   0x00000016   Code   RO          850    i._HW_Timer_Init    es_port.o
+    0x000021de   0x00000002   Code   RO         1003    i._sys_exit         retarget.o
+    0x000021e0   0x00000006   Code   RO         1005    i.ferror            retarget.o
+    0x000021e6   0x00000004   Code   RO         1006    i.fgetc             retarget.o
+    0x000021ea   0x0000000e   Code   RO         1007    i.fputc             retarget.o
+    0x000021f8   0x00000014   Code   RO         1053    i.kbhit             termio.o
+    0x0000220c   0x000000f8   Code   RO            1    i.main              main.o
+    0x00002304   0x0000005e   Code   RO         2813    x$fpl$dfix          fz_wm.l(dfix.o)
+    0x00002362   0x0000002e   Code   RO         2818    x$fpl$dflt          fz_wm.l(dflt_clz.o)
+    0x00002390   0x00000154   Code   RO         2823    x$fpl$dmul          fz_wm.l(dmul.o)
+    0x000024e4   0x0000009c   Code   RO         2876    x$fpl$dnaninf       fz_wm.l(dnaninf.o)
+    0x00002580   0x0000000c   Code   RO         2878    x$fpl$dretinf       fz_wm.l(dretinf.o)
+    0x0000258c   0x0000000a   Code   RO         2900    x$fpl$fpinit        fz_wm.l(fpinit.o)
+    0x00002596   0x00000000   Code   RO         2880    x$fpl$usenofp       fz_wm.l(usenofp.o)
+    0x00002596   0x00000002   PAD
+    0x00002598   0x00000030   Data   RO          725    .constdata          admulti.o
+    0x000025c8   0x00000008   Data   RO          757    .constdata          es_checkevents.o
+    0x000025d0   0x00000040   Data   RO          791    .constdata          es_framework.o
+    0x00002610   0x00000020   Data   RO          831    .constdata          es_lookuptables.o
+    0x00002630   0x0000000f   Data   RO          832    .constdata          es_lookuptables.o
+    0x0000263f   0x00000001   PAD
+    0x00002640   0x00000040   Data   RO          959    .constdata          es_timers.o
+    0x00002680   0x0000001c   Data   RO         1096    .constdata          uartstdio.o
+    0x0000269c   0x00000210   Data   RO         1190    .constdata          driverlib.lib(gpio.o)
+    0x000028ac   0x0000010c   Data   RO         1485    .constdata          driverlib.lib(interrupt.o)
+    0x000029b8   0x00000048   Data   RO          359    .conststring        uart.o
+    0x00002a00   0x00000064   Data   RO          418    .conststring        lobbyistsm.o
+    0x00002a64   0x00000011   Data   RO         1097    .conststring        uartstdio.o
+    0x00002a75   0x00000003   PAD
+    0x00002a78   0x00000020   Data   RO         2985    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00000a30, Max: 0x00008000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Base: 0x20000000, Size: 0x00000a40, Max: 0x00008000, ABSOLUTE)
 
     Base Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x00000001   Data   RW           91    .data               eventcheckers.o
-    0x20000001   0x00000002   Data   RW          171    .data               es_shorttimer.o
-    0x20000003   0x00000002   Data   RW          219    .data               button.o
+    0x20000000   0x00000001   Data   RW           94    .data               eventcheckers.o
+    0x20000001   0x00000002   Data   RW          174    .data               es_shorttimer.o
+    0x20000003   0x00000002   Data   RW          222    .data               button.o
     0x20000005   0x00000003   PAD
-    0x20000008   0x00000008   Data   RW          288    .data               xbee.o
-    0x20000010   0x0000000c   Data   RW          357    .data               uart.o
-    0x2000001c   0x0000001c   Data   RW          416    .data               lobbyistsm.o
-    0x20000038   0x00000001   Data   RW          417    .data               lobbyistsm.o
-    0x20000039   0x00000008   Data   RW          418    .data               lobbyistsm.o
-    0x20000041   0x00000008   Data   RW          419    .data               lobbyistsm.o
-    0x20000049   0x00000001   Data   RW          474    .data               mapkeys.o
-    0x2000004a   0x00000002   PAD
-    0x2000004c   0x00000010   Data   RW          509    .data               encryption.o
-    0x2000005c   0x00000002   Data   RW          552    .data               steering.o
-    0x2000005e   0x00000004   Data   RW          677    .data               dmc.o
-    0x20000062   0x00000006   Data   RW          763    .data               es_framework.o
-    0x20000068   0x00000004   Data   RW          822    .data               es_port.o
-    0x2000006c   0x00000004   Data   RW          885    .data               es_queue.o
-    0x20000070   0x0000000a   Data   RW          931    .data               es_timers.o
-    0x2000007a   0x00000002   PAD
-    0x2000007c   0x00000004   Data   RW          979    .data               retarget.o
-    0x20000080   0x00000004   Data   RW          980    .data               retarget.o
-    0x20000084   0x00000008   Data   RW         1069    .data               uartstdio.o
-    0x2000008c   0x00000020   Zero   RW          287    .bss                xbee.o
-    0x200000ac   0x00000032   Zero   RW          354    .bss                uart.o
-    0x200000de   0x00000032   Zero   RW          355    .bss                uart.o
-    0x20000110   0x00000020   Zero   RW          506    .bss                encryption.o
-    0x20000130   0x00000020   Zero   RW          507    .bss                encryption.o
-    0x20000150   0x00000020   Zero   RW          508    .bss                encryption.o
-    0x20000170   0x0000000c   Zero   RW          758    .bss                es_framework.o
-    0x2000017c   0x00000010   Zero   RW          759    .bss                es_framework.o
-    0x2000018c   0x00000010   Zero   RW          760    .bss                es_framework.o
-    0x2000019c   0x00000010   Zero   RW          761    .bss                es_framework.o
-    0x200001ac   0x00000020   Zero   RW          929    .bss                es_timers.o
-    0x200001cc   0x00000060   Zero   RW         2892    .bss                c_w.l(libspace.o)
-    0x2000022c   0x00000004   PAD
-    0x20000230   0x00000000   Zero   RW          719    HEAP                startup_rvmdk.o
-    0x20000230   0x00000800   Zero   RW          718    STACK               startup_rvmdk.o
+    0x20000008   0x00000008   Data   RW          291    .data               xbee.o
+    0x20000010   0x0000000c   Data   RW          360    .data               uart.o
+    0x2000001c   0x00000020   Data   RW          419    .data               lobbyistsm.o
+    0x2000003c   0x00000001   Data   RW          420    .data               lobbyistsm.o
+    0x2000003d   0x00000008   Data   RW          421    .data               lobbyistsm.o
+    0x20000045   0x00000008   Data   RW          422    .data               lobbyistsm.o
+    0x2000004d   0x00000001   Data   RW          474    .data               mapkeys.o
+    0x2000004e   0x00000002   PAD
+    0x20000050   0x00000010   Data   RW          509    .data               encryption.o
+    0x20000060   0x00000002   Data   RW          552    .data               steering.o
+    0x20000062   0x00000004   Data   RW          677    .data               dmc.o
+    0x20000066   0x00000002   PAD
+    0x20000068   0x00000008   Data   RW          702    .data               badge.o
+    0x20000070   0x00000001   Data   RW          726    .data               admulti.o
+    0x20000071   0x00000001   PAD
+    0x20000072   0x00000006   Data   RW          792    .data               es_framework.o
+    0x20000078   0x00000004   Data   RW          851    .data               es_port.o
+    0x2000007c   0x00000004   Data   RW          914    .data               es_queue.o
+    0x20000080   0x0000000a   Data   RW          960    .data               es_timers.o
+    0x2000008a   0x00000002   PAD
+    0x2000008c   0x00000004   Data   RW         1008    .data               retarget.o
+    0x20000090   0x00000004   Data   RW         1009    .data               retarget.o
+    0x20000094   0x00000008   Data   RW         1098    .data               uartstdio.o
+    0x2000009c   0x00000020   Zero   RW          290    .bss                xbee.o
+    0x200000bc   0x00000032   Zero   RW          357    .bss                uart.o
+    0x200000ee   0x00000032   Zero   RW          358    .bss                uart.o
+    0x20000120   0x00000020   Zero   RW          506    .bss                encryption.o
+    0x20000140   0x00000020   Zero   RW          507    .bss                encryption.o
+    0x20000160   0x00000020   Zero   RW          508    .bss                encryption.o
+    0x20000180   0x0000000c   Zero   RW          787    .bss                es_framework.o
+    0x2000018c   0x00000010   Zero   RW          788    .bss                es_framework.o
+    0x2000019c   0x00000010   Zero   RW          789    .bss                es_framework.o
+    0x200001ac   0x00000010   Zero   RW          790    .bss                es_framework.o
+    0x200001bc   0x00000020   Zero   RW          958    .bss                es_timers.o
+    0x200001dc   0x00000060   Zero   RW         2921    .bss                c_w.l(libspace.o)
+    0x2000023c   0x00000004   PAD
+    0x20000240   0x00000000   Zero   RW          748    HEAP                startup_rvmdk.o
+    0x20000240   0x00000800   Zero   RW          747    STACK               startup_rvmdk.o
 
 
 ==============================================================================
@@ -1800,7 +1834,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-        60         18          0          0          0        476   badge.o
+       256         40         48          1          0       1844   admulti.o
+       140         48          0          8          0       2300   badge.o
        236         52          0          2          0       1863   button.o
        368         86          0          4          0       1961   dmc.o
         92         12          0         16         96       2717   encryption.o
@@ -1813,7 +1848,7 @@ Image component sizes
        208         42         64         10         32       2891   es_timers.o
        104         14          0          1          0       1934   eventcheckers.o
        116         30          0          0          0       1335   liftfan.o
-      1344        556        100         45          0       5938   lobbyistsm.o
+      1372        556        100         49          0       5986   lobbyistsm.o
        248        164          0          0          0       9411   main.o
        428        162          0          1          0       1953   mapkeys.o
        276         34          0          0          0       2207   pwm.o
@@ -1826,9 +1861,9 @@ Image component sizes
        264         10          0          8         32       6292   xbee.o
 
     ----------------------------------------------------------------------
-      6470       2154        436        140       2368      69602   Object Totals
+      6834       2224        484        156       2368      73318   Object Totals
          0          0         32          0          0          0   (incl. Generated)
-        12          0          4          7          0          0   (incl. Padding)
+        12          0          4         10          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -1903,15 +1938,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      9260       2266       1232        140       2468      76094   Grand Totals
-      9260       2266       1232        140       2468      76094   ELF Image Totals
-      9260       2266       1232        140          0          0   ROM Totals
+      9624       2336       1280        156       2468      79510   Grand Totals
+      9624       2336       1280        156       2468      79510   ELF Image Totals
+      9624       2336       1280        156          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                10492 (  10.25kB)
-    Total RW  Size (RW Data + ZI Data)              2608 (   2.55kB)
-    Total ROM Size (Code + RO Data + RW Data)      10632 (  10.38kB)
+    Total RO  Size (Code + RO Data)                10904 (  10.65kB)
+    Total RW  Size (RW Data + ZI Data)              2624 (   2.56kB)
+    Total ROM Size (Code + RO Data + RW Data)      11060 (  10.80kB)
 
 ==============================================================================
 

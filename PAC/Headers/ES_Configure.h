@@ -272,7 +272,7 @@ typedef enum {  ES_NO_EVENT = 0,
 // These are the definitions for the Distribution lists. Each definition
 // should be a comma separated list of post functions to indicate which
 // services are on that distribution list.
-#define NUM_DIST_LISTS 0
+#define NUM_DIST_LISTS 1
 #if NUM_DIST_LISTS > 0 
 #define DIST_LIST0 PostTestHarnessService0, PostTestHarnessService0
 #endif

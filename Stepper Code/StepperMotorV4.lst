@@ -1,4 +1,4 @@
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE  1
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -23,7 +23,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0000   280A           00008     goto    main              ; go to beginning of program
                       00009 
 0004                  00010     ORG     4             ; interrupt vector location
-0004   2830           00011     goto        ISR
+0004   2831           00011     goto        ISR
 0005                  00012         ORG     5
                       00013         
                       00014 ;
@@ -57,7 +57,7 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 000D   1085           00041         BCF ANSELA, ANSA1
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE  2
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -98,135 +98,137 @@ Message[302]: Register in operand not in bank 0.  Ensure that bank bits are corr
 0024   1692           00064         bsf T2CON, T2OUTPS2 
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 0025   1712           00065         bsf T2CON, T2OUTPS3 
-                      00066 ;       bsf T2CON, T2CKPS1      ; Prescale Timer2 to 16:1 
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0026   1512           00067         bsf T2CON, TMR2ON ; Turn Timer ON
+0026   1492           00066         bsf T2CON, T2CKPS1      ; Prescale Timer2 to 16:1 
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0027   1512           00067         bsf T2CON, TMR2ON ; Turn Timer ON
                       00068         
-0027   1683 1303      00069         banksel PIE1 ; Enable Timer2 Interrupt
+0028   1683 1303      00069         banksel PIE1 ; Enable Timer2 Interrupt
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0029   148C           00070         bsf PIE1, TMR2IE
+002A   148C           00070         bsf PIE1, TMR2IE
                       00071 
                       00072 ; Initialize External Interrupts
-002A   1283 1303      00073         banksel INTCON
-002C   108B           00074         bcf INTCON, INTF ; Clear interrupts before enabling
-002D   170B           00075         bsf INTCON, PEIE
-002E   160B           00076         bsf INTCON, INTE
+002B   1283 1303      00073         banksel INTCON
+002D   108B           00074         bcf INTCON, INTF ; Clear interrupts before enabling
+002E   170B           00075         bsf INTCON, PEIE
+002F   160B           00076         bsf INTCON, INTE
                       00077 
-002F   282F           00078         goto $
+0030   2830           00078         goto $
                       00079 
-0030                  00080 ISR:
+0031                  00080 ISR:
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
                       00081 
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE  3
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-0030                  00082 PUSH:
+0031                  00082 PUSH:
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0030   00F0           00083         movwf WREG_TEMP ;save WREG
-0031   0803           00084         movf STATUS,W ;store STATUS in WREG
-0032   0183           00085         clrf STATUS ;change to file register bank0
+0031   00F0           00083         movwf WREG_TEMP ;save WREG
+0032   0803           00084         movf STATUS,W ;store STATUS in WREG
+0033   0183           00085         clrf STATUS ;change to file register bank0
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0033   00F1           00086         movwf STATUS_TEMP ;save STATUS value
-0034   080A           00087         movf PCLATH,W ;store PCLATH in WREG
+0034   00F1           00086         movwf STATUS_TEMP ;save STATUS value
+0035   080A           00087         movf PCLATH,W ;store PCLATH in WREG
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0035   00F2           00088         movwf PCLATH_TEMP ;save PCLATH value
-0036   018A           00089         clrf PCLATH ;change to program memory page0
+0036   00F2           00088         movwf PCLATH_TEMP ;save PCLATH value
+0037   018A           00089         clrf PCLATH ;change to program memory page0
                       00090 
-0037                  00091 ISR_BODY: 
+0038                  00091 ISR_BODY: 
                       00092 ;Figure out which interrupt we triggered
-0037   1283 1303      00093         banksel PIR1 
-0039   188C           00094         btfsc PIR1, TMR2IF
-003A   2840           00095                 goto TimerInterrupt ; If Interrupt came from Timer
-003B   1283 1303      00096         banksel INTCON
-003D   188B           00097         btfsc INTCON, INTF
-003E   2845           00098                 goto ExternalInterrupt ; If Interrupt came externally
-003F   284A           00099         goto POP ; At this point, we should have recognized the interrupt, else skip to end
-                      00100 
-0040                  00101 TimerInterrupt:
-0040   108C           00102         bcf PIR1, TMR2IF ; Clear source of interrupt
-0041   1E85           00103         btfss PORTA, ModeInput ; Figure out which mode we're in
-0042   284A           00104                 goto POP;       ; Ignore interrupt if not in timer mode
-0043   2052           00105         call Step; ; Step if mode is set
-0044   284A           00106         goto POP;
-                      00107 
-0045                  00108 ExternalInterrupt:
-0045   108B           00109         bcf INTCON, INTF ; Clear source of interrupt
-0046   1A85           00110         btfsc PORTA, ModeInput ; Figure out which mode we're in
-0047   284A           00111                 goto POP;       ;  If mode bit is set, ignore button
-0048   2052           00112         call Step ; Only step if mode is cleared
-0049   284A           00113         goto POP
-                      00114 
+0038   1283 1303      00093         banksel PIR1 
+003A   188C           00094         btfsc PIR1, TMR2IF
+003B   283E           00095                 goto TimerInterrupt ; If Interrupt came from Timer
+                      00096 ;       banksel INTCON
+                      00097 ;       btfsc INTCON, INTF
+003C   108B           00098         bcf INTCON, INTF ; Clear source of interrupt
+                      00099 ;               goto ExternalInterrupt ; If Interrupt came externally
+003D   2848           00100         goto POP ; At this point, we should have recognized the interrupt, else skip to end
+                      00101 
+003E                  00102 TimerInterrupt:
+003E   108C           00103         bcf PIR1, TMR2IF ; Clear source of interrupt
+003F   1E85           00104         btfss PORTA, ModeInput ; Figure out which mode we're in
+0040   2848           00105                 goto POP;       ; Ignore interrupt if not in timer mode
+0041   2050           00106         call Step; ; Step if mode is set
+0042   2848           00107         goto POP;
+                      00108 
+0043                  00109 ExternalInterrupt:
+0043   108B           00110         bcf INTCON, INTF ; Clear source of interrupt
+0044   1A85           00111         btfsc PORTA, ModeInput ; Figure out which mode we're in
+0045   2848           00112                 goto POP;       ;  If mode bit is set, ignore button
+0046   2050           00113         call Step ; Only step if mode is cleared
+0047   2848           00114         goto POP
                       00115 
-004A                  00116 POP: 
-004A   0183           00117         clrf STATUS ;select bank 0
+                      00116 
+0048                  00117 POP: 
+0048   0183           00118         clrf STATUS ;select bank 0
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-004B   0872           00118         movf PCLATH_TEMP,W ;store saved PCLATH value in WREG
-004C   008A           00119         movwf PCLATH ;restore PCLATH
+0049   0872           00119         movf PCLATH_TEMP,W ;store saved PCLATH value in WREG
+004A   008A           00120         movwf PCLATH ;restore PCLATH
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-004D   0871           00120         movf STATUS_TEMP,W ;store saved STATUS value in WREG
-004E   0083           00121         movwf STATUS ;restore STATUS
+004B   0871           00121         movf STATUS_TEMP,W ;store saved STATUS value in WREG
+004C   0083           00122         movwf STATUS ;restore STATUS
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-004F   0EF0           00122         swapf WREG_TEMP,F ;prepare WREG to be restored
+004D   0EF0           00123         swapf WREG_TEMP,F ;prepare WREG to be restored
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0050   0E70           00123         swapf WREG_TEMP,W ;restore WREG keeping STATUS bits
-0051   0009           00124         retfie ;return from interrupt
-                      00125 
-0052                  00126 Step:
-                      00127 ; Figure out which direction to step in
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE  4
+004E   0E70           00124         swapf WREG_TEMP,W ;restore WREG keeping STATUS bits
+004F   0009           00125         retfie ;return from interrupt
+                      00126 
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0052   1E05           00128         btfss PORTA, DirectionInput
-0053   2858           00129                 goto Reverse
-0054   0A40           00130 Forward incf index,w
-0055   3903           00131         andlw 0x03
-0056   00C0           00132         movwf index
-0057   285B           00133         goto EndDirectionSet
-0058                  00134 Reverse
-0058   0340           00135         decf index,w
-0059   3903           00136         andlw 0x03
-005A   00C0           00137         movwf index
-                      00138 
-005B                  00139 EndDirectionSet:
-                      00140 ; Table lookup to find next step value
-005B   3000           00141         movlw FullStepDrive>>8 ; Just in case the table is on another page
-005C   008A           00142         movwf PCLATH
-005D   0840           00143         movf index, w
-005E   2005           00144         call FullStepDrive
-                      00145 ; Write w to port
-005F   00C1           00146         movwf WriteToPort ; Temporarily store the w register
-0060   30FC           00147         movlw 0xFC
+0050                  00127 Step:
+                      00128 ; Figure out which direction to step in
+0050   1E05           00129         btfss PORTA, DirectionInput
+0051   2856           00130                 goto Reverse
+0052   0A40           00131 Forward incf index,w
+0053   3903           00132         andlw 0x03
+0054   00C0           00133         movwf index
+0055   2859           00134         goto EndDirectionSet
+0056                  00135 Reverse
+0056   0340           00136         decf index,w
+0057   3903           00137         andlw 0x03
+0058   00C0           00138         movwf index
+                      00139 
+0059                  00140 EndDirectionSet:
+                      00141 ; Table lookup to find next step value
+0059   3000           00142         movlw FullStepDrive>>8 ; Just in case the table is on another page
+005A   008A           00143         movwf PCLATH
+005B   0840           00144         movf index, w
+005C   2005           00145         call FullStepDrive
+                      00146 ; Write w to port
+005D   00C1           00147         movwf WriteToPort ; Temporarily store the w register
+005E   30FC           00148         movlw 0xFC
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0061   0585           00148         andwf LATA, f ; Clear two output bits of LATA
-0062   0841           00149         movf WriteToPort, w     
+005F   0585           00149         andwf LATA, f ; Clear two output bits of LATA
+0060   0841           00150         movf WriteToPort, w     
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0063   0485           00150         IORWF LATA, f ; Write value to port
-0064   0008           00151         return
-                      00152 
-                      00153 ; Subroutine used for debugging interrupts
-0065                  00154 Toggle: 
-0065   1283 1703      00155         banksel LATA    
+0061   0485           00151         IORWF LATA, f ; Write value to port
+0062   0008           00152         return
+                      00153 
+                      00154 ; Subroutine used for debugging interrupts
+0063                  00155 Toggle: 
+0063   1283 1703      00156         banksel LATA    
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0067   1C05           00156         btfss LATA, LATA0
-0068   286B           00157                 goto Clear
+0065   1C05           00157         btfss LATA, LATA0
+0066   2869           00158                 goto Clear
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0069   1005           00158         bcf LATA,LATA0
-006A   286C           00159         goto Done
-006B                  00160 Clear;
+0067   1005           00159         bcf LATA,LATA0
+0068   286A           00160         goto Done
+0069                  00161 Clear;
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-006B   1405           00161         bsf LATA,LATA0
-006C                  00162 Done:
-006C   0008           00163         return
-                      00164         
-                      00165 
-                      00166 ; REQUIRED - tell assembler this is the end of source code
-                      00167         end
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE  5
+0069   1405           00162         bsf LATA,LATA0
+006A                  00163 Done:
+006A   0008           00164         return
+                      00165         
+                      00166 
+                      00167 ; REQUIRED - tell assembler this is the end of source code
+                      00168         end
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE  5
 
 
 SYMBOL TABLE
@@ -285,7 +287,7 @@ C2IF                              00000005
 C2INTN                            00000006
 C2INTP                            00000007
 C2NCH                             00000000
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE  6
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE  6
 
 
 SYMBOL TABLE
@@ -344,7 +346,7 @@ CWGFS0                            00000003
 CWGFS1                            00000004
 CWGFS2                            00000005
 CWGFSEL                           00000002
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE  7
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE  7
 
 
 SYMBOL TABLE
@@ -366,7 +368,7 @@ CWGRDB                            00000007
 CWGRS0                            00000000
 CWGRS1                            00000001
 CWGRS2                            00000002
-Clear                             0000006B
+Clear                             00000069
 DACCON0                           00000091
 DACCON1                           00000092
 DACEN                             00000007
@@ -390,10 +392,10 @@ DC                                00000001
 DCB0                              00000004
 DCB1                              00000005
 DirectionInput                    00000004
-Done                              0000006C
-EndDirectionSet                   0000005B
+Done                              0000006A
+EndDirectionSet                   00000059
 EndTBL                            0000000A
-ExternalInterrupt                 00000045
+ExternalInterrupt                 00000043
 F                                 00000001
 FSR                               00000004
 FVRBUFEN                          00000005
@@ -401,9 +403,9 @@ FVRBUFSS                          00000004
 FVRCON                            00000090
 FVREN                             00000007
 FVRRDY                            00000006
-Forward                           00000054
+Forward                           00000052
 FullStepDrive                     00000005
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE  8
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE  8
 
 
 SYMBOL TABLE
@@ -461,14 +463,14 @@ IOCAP5                            00000005
 IRCF0                             00000004
 IRCF1                             00000005
 IRP                               00000007
-ISR                               00000030
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE  9
+ISR                               00000031
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-ISR_BODY                          00000037
+ISR_BODY                          00000038
 LATA                              00000105
 LATA0                             00000000
 LATA1                             00000001
@@ -513,15 +515,15 @@ PMCON2                            0000018D
 PMDAT                             00000190
 PMDATH                            00000191
 PMDATL                            00000190
-POP                               0000004A
+POP                               00000048
 PORTA                             00000005
 PR2                               00000111
 PS0                               00000000
 PS1                               00000001
 PS2                               00000002
 PSA                               00000003
-PUSH                              00000030
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE 10
+PUSH                              00000031
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE 10
 
 
 SYMBOL TABLE
@@ -535,10 +537,10 @@ RA4                               00000004
 RA5                               00000005
 RAIF                              00000000
 RD                                00000000
-Reverse                           00000058
+Reverse                           00000056
 STATUS                            00000003
 STATUS_TEMP                       000000F1
-Step                              00000052
+Step                              00000050
 T0CS                              00000005
 T0SE                              00000004
 T1CKPS0                           00000004
@@ -580,7 +582,7 @@ TMR2IE                            00000001
 TMR2IF                            00000001
 TMR2ON                            00000002
 TRISA                             00000085
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE 11
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE 11
 
 
 SYMBOL TABLE
@@ -597,8 +599,8 @@ TUN1                              00000001
 TUN2                              00000002
 TUN3                              00000003
 TUN4                              00000004
-TimerInterrupt                    00000040
-Toggle                            00000065
+TimerInterrupt                    0000003E
+Toggle                            00000063
 VCFG                              00000006
 W                                 00000000
 WPUA                              0000010C
@@ -639,7 +641,7 @@ _WRT_FOURTH                       00003BFF
 _WRT_HALF                         000037FF
 _WRT_OFF                          00003FFF
 __12F752                          00000001
-MPASM  5.39                STEPPERMOTORV4.ASM   5-20-2016  16:58:52         PAGE 12
+MPASM  5.39                STEPPERMOTORV4.ASM   5-22-2016  14:33:58         PAGE 12
 
 
 SYMBOL TABLE
@@ -653,17 +655,17 @@ main                              0000000A
 MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
 
 0000 : X---XXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
-0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXX--- ----------------
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXX----- ----------------
 2000 : -------X-------- ---------------- ---------------- ----------------
 
 All other memory blocks unused.
 
-Program Memory Words Used:   106
-Program Memory Words Free:   918
+Program Memory Words Used:   104
+Program Memory Words Free:   920
 
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed
-Messages :    28 reported,     0 suppressed
+Messages :    29 reported,     0 suppressed
 
 

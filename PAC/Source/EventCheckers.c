@@ -25,7 +25,7 @@
 #define BUTTON_PRESSED 0
 #define BUTTON_NOT_PRESSED 1
 #define HUMAN_DETECTED true
-#define ACCEL_THRESHOLD 2500
+#define ACCEL_THRESHOLD 2200
 
 // this will pull in the symbolic definitions for events, which we will want
 // to post in response to detecting events
@@ -175,7 +175,7 @@ bool Check4InitPairing(void)
    uint16_t CurrentADReading = (uint16_t) ADResults[0]; // stores the AD reading
 	
 	bool CurrentCapState =  HWREG(GPIO_PORTF_BASE + (GPIO_O_DATA + ALL_BITS)) & BIT3HI; // Read pin F3
-
+// printf("AD Reading: %d \r\n", CurrentADReading);
 //printf("AD Reading: %d \r\n", CurrentADReading);
 // check for accel above threshold AND last accel reading lower than threshold
 // do the check for difference first so that you don't bother with a test

@@ -97,6 +97,8 @@ static uint8_t encryptedChecksum;
 
 static uint8_t Color;
 
+static uint16_t lastPairedAddress = 0x00;
+
 /*------------------------------ Module Code ------------------------------*/
 /****************************************************************************
  Function
@@ -195,7 +197,7 @@ ES_Event RunLobbyistSM( ES_Event ThisEvent )
 					// Read incoming message
 					incomingMessage = GetMessageData();
 					// Check that message is a pair request and that it's meant for us
-					if(*incomingMessage == PAIR_REQUEST_HEADER && CheckLobbyistNumber() && GetApiIdentifier() == INCOMING_PACKET_API_IDENTIFIER){  // Ensure that this is not a Tx success receive
+					if(*incomingMessage == PAIR_REQUEST_HEADER && CheckLobbyistNumber() && GetApiIdentifier() == INCOMING_PACKET_API_IDENTIFIER && GetSenderAddress() != lastPairedAddress){  // Ensure that this is not a Tx success receive
 						printf("\r\n Current Message Size: %d ", GetMessageDataSize());
 						// If we passed the checks, we're now paired. Start timers.
 						printf("\n\r\nPair request received in unpaired state.");
@@ -216,6 +218,7 @@ ES_Event RunLobbyistSM( ES_Event ThisEvent )
 						 // ES_Timer_InitTimer(DMC_TIMER, ONE_SEC); //Start the 1s DMC timer
 						// Recognize our new pac daddy
 						pairedAddress = GetSenderAddress() ;
+						lastPairedAddress = pairedAddress;
 						// Send an ACK back to the sender
 						TransmitStatusPacket(PAIRED); 
 						// Set the pair time
@@ -248,7 +251,7 @@ ES_Event RunLobbyistSM( ES_Event ThisEvent )
 						TransmitStatusPacket(PAIRED); //transmit status with the pairing bit set.
 						CurrentState = PairedAwaitControl;
 						printf("\r\n In paired await control");
-				}
+					}
         break;
         case ES_TIMEOUT: // if there is a timeout on the 1s timer
 					printf("\n\r\n1s timeout in pairing - moving to awaiting pair.");
@@ -257,6 +260,7 @@ ES_Event RunLobbyistSM( ES_Event ThisEvent )
 					ES_Timer_StopTimer(UNPAIR_TIMER); 		//Disable the 45s pairing timer
 					ES_Timer_StopTimer(PAIR_FAIL_TIMER); 	//Disable the 1s transmit timeout timer
 					TransmitStatusPacket(UNPAIRED); 			//Transmit status with the pairing bit cleared.
+					UpdateDMC(DMC_UNPAIRED,Color); 				//Update DMC
 					CurrentState = WaitingForPair;
         break;
       }
@@ -317,6 +321,7 @@ ES_Event RunLobbyistSM( ES_Event ThisEvent )
 								ES_Timer_StopTimer(UNPAIR_TIMER); 		//Disable the 45s pairing timer
 								ES_Timer_StopTimer(PAIR_FAIL_TIMER); 	//Disable the 1s transmit timeout timer
                 printf("\n\r\nUnpairing.");
+								UpdateDMC(DMC_UNPAIRED,Color); 	//Update DMC 
 						// If timer is not at 0, reinitialize the timer again for 1s to keep counting
               }else{
 								 ES_Timer_InitTimer(UNPAIR_TIMER, UNPAIR_TIME); //Start the 45s timer

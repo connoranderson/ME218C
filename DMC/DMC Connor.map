@@ -1,13 +1,13 @@
 MPLINK 4.38, Linker
-Linker Map File - Created Sun May 22 01:17:41 2016
+Linker Map File - Created Sun May 22 19:30:26 2016
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
-                   .org_0       code   0x000000    program   0x000000
-                   .org_1       code   0x000000    program   0x000002
-                   .org_2       code   0x000004    program   0x000002
-                   .org_3       code   0x000005    program   0x000318
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000004    program   0x000002
+                   .org_2       code   0x000005    program   0x000318
 .config_2007_DMC CONNOR.O       code   0x002007    program   0x000002
 
 
@@ -15,10 +15,10 @@ Linker Map File - Created Sun May 22 01:17:41 2016
                               Program Memory Usage 
                                Start         End      
                            ---------   ---------      
-                            0x000000    0x000000      
+                            0x000000    0x000002      
                             0x000004    0x000190      
                             0x002007    0x002007      
-            399 out of 1030 program addresses used, program memory utilization is 38%
+            401 out of 1030 program addresses used, program memory utilization is 38%
 
 
 
@@ -51,6 +51,7 @@ Linker Map File - Created Sun May 22 01:17:41 2016
              TIMER2_CHECK   0x00007c    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
             TURN_LEDS_OFF   0x000140    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
              TURN_LEDS_ON   0x00011e    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
+             _.org_2_0074   0x000074    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
 
 
 
@@ -59,10 +60,11 @@ Linker Map File - Created Sun May 22 01:17:41 2016
                 ---------  ---------  ---------  --------- ---------                
             DIM_LED_ARRAY   0x000005    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
                      Main   0x000033    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
-                      ISR   0x000075    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
+             _.org_2_0074   0x000074    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
                      PUSH   0x000075    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
-             TIMER2_CHECK   0x00007c    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
+                      ISR   0x000075    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
                  ISR_BODY   0x00007c    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
+             TIMER2_CHECK   0x00007c    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
              TIMER1_CHECK   0x00008a    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
                 START_BIT   0x00008f    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
                   RECEIVE   0x0000af    program     static U:\_ME218cTeams\Team 10\ME218C\DMC\DMC Connor.asm
